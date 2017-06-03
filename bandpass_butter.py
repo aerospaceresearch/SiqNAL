@@ -19,7 +19,7 @@ def butter_bandpass_filter(data, lowcut, highcut, fs,fc, order=15):
 		b, a = butter(order,high, btype='low')		
 
 	else:
-		b, a = butter(order, [low, high], btype='low')
+		b, a = butter(order, [low, high], btype='band')
 	
 	y = lfilter(b, a, data)
 	return y
@@ -69,7 +69,7 @@ if __name__ == '__main__':
 		signal_chunk_iq.real = signal_chunk[::2]
 		signal_chunk_iq.imag = signal_chunk[1::2]
 
-		final=butter_bandpass_filter(signal_chunk_iq,fc,138.15*1e6,fs,fc)
+		final=butter_bandpass_filter(signal_chunk_iq,138.15*1e6,138.55*1e6,fs,fc)
 
 		plt.rcParams["figure.figsize"] = (16,6)
 		fig=plt.figure()
