@@ -80,7 +80,7 @@ def firwin_custom(numtaps, cutoff, width=None, window='hamming', pass_zero=True,
 def firwin_bandpass_filter(data, lowcut, highcut, fs,fc,num):
 	nyq = 0.5 * fs
 	centre=(highcut+lowcut)/2-fc
-	print(centre)
+
 	width=np.ceil((highcut-lowcut)/2)
 
 	h = firwin_custom(num,width,nyq=nyq,window='hanning')
