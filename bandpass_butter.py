@@ -10,13 +10,15 @@ from scipy import signal
 from scipy.signal import butter, lfilter, firwin, fftconvolve
 import fourier
 
-def calc_parameter(flow,fhigh,fc,fs=2*1e6):
 
-    centre=((flow+fhigh)/2)-fc
-    width=np.ceil((fhigh-flow)/2)
-    factor=-1*centre/fs
+def calc_parameter(flow, fhigh, fc, fs=2 * 1e6):
 
-    return factor,width
+    centre = ((flow + fhigh) / 2) - fc
+    width = np.ceil((fhigh - flow) / 2)
+    factor = -1 * centre / fs
+
+    return factor, width
+
 
 def butter_bandpass_filter_old(data, lowcut, highcut, fs, fc, order=15):
     nyq = 0.5 * fs
@@ -32,14 +34,15 @@ def butter_bandpass_filter_old(data, lowcut, highcut, fs, fc, order=15):
     y = lfilter(b, a, data)
     return y
 
-def butter_bandpass_filter(data,width,fs,order=7):
-    nyq=0.5*fs
-    val=width/nyq
-    
-    if val<0.002:
-        val=0.002
 
-    b,a=butter(order,val,btype='low')
+def butter_bandpass_filter(data, width, fs, order=7):
+    nyq = 0.5 * fs
+    val = width / nyq
+
+    if val < 0.002:
+        val = 0.002
+
+    b, a = butter(order, val, btype='low')
     y = lfilter(b, a, data)
 
     return y
@@ -74,10 +77,10 @@ if __name__ == '__main__':
         chunksize = 2000000
         fs = 2 * 1e6
         fc = 137.65 * 1e6
-        flow= 137.93*1e6
-        fhigh= 137.96*1e6
-        factor,width=calc_parameter(flow,fhigh,fc,fs)
-        t_power=np.arange(chunksize)
+        flow = 137.93 * 1e6
+        fhigh = 137.96 * 1e6
+        factor, width = calc_parameter(flow, fhigh, fc, fs)
+        t_power = np.arange(chunksize)
 
         last = 1
 
@@ -95,9 +98,10 @@ if __name__ == '__main__':
             signal_chunk_iq.real = signal_chunk[::2]
             signal_chunk_iq.imag = signal_chunk[1::2]
 
-            signal_chunk_iq_new=signal_chunk_iq*(np.exp(1j*2*np.pi*t_power*(factor)))
-            final1=butter_bandpass_filter(signal_chunk_iq_new,width,fs)
-            final=final1*(np.exp(1j*2*np.pi*t_power*(-1*factor)))
+            signal_chunk_iq_new = signal_chunk_iq * \
+                (np.exp(1j * 2 * np.pi * t_power * (factor)))
+            final1 = butter_bandpass_filter(signal_chunk_iq_new, width, fs)
+            final = final1 * (np.exp(1j * 2 * np.pi * t_power * (-1 * factor)))
 
             plt.rcParams["figure.figsize"] = (16, 6)
             fig = plt.figure()
