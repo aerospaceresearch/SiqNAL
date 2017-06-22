@@ -13,7 +13,8 @@ import matplotlib as mlp
 from scipy.signal.signaltools import get_window
 from matplotlib.colors import LinearSegmentedColormap
 
-def waterfallspect(data, fc,fs, fft_size, overlap_fac):
+
+def waterfallspect(data, fc, fs, fft_size, overlap_fac):
 
     hop_size = np.int32(np.floor(fft_size * (1 - overlap_fac)))
     pad_end_size = fft_size
@@ -21,17 +22,17 @@ def waterfallspect(data, fc,fs, fft_size, overlap_fac):
     total_segments = np.int32(np.ceil(len(data) / np.float32(hop_size)))
     t_max = len(data) / np.float32(fs)
 
-    window = np.hanning(fft_size)  
+    window = np.hanning(fft_size)
     inner_pad = np.zeros(fft_size)
 
-    proc = np.concatenate((data, np.zeros(pad_end_size)))              
+    proc = np.concatenate((data, np.zeros(pad_end_size)))
     result = np.empty((total_segments, fft_size),
-                      dtype=np.float32) 
+                      dtype=np.float32)
 
-    for i in range(total_segments):                  
+    for i in range(total_segments):
         current_hop = hop_size * i
         segment = proc[current_hop:current_hop +
-                       fft_size] 
+                       fft_size]
         windowed = segment * window
         padded = np.append(windowed, inner_pad)
         spectrum = fftshift(fft(windowed)) / fft_size
@@ -72,7 +73,7 @@ if __name__ == '__main__':
 
         fs = 2 * 1e6
         fc = 137.65 * 1e6
-        #fc=145.825*1e6
+        # fc=145.825*1e6
 
     chunksize = 2000000
     len_signal = len(signal)
@@ -83,7 +84,7 @@ if __name__ == '__main__':
         start = i * chunksize
         end = start + chunksize
 
-        signal_chunk = signal[start:end,:]
+        signal_chunk = signal[start:end, :]
         signal_chunk = signal_chunk.flatten()
         signal_chunk = signal_chunk - 127.5
 
@@ -93,14 +94,17 @@ if __name__ == '__main__':
         signal_chunk_iq.imag = signal_chunk[1::2]
 
         if(i == 0):
-            waterfall_data=waterfallspect(signal_chunk_iq, fc,fs, 8 * 4096, 0.5)
+            waterfall_data = waterfallspect(
+                signal_chunk_iq, fc, fs, 8 * 4096, 0.5)
         else:
-        	waterfall_data=waterfall_data+waterfallspect(signal_chunk_iq, fc,fs, 8 * 4096, 0.5)
+            waterfall_data = waterfall_data + \
+                waterfallspect(signal_chunk_iq, fc, fs, 8 * 4096, 0.5)
 
     dummy_vector = [0.0, 10]
     freq_vector = [-(fs / 2) + fc, (fs / 2) + fc]
-    waterfall_data=waterfall_data/last
-    img = plt.imshow(waterfall_data, extent=freq_vector + dummy_vector,origin='lower',interpolation='nearest', aspect='auto',cmap=plt.cm.magma)
+    waterfall_data = waterfall_data / last
+    img = plt.imshow(waterfall_data, extent=freq_vector + dummy_vector,
+                     origin='lower', interpolation='nearest', aspect='auto', cmap=plt.cm.magma)
     plt.colorbar()
     plt.yticks([])
     plt.show()
