@@ -10,6 +10,7 @@ from matplotlib.colors import LinearSegmentedColormap
 import matplotlib.colors as mcolors
 import matplotlib as mlp
 
+
 def PlotSpectrogram(freq_vector, dummy_vector, data, dbf=60):
 
     eps = 1e-3
@@ -20,11 +21,11 @@ def PlotSpectrogram(freq_vector, dummy_vector, data, dbf=60):
 
     fig = plt.figure(figsize=(16, 5))
 
-    table=np.loadtxt('map.txt', skiprows=1)
-    cm = mlp.colors.ListedColormap(table/255.0)
+    table = np.loadtxt('map.txt', skiprows=1)
+    cm = mlp.colors.ListedColormap(table / 255.0)
 
     plt.imshow(display_data.T, extent=freq_vector + dummy_vector,
-               aspect='auto', interpolation="nearest",cmap=plt.cm.magma)
+               aspect='auto', interpolation="nearest", cmap=plt.cm.magma)
     plt.colorbar()
     plt.xlabel('Frequency (Hz)')
     plt.tight_layout()
@@ -62,7 +63,7 @@ def GenerateSpectrogram(signal, fs, fc):
         start = i * chunksize
         end = start + chunksize
 
-        signal_chunk = signal[start:end,:]
+        signal_chunk = signal[start:end, :]
         signal_chunk = signal_chunk.flatten()
         signal_chunk = signal_chunk - 127.5
 
@@ -83,7 +84,7 @@ def GenerateSpectrogram(signal, fs, fc):
         spectrogram_data += signal_chunk_spectrogram_data
 
         del signal_chunk_iq, signal_chunk, signal_chunk_spectrogram_data
-    spectrogram_data=spectrogram_data/last
+    spectrogram_data = spectrogram_data / last
     dummy_vector = [0.0, len_dummy / (fs)]
     freq_vector = [-(fs / 2) + fc, (fs / 2) + fc]
     PlotSpectrogram(freq_vector, dummy_vector, spectrogram_data)
@@ -119,7 +120,7 @@ if __name__ == '__main__':
 
         fs = 2 * 1e6
         fc = 137.65 * 1e6
-        #fc=145.825*1e6
+        # fc=145.825*1e6
 
         GenerateSpectrogram(signal, fs, fc)
 
