@@ -6,6 +6,9 @@ from os import path
 import scipy.io.wavfile
 from scipy.fftpack import fft, fftshift
 from scipy import signal
+from matplotlib.colors import LinearSegmentedColormap
+import matplotlib.colors as mcolors
+import matplotlib as mlp
 
 
 def PlotSpectrogram(freq_vector, dummy_vector, data, dbf=60):
@@ -17,8 +20,13 @@ def PlotSpectrogram(freq_vector, dummy_vector, data, dbf=60):
     display_data = (np.flipud(64.0 * (data_log + dbf) / dbf))
 
     fig = plt.figure(figsize=(16, 5))
+
+    table = np.loadtxt('map.txt', skiprows=1)
+    cm = mlp.colors.ListedColormap(table / 255.0)
+
     plt.imshow(display_data.T, extent=freq_vector + dummy_vector,
-               aspect='auto', interpolation="nearest")
+               aspect='auto', interpolation="nearest", cmap=plt.cm.magma)
+    plt.colorbar()
     plt.xlabel('Frequency (Hz)')
     plt.tight_layout()
 
@@ -35,8 +43,8 @@ def ShortTimeSpectrogram(signal, N, fs, fc):
     signal = signal[np.r_[N // 2:len(signal), np.ones(N // 2) * (
         len(signal) - 1)].astype(int)].reshape((N, len_padding * 2), order='F')
 
-    signal_spectrogram = signal * np.hanning(N)[:, None];
-    signal_spectrogram = np.fft.fftshift(np.fft.fft(
+    signal_spectrogram = signal * np.hanning(N)[:, None]
+    signal_spectrogram = fftshift(fft(
         signal_spectrogram, len(signal_spectrogram), axis=0), axes=0)
 
     return signal_spectrogram
@@ -48,7 +56,7 @@ def GenerateSpectrogram(signal, fs, fc):
     fft_points = 1024
 
     len_signal = signal.shape[0]
-    last = int(len_signal // chunksize)
+    last = int(len_signal // (chunksize))
 
     for i in range(0, last):
 
@@ -76,7 +84,7 @@ def GenerateSpectrogram(signal, fs, fc):
         spectrogram_data += signal_chunk_spectrogram_data
 
         del signal_chunk_iq, signal_chunk, signal_chunk_spectrogram_data
-
+    spectrogram_data = spectrogram_data / last
     dummy_vector = [0.0, len_dummy / (fs)]
     freq_vector = [-(fs / 2) + fc, (fs / 2) + fc]
     PlotSpectrogram(freq_vector, dummy_vector, spectrogram_data)
@@ -88,6 +96,7 @@ def LoadData(filename):
 
         rate, signal = scipy.io.wavfile.read(filename, mmap=True)
         signal = signal[44:, :]
+        #signal = np.memmap(filename, dtype='uint8', mode='r',offset=44)
         return signal
 
     except:
@@ -111,6 +120,7 @@ if __name__ == '__main__':
 
         fs = 2 * 1e6
         fc = 137.65 * 1e6
+        # fc=145.825*1e6
 
         GenerateSpectrogram(signal, fs, fc)
 
