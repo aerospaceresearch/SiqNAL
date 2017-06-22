@@ -21,9 +21,6 @@ def PlotSpectrogram(freq_vector, dummy_vector, data, dbf=60):
 
     fig = plt.figure(figsize=(16, 5))
 
-    table = np.loadtxt('map.txt', skiprows=1)
-    cm = mlp.colors.ListedColormap(table / 255.0)
-
     plt.imshow(display_data.T, extent=freq_vector + dummy_vector,
                aspect='auto', interpolation="nearest", cmap=plt.cm.magma)
     plt.colorbar()
@@ -106,9 +103,7 @@ def LoadData(filename):
 
 if __name__ == '__main__':
 
-    data_directory = path.join(os.getcwd(), 'data')
-    filename = path.join(
-        data_directory, 'station1_yagi_SDRSharp_20170312_060959Z_137650kHz_IQ.wav')
+    filename = "/home/matrix/Desktop/siqnal/data/station1_yagi_SDRSharp_20170312_060959Z_137650kHz_IQ.wav"
 
     signal = LoadData(filename)
 

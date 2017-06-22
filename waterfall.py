@@ -59,9 +59,7 @@ def LoadData(filename):
 
 if __name__ == '__main__':
 
-    data_directory = path.join(os.getcwd(), 'data')
-    filename = path.join(
-        data_directory, 'station1_yagi_SDRSharp_20170312_060959Z_137650kHz_IQ.wav')
+    filename = "/home/matrix/Desktop/siqnal/data/station1_yagi_SDRSharp_20170312_060959Z_137650kHz_IQ.wav"
 
     signal = LoadData(filename)
 
