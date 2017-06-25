@@ -23,6 +23,9 @@
          <property name="text">
           <string/>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
         </widget>
        </item>
        <item>
@@ -134,7 +137,10 @@
          <item>
           <widget class="QLabel" name="FileLogoDisplay">
            <property name="text">
-            <string>TextLabel</string>
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
@@ -155,6 +161,12 @@
            </item>
            <item>
             <widget class="QLineEdit" name="FileNameDisplay">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="readOnly">
               <bool>true</bool>
              </property>
