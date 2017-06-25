@@ -9,6 +9,8 @@ import analysisscreen
 import timescreen
 import freqscreen
 import powerscreen
+import spectscreen
+import waitscreen
 
 import SignalData
 import checkmodules
@@ -17,6 +19,7 @@ import read_wav
 import signal_plot
 import signal_plot_freq
 import signal_plot_power
+import spectrogram
 
 class ValidFreq(QtGui.QValidator):
 	def __init__(self):
@@ -53,6 +56,7 @@ class ControlScreen(QtGui.QMainWindow, analysisscreen.Ui_MainWindow):
 		self.TimeLaunchButton.clicked.connect(self.launchtimedomain)
 		self.FourierLaunchButton.clicked.connect(self.launchfourier)
 		self.PowerLaunchButton.clicked.connect(self.launchpower)
+		self.SpectrogramLaunchButton.clicked.connect(self.launchspect)
 
 	def addlogo(self):
 		image_directory = path.join(os.getcwd(), 'img')
@@ -165,6 +169,10 @@ class ControlScreen(QtGui.QMainWindow, analysisscreen.Ui_MainWindow):
 	def launchpower(self):
 		self.powerscreenwindow=PowerDomainScreen(self.SignalMeta)
 		self.powerscreenwindow.exec_()
+
+	def launchspect(self):
+		self.spectscreenwindow=SpectDomainScreen(self.SignalMeta)
+		self.spectscreenwindow.exec_()
 
 class TimeDomainScreen(QtGui.QDialog, timescreen.Ui_Dialog):
 	
@@ -312,6 +320,64 @@ class PowerDomainScreen(QtGui.QDialog, powerscreen.Ui_Dialog):
 		start = int(self.StartTimeInput.text())
 		end=int(self.EndTimeInput.text())
 		signal_plot_power.SignalPowerPlot(self.SignalInfo,start,end)
+
+class SpectDomainScreen(QtGui.QDialog, spectscreen.Ui_Dialog):
+	
+	def __init__(self,SignalMeta):
+		super(self.__class__, self).__init__()
+		self.setupUi(self)
+
+		self.SignalInfo=SignalMeta
+		self.initialize()
+
+	def initialize(self):
+
+		image_directory = path.join(os.getcwd(), 'img')
+		imagefile=path.join(image_directory,'logo_small.png')
+		pixmap = QtGui.QPixmap(imagefile)
+		self.LogoDisplay.setPixmap(pixmap)
+
+		value = self.SignalInfo.getvalues()
+
+		if(value[1] == ".wav"):
+			time = int(len(value[2])/value[3])
+			image_directory = path.join(os.getcwd(), 'img')
+			imagefile=path.join(image_directory,'wav_file.png')
+			pixmap = QtGui.QPixmap(imagefile)
+			self.FileLogoDisplay.setPixmap(pixmap)
+		else:
+			time = int(len(value[2])/(2*value[3]))
+			image_directory = path.join(os.getcwd(), 'img')
+			imagefile=path.join(image_directory,'dat_file.png')
+			pixmap = QtGui.QPixmap(imagefile)
+			self.FileLogoDisplay.setPixmap(pixmap)
+
+		self.FileNameDisplay.setText(value[0])
+		self.SampleFreqDisplay.setText(str(value[3]))
+		self.CentreFreqDisplay.setText(str(value[4]))
+		self.TimeSignalDisplay.setText(str(time))
+
+		self.ActionButton.clicked.connect(self.SpectDomainPlot)
+
+	def SpectDomainPlot(self):
+
+		cmap=self.ColormapInput.currentText()
+		WaitWindow=WaitScreenReq()
+		spectrogram.SpectrogramPlot(self.SignalInfo,cmap,WaitWindow)
+
+class WaitScreenReq(QtGui.QDialog, waitscreen.Ui_Dialog):
+	"""docstring for CheckDependencies"""
+	def __init__(self):
+		super(self.__class__, self).__init__()
+		self.setupUi(self)
+
+
+	def updateprogress(self,current,levels):
+		new_value=int(((current+1)*100)/levels)
+		self.ProgressBar.setValue(new_value)
+
+	def close(self):
+		self.checked=True
 
 def main():
 	app=QtGui.QApplication(sys.argv)
