@@ -161,11 +161,8 @@
            </item>
            <item>
             <widget class="QLineEdit" name="FileNameDisplay">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
              </property>
              <property name="readOnly">
               <bool>true</bool>
@@ -278,7 +275,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Time Domain Vizualization Section</string>
+            <string>Frequency Domain Vizualization Section</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>

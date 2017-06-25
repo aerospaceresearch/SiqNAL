@@ -7,12 +7,16 @@ from os.path import splitext
 import checkscreen
 import analysisscreen
 import timescreen
+import freqscreen
+import powerscreen
 
 import SignalData
 import checkmodules
 import read_dat
 import read_wav
 import signal_plot
+import signal_plot_freq
+import signal_plot_power
 
 class ValidFreq(QtGui.QValidator):
 	def __init__(self):
@@ -47,6 +51,8 @@ class ControlScreen(QtGui.QMainWindow, analysisscreen.Ui_MainWindow):
 		self.addlogo()
 		self.initializeAnalysiscreen()
 		self.TimeLaunchButton.clicked.connect(self.launchtimedomain)
+		self.FourierLaunchButton.clicked.connect(self.launchfourier)
+		self.PowerLaunchButton.clicked.connect(self.launchpower)
 
 	def addlogo(self):
 		image_directory = path.join(os.getcwd(), 'img')
@@ -131,13 +137,9 @@ class ControlScreen(QtGui.QMainWindow, analysisscreen.Ui_MainWindow):
 
 	def setVizualizationside(self,value):
 		self.TimeLaunchButton.setEnabled(value)
-
 		self.FourierLaunchButton.setEnabled(value)
-
 		self.PowerLaunchButton.setEnabled(value)
-
 		self.SpectrogramLaunchButton.setEnabled(value)
-
 		self.BandpassLaunchButton.setEnabled(value)
 
 
@@ -156,6 +158,14 @@ class ControlScreen(QtGui.QMainWindow, analysisscreen.Ui_MainWindow):
 		self.timescreenwindow=TimeDomainScreen(self.SignalMeta)
 		self.timescreenwindow.exec_()
 
+	def launchfourier(self):
+		self.freqscreenwindow=FreqDomainScreen(self.SignalMeta)
+		self.freqscreenwindow.exec_()
+
+	def launchpower(self):
+		self.powerscreenwindow=PowerDomainScreen(self.SignalMeta)
+		self.powerscreenwindow.exec_()
+
 class TimeDomainScreen(QtGui.QDialog, timescreen.Ui_Dialog):
 	
 	def __init__(self,SignalMeta):
@@ -166,12 +176,26 @@ class TimeDomainScreen(QtGui.QDialog, timescreen.Ui_Dialog):
 		self.initialize()
 
 	def initialize(self):
+		
+		image_directory = path.join(os.getcwd(), 'img')
+		imagefile=path.join(image_directory,'logo_small.png')
+		pixmap = QtGui.QPixmap(imagefile)
+		self.LogoDisplay.setPixmap(pixmap)
+
 		value = self.SignalInfo.getvalues()
 
 		if(value[1] == ".wav"):
 			time = int(len(value[2])/value[3])
+			image_directory = path.join(os.getcwd(), 'img')
+			imagefile=path.join(image_directory,'wav_file.png')
+			pixmap = QtGui.QPixmap(imagefile)
+			self.FileLogoDisplay.setPixmap(pixmap)
 		else:
 			time = int(len(value[2])/(2*value[3]))
+			image_directory = path.join(os.getcwd(), 'img')
+			imagefile=path.join(image_directory,'dat_file.png')
+			pixmap = QtGui.QPixmap(imagefile)
+			self.FileLogoDisplay.setPixmap(pixmap)
 
 		self.FileNameDisplay.setText(value[0])
 		self.SampleFreqDisplay.setText(str(value[3]))
@@ -190,6 +214,105 @@ class TimeDomainScreen(QtGui.QDialog, timescreen.Ui_Dialog):
 		start = int(self.StartTimeInput.text())
 		end=int(self.EndTimeInput.text())
 		signal_plot.SignalTimePlot(self.SignalInfo,start,end)
+
+class FreqDomainScreen(QtGui.QDialog, freqscreen.Ui_Dialog):
+	
+	def __init__(self,SignalMeta):
+		super(self.__class__, self).__init__()
+		self.setupUi(self)
+
+		self.SignalInfo=SignalMeta
+		self.initialize()
+
+	def initialize(self):
+
+		image_directory = path.join(os.getcwd(), 'img')
+		imagefile=path.join(image_directory,'logo_small.png')
+		pixmap = QtGui.QPixmap(imagefile)
+		self.LogoDisplay.setPixmap(pixmap)
+
+		value = self.SignalInfo.getvalues()
+
+		if(value[1] == ".wav"):
+			time = int(len(value[2])/value[3])
+			image_directory = path.join(os.getcwd(), 'img')
+			imagefile=path.join(image_directory,'wav_file.png')
+			pixmap = QtGui.QPixmap(imagefile)
+			self.FileLogoDisplay.setPixmap(pixmap)
+		else:
+			time = int(len(value[2])/(2*value[3]))
+			image_directory = path.join(os.getcwd(), 'img')
+			imagefile=path.join(image_directory,'dat_file.png')
+			pixmap = QtGui.QPixmap(imagefile)
+			self.FileLogoDisplay.setPixmap(pixmap)
+
+		self.FileNameDisplay.setText(value[0])
+		self.SampleFreqDisplay.setText(str(value[3]))
+		self.CentreFreqDisplay.setText(str(value[4]))
+		self.TimeSignalDisplay.setText(str(time))
+
+		validator1=QtGui.QIntValidator(0,time-2,self)
+		self.StartTimeInput.setValidator(validator1)
+		validator2=QtGui.QIntValidator(0,time-1,self)
+		self.EndTimeInput.setValidator(validator2)
+
+		self.ActionButton.clicked.connect(self.FreqDomainPlot)
+
+	def FreqDomainPlot(self):
+
+		start = int(self.StartTimeInput.text())
+		end=int(self.EndTimeInput.text())
+		signal_plot_freq.SignalFreqPlot(self.SignalInfo,start,end)
+
+class PowerDomainScreen(QtGui.QDialog, powerscreen.Ui_Dialog):
+	
+	def __init__(self,SignalMeta):
+		super(self.__class__, self).__init__()
+		self.setupUi(self)
+
+		self.SignalInfo=SignalMeta
+		self.initialize()
+
+	def initialize(self):
+
+		image_directory = path.join(os.getcwd(), 'img')
+		imagefile=path.join(image_directory,'logo_small.png')
+		pixmap = QtGui.QPixmap(imagefile)
+		self.LogoDisplay.setPixmap(pixmap)
+
+		value = self.SignalInfo.getvalues()
+
+		if(value[1] == ".wav"):
+			time = int(len(value[2])/value[3])
+			image_directory = path.join(os.getcwd(), 'img')
+			imagefile=path.join(image_directory,'wav_file.png')
+			pixmap = QtGui.QPixmap(imagefile)
+			self.FileLogoDisplay.setPixmap(pixmap)
+		else:
+			time = int(len(value[2])/(2*value[3]))
+			image_directory = path.join(os.getcwd(), 'img')
+			imagefile=path.join(image_directory,'dat_file.png')
+			pixmap = QtGui.QPixmap(imagefile)
+			self.FileLogoDisplay.setPixmap(pixmap)
+
+		self.FileNameDisplay.setText(value[0])
+		self.SampleFreqDisplay.setText(str(value[3]))
+		self.CentreFreqDisplay.setText(str(value[4]))
+		self.TimeSignalDisplay.setText(str(time))
+
+		validator1=QtGui.QIntValidator(0,time-2,self)
+		self.StartTimeInput.setValidator(validator1)
+		validator2=QtGui.QIntValidator(0,time-1,self)
+		self.EndTimeInput.setValidator(validator2)
+
+		self.ActionButton.clicked.connect(self.PowerDomainPlot)
+
+	def PowerDomainPlot(self):
+
+		start = int(self.StartTimeInput.text())
+		end=int(self.EndTimeInput.text())
+		signal_plot_power.SignalPowerPlot(self.SignalInfo,start,end)
+
 def main():
 	app=QtGui.QApplication(sys.argv)
 	MainWindow=ControlScreen()

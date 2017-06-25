@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'timescreen.ui'
+# Form implementation generated from reading ui file 'powerscreen.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -114,11 +114,6 @@ class Ui_Dialog(object):
         self.FileNameLabel.setObjectName(_fromUtf8("FileNameLabel"))
         self.horizontalLayout_7.addWidget(self.FileNameLabel)
         self.FileNameDisplay = QtGui.QLineEdit(Dialog)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.FileNameDisplay.sizePolicy().hasHeightForWidth())
-        self.FileNameDisplay.setSizePolicy(sizePolicy)
         self.FileNameDisplay.setReadOnly(True)
         self.FileNameDisplay.setObjectName(_fromUtf8("FileNameDisplay"))
         self.horizontalLayout_7.addWidget(self.FileNameDisplay)
@@ -260,7 +255,7 @@ class Ui_Dialog(object):
         self.SampleFreqLabel.setText(_translate("Dialog", "Sampling Frequency(Hz)", None))
         self.CentreFreqLabel.setText(_translate("Dialog", "Centre Frequency(Hz)", None))
         self.LengthSIgnalLabel.setText(_translate("Dialog", "Length of Signal(sec)", None))
-        self.AnalysisDisplay.setText(_translate("Dialog", "Time Domain Vizualization Section", None))
+        self.AnalysisDisplay.setText(_translate("Dialog", "Power Spectral Density Vizualization Section", None))
         self.StartTimeLabel.setText(_translate("Dialog", "Start Time(sec)", None))
         self.StartTimeInput.setPlaceholderText(_translate("Dialog", "(Inclusive)", None))
         self.EndTimeLabel.setText(_translate("Dialog", "End Time(sec)", None))
