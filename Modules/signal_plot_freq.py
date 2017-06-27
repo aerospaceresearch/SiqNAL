@@ -1,8 +1,11 @@
-import SignalData
+from Modules import SignalData
+
 import numpy as np
 import matplotlib.pyplot as plt
 
-def SignalTimePlot(SignalInfo,start,end):
+from Modules import fourier
+
+def SignalFreqPlot(SignalInfo,start,end):
 
 	value=SignalInfo.getvalues()
 	signal=value[2]
@@ -25,7 +28,7 @@ def SignalTimePlot(SignalInfo,start,end):
 	signal_chunk_iq.real = signal_chunk[::2]
 	signal_chunk_iq.imag = signal_chunk[1::2]
 
-	time= np.arange(start,end,1/value[3])
+	frequency,transform=fourier.CalcFourier(signal_chunk_iq,value[3],value[4])
 
 	plt.rcParams["figure.figsize"] = (16, 6)
 	fig = plt.figure()
@@ -33,8 +36,8 @@ def SignalTimePlot(SignalInfo,start,end):
 	ax = fig.add_subplot(111)
 	plt.gca().xaxis.grid(True)
 	plt.gca().yaxis.grid(True)
-	ax.set_title("Time Domain Plot of Signal")
-	ax.set_xlabel('Time(sec)')
-	ax.set_ylabel('|x(t)|')
-	plt.plot(time, abs(signal_chunk_iq))
+	ax.set_title("Freq Domain Plot of Signal")
+	ax.set_xlabel('Freq(Hz)')
+	ax.set_ylabel('|X(t)|')
+	plt.plot(frequency, transform)
 	plt.show()

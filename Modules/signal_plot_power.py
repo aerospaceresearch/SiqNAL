@@ -1,4 +1,5 @@
-import SignalData
+from Modules import SignalData
+
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import csd

@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>558</width>
     <height>500</height>
    </rect>
   </property>
@@ -431,6 +431,13 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="Spectrogram2LaunchButton">
+            <property name="text">
+             <string>Spectrogram Test</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="BandpassLaunchButton">
             <property name="text">
              <string>Bandpass Filter</string>
@@ -440,11 +447,6 @@
          </layout>
         </item>
        </layout>
-      </widget>
-      <widget class="QWidget" name="tab_2">
-       <attribute name="title">
-        <string>Signal 2</string>
-       </attribute>
       </widget>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">

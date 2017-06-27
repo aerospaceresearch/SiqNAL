@@ -5,7 +5,9 @@ import matplotlib.pyplot as plt
 from scipy.fftpack import fft, fftshift
 import sys
 
-import waitscreen
+from Modules import SignalData
+
+from Screens import waitscreen
 
 def waterfallspect(data, fc, fs, fft_size, overlap_fac):
 
@@ -63,10 +65,14 @@ def SpectrogramPlot(SignalInfo,cmapstr,WaitWindow):
 	len_signal=len(signal)
 	chunknumber=int(len_signal//(factor*chunksize))
 
+	#WaitWindow=WaitScreenReq()
 	WaitWindow.show()
+	#WaitWindow.updateprogress(i,chunknumber)
 
 	for i in range(0, chunknumber):
 
+		WaitWindow.updateprogress(i,chunknumber)
+		
 		start = i * factor*chunksize
 		end = start + factor*chunksize
 
@@ -87,13 +93,13 @@ def SpectrogramPlot(SignalInfo,cmapstr,WaitWindow):
 		else:
 			waterfall_data = waterfall_data + waterfallspect(signal_chunk_iq, fc, fs, nfft, 0.5)
 
-		WaitWindow.updateprogress(i,chunknumber)
+		del signal_chunk_iq, signal_chunk
 
+
+	WaitWindow.close()
 	dummy_vector = [0.0, 10]
 	freq_vector = [-(fs / 2) + fc, (fs / 2) + fc]
 	waterfall_data = waterfall_data / chunknumber
-	
-	WaitWindow.close()
 
 	img = plt.imshow(waterfall_data, extent=freq_vector + dummy_vector,origin='lower', interpolation='nearest', aspect='auto', cmap=cmap)
 	plt.colorbar()
