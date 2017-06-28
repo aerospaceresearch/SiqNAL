@@ -9,6 +9,7 @@ from Modules import SignalData
 
 from Screens import waitscreen
 
+
 def waterfallspect(data, fc, fs, fft_size, overlap_fac):
 
     hop_size = np.int32(np.floor(fft_size * (1 - overlap_fac)))
@@ -37,71 +38,78 @@ def waterfallspect(data, fc, fs, fft_size, overlap_fac):
 
     return result
 
-def SpectrogramPlot(SignalInfo,cmapstr,WaitWindow):
 
-	value=SignalInfo.getvalues()
-	signal=value[2]
-	nfft=32768
+def SpectrogramPlot(SignalInfo, cmapstr, WaitWindow):
 
-	if("gray" in cmapstr):
-		cmap=plt.cm.gray
-	elif("magma" in cmapstr):
-		cmap=plt.cm.magma
-	elif("inferno" in cmapstr):
-		cmap=plt.cm.inferno
-	elif("viridis" in cmapstr):
-		cmap=plt.cm.viridis
-	else:
-		cmap=plt.cm.plasma
+    value = SignalInfo.getvalues()
+    signal = value[2]
+    nfft = 32768
 
-	if(value[1]==".wav"):
-		factor=1
-	else:
-		factor=2
+    if("gray" in cmapstr):
+        cmap = plt.cm.gray
+    elif("magma" in cmapstr):
+        cmap = plt.cm.magma
+    elif("inferno" in cmapstr):
+        cmap = plt.cm.inferno
+    elif("viridis" in cmapstr):
+        cmap = plt.cm.viridis
+    else:
+        cmap = plt.cm.plasma
 
-	fs=value[3]
-	fc=value[4]
-	chunksize=int(fs)
-	len_signal=len(signal)
-	chunknumber=int(len_signal//(factor*chunksize))
+    if(value[1] == ".dat"):
+        factor = 2
+    else:
+        factor = 1
 
-	#WaitWindow=WaitScreenReq()
-	WaitWindow.show()
-	#WaitWindow.updateprogress(i,chunknumber)
+    fs = value[3]
+    fc = value[4]
+    chunksize = int(fs)
+    len_signal = len(signal)
+    chunknumber = int(len_signal // (factor * chunksize))
 
-	for i in range(0, chunknumber):
+    WaitWindow.show()
 
-		WaitWindow.updateprogress(i,chunknumber)
-		
-		start = i * factor*chunksize
-		end = start + factor*chunksize
+    for i in range(0, chunknumber):
 
-		if(value[1]==".wav"):
-			signal_chunk = signal[start:end, :]
-			signal_chunk = signal_chunk.flatten()
-		else:
-			signal_chunk = signal[start:end]
+        WaitWindow.updateprogress(i, chunknumber)
 
-		signal_chunk = signal_chunk - 127.5
+        startslice = i * factor * chunksize
+        endslice = startslice + factor * chunksize
 
-		signal_chunk_iq = np.empty(signal_chunk.shape[0] // 2, dtype=np.complex128)
-		signal_chunk_iq.real = signal_chunk[::2]
-		signal_chunk_iq.imag = signal_chunk[1::2]
+        if(value[1] == ".wav"):
+            signal_chunk = signal[startslice:endslice, :]
+            signal_chunk = signal_chunk.flatten()
+            signal_chunk = signal_chunk - 127.5
+        elif(value[1] == ".dat"):
+            signal_chunk = signal[startslice:endslice]
+            signal_chunk = signal_chunk - 127.5
+        else:
+            signal_chunk_iq = signal[startslice:endslice]
 
-		if(i == 0):
-			waterfall_data = waterfallspect(signal_chunk_iq, fc, fs, nfft, 0.5)
-		else:
-			waterfall_data = waterfall_data + waterfallspect(signal_chunk_iq, fc, fs, nfft, 0.5)
+        if(value[1] != ".txt"):
+            signal_chunk_iq = np.empty(
+                signal_chunk.shape[0] // 2, dtype=np.complex128)
+            signal_chunk_iq.real = signal_chunk[::2]
+            signal_chunk_iq.imag = signal_chunk[1::2]
 
-		del signal_chunk_iq, signal_chunk
+        if(i == 0):
+            waterfall_data = waterfallspect(signal_chunk_iq, fc, fs, nfft, 0.5)
+        else:
+            waterfall_data = waterfall_data + \
+                waterfallspect(signal_chunk_iq, fc, fs, nfft, 0.5)
 
+        try:
+            del signal_chunk_iq, signal_chunk
+        except:
+            pass
 
-	WaitWindow.close()
-	dummy_vector = [0.0, 10]
-	freq_vector = [-(fs / 2) + fc, (fs / 2) + fc]
-	waterfall_data = waterfall_data / chunknumber
+    WaitWindow.close()
+    dummy_vector = [0.0, 10]
+    freq_vector = [-(fs / 2) + fc, (fs / 2) + fc]
+    waterfall_data = waterfall_data / chunknumber
 
-	img = plt.imshow(waterfall_data, extent=freq_vector + dummy_vector,origin='lower', interpolation='nearest', aspect='auto', cmap=cmap)
-	plt.colorbar()
-	plt.yticks([])
-	plt.show()
+    img = plt.imshow(waterfall_data, extent=freq_vector + dummy_vector,
+                     origin='lower', interpolation='nearest', aspect='auto', cmap=cmap)
+    plt.colorbar()
+    plt.yticks([])
+    plt.show()
