@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/matrix/Desktop/siqnal/qt/powerscreen.ui'
+# Form implementation generated from reading ui file '/home/matrix/Desktop/siqnal/qt/bandpassscreen.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -28,8 +28,9 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(688, 366)
-        self.verticalLayout_5 = QtGui.QVBoxLayout(Dialog)
-        self.verticalLayout_5.setObjectName(_fromUtf8("verticalLayout_5"))
+        self.horizontalLayout_10 = QtGui.QHBoxLayout(Dialog)
+        self.horizontalLayout_10.setObjectName(
+            _fromUtf8("horizontalLayout_10"))
         self.verticalLayout_4 = QtGui.QVBoxLayout()
         self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
@@ -88,9 +89,8 @@ class Ui_Dialog(object):
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.horizontalLayout_3.addLayout(self.verticalLayout)
         self.verticalLayout_4.addLayout(self.horizontalLayout_3)
-        self.horizontalLayout_10 = QtGui.QHBoxLayout()
-        self.horizontalLayout_10.setObjectName(
-            _fromUtf8("horizontalLayout_10"))
+        self.horizontalLayout_8 = QtGui.QHBoxLayout()
+        self.horizontalLayout_8.setObjectName(_fromUtf8("horizontalLayout_8"))
         self.verticalLayout_2 = QtGui.QVBoxLayout()
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
         self.MetaDisplay = QtGui.QLabel(Dialog)
@@ -117,6 +117,13 @@ class Ui_Dialog(object):
         self.FileNameLabel.setObjectName(_fromUtf8("FileNameLabel"))
         self.horizontalLayout_7.addWidget(self.FileNameLabel)
         self.FileNameDisplay = QtGui.QLineEdit(Dialog)
+        sizePolicy = QtGui.QSizePolicy(
+            QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(
+            self.FileNameDisplay.sizePolicy().hasHeightForWidth())
+        self.FileNameDisplay.setSizePolicy(sizePolicy)
         self.FileNameDisplay.setReadOnly(True)
         self.FileNameDisplay.setObjectName(_fromUtf8("FileNameDisplay"))
         self.horizontalLayout_7.addWidget(self.FileNameDisplay)
@@ -184,7 +191,7 @@ class Ui_Dialog(object):
         self.TimeSignalDisplay.setObjectName(_fromUtf8("TimeSignalDisplay"))
         self.horizontalLayout_6.addWidget(self.TimeSignalDisplay)
         self.verticalLayout_2.addLayout(self.horizontalLayout_6)
-        self.horizontalLayout_10.addLayout(self.verticalLayout_2)
+        self.horizontalLayout_8.addLayout(self.verticalLayout_2)
         self.verticalLayout_3 = QtGui.QVBoxLayout()
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
         self.AnalysisDisplay = QtGui.QLabel(Dialog)
@@ -196,64 +203,67 @@ class Ui_Dialog(object):
         self.AnalysisDisplay.setAlignment(QtCore.Qt.AlignCenter)
         self.AnalysisDisplay.setObjectName(_fromUtf8("AnalysisDisplay"))
         self.verticalLayout_3.addWidget(self.AnalysisDisplay)
-        self.DummyLabel = QtGui.QLabel(Dialog)
+        self.horizontalLayout_11 = QtGui.QHBoxLayout()
+        self.horizontalLayout_11.setObjectName(
+            _fromUtf8("horizontalLayout_11"))
+        self.FLowLabel = QtGui.QLabel(Dialog)
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.FLowLabel.setFont(font)
+        self.FLowLabel.setObjectName(_fromUtf8("FLowLabel"))
+        self.horizontalLayout_11.addWidget(self.FLowLabel)
+        self.FLowInput = QtGui.QLineEdit(Dialog)
         sizePolicy = QtGui.QSizePolicy(
-            QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Preferred)
+            QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(
-            self.DummyLabel.sizePolicy().hasHeightForWidth())
-        self.DummyLabel.setSizePolicy(sizePolicy)
-        self.DummyLabel.setMinimumSize(QtCore.QSize(294, 0))
-        self.DummyLabel.setText(_fromUtf8(""))
-        self.DummyLabel.setObjectName(_fromUtf8("DummyLabel"))
-        self.verticalLayout_3.addWidget(self.DummyLabel)
+            self.FLowInput.sizePolicy().hasHeightForWidth())
+        self.FLowInput.setSizePolicy(sizePolicy)
+        self.FLowInput.setObjectName(_fromUtf8("FLowInput"))
+        self.horizontalLayout_11.addWidget(self.FLowInput)
+        self.verticalLayout_3.addLayout(self.horizontalLayout_11)
+        self.horizontalLayout_12 = QtGui.QHBoxLayout()
+        self.horizontalLayout_12.setObjectName(
+            _fromUtf8("horizontalLayout_12"))
+        self.FHighLabel = QtGui.QLabel(Dialog)
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.FHighLabel.setFont(font)
+        self.FHighLabel.setObjectName(_fromUtf8("FHighLabel"))
+        self.horizontalLayout_12.addWidget(self.FHighLabel)
+        self.FHighInput = QtGui.QLineEdit(Dialog)
+        sizePolicy = QtGui.QSizePolicy(
+            QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(
+            self.FHighInput.sizePolicy().hasHeightForWidth())
+        self.FHighInput.setSizePolicy(sizePolicy)
+        self.FHighInput.setObjectName(_fromUtf8("FHighInput"))
+        self.horizontalLayout_12.addWidget(self.FHighInput)
+        self.verticalLayout_3.addLayout(self.horizontalLayout_12)
         self.horizontalLayout_9 = QtGui.QHBoxLayout()
         self.horizontalLayout_9.setObjectName(_fromUtf8("horizontalLayout_9"))
-        self.StartTimeLabel = QtGui.QLabel(Dialog)
+        self.FileSaveDisplay = QtGui.QLabel(Dialog)
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
-        self.StartTimeLabel.setFont(font)
-        self.StartTimeLabel.setObjectName(_fromUtf8("StartTimeLabel"))
-        self.horizontalLayout_9.addWidget(self.StartTimeLabel)
-        self.StartTimeInput = QtGui.QLineEdit(Dialog)
-        sizePolicy = QtGui.QSizePolicy(
-            QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.StartTimeInput.sizePolicy().hasHeightForWidth())
-        self.StartTimeInput.setSizePolicy(sizePolicy)
-        self.StartTimeInput.setObjectName(_fromUtf8("StartTimeInput"))
-        self.horizontalLayout_9.addWidget(self.StartTimeInput)
+        self.FileSaveDisplay.setFont(font)
+        self.FileSaveDisplay.setObjectName(_fromUtf8("FileSaveDisplay"))
+        self.horizontalLayout_9.addWidget(self.FileSaveDisplay)
+        self.FileSaveInput = QtGui.QLineEdit(Dialog)
+        self.FileSaveInput.setObjectName(_fromUtf8("FileSaveInput"))
+        self.horizontalLayout_9.addWidget(self.FileSaveInput)
         self.verticalLayout_3.addLayout(self.horizontalLayout_9)
-        self.horizontalLayout_8 = QtGui.QHBoxLayout()
-        self.horizontalLayout_8.setObjectName(_fromUtf8("horizontalLayout_8"))
-        self.EndTimeLabel = QtGui.QLabel(Dialog)
-        font = QtGui.QFont()
-        font.setBold(True)
-        font.setWeight(75)
-        self.EndTimeLabel.setFont(font)
-        self.EndTimeLabel.setObjectName(_fromUtf8("EndTimeLabel"))
-        self.horizontalLayout_8.addWidget(self.EndTimeLabel)
-        self.EndTimeInput = QtGui.QLineEdit(Dialog)
-        sizePolicy = QtGui.QSizePolicy(
-            QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.EndTimeInput.sizePolicy().hasHeightForWidth())
-        self.EndTimeInput.setSizePolicy(sizePolicy)
-        self.EndTimeInput.setObjectName(_fromUtf8("EndTimeInput"))
-        self.horizontalLayout_8.addWidget(self.EndTimeInput)
-        self.verticalLayout_3.addLayout(self.horizontalLayout_8)
         self.ActionButton = QtGui.QPushButton(Dialog)
         self.ActionButton.setObjectName(_fromUtf8("ActionButton"))
         self.verticalLayout_3.addWidget(self.ActionButton)
-        self.horizontalLayout_10.addLayout(self.verticalLayout_3)
-        self.verticalLayout_4.addLayout(self.horizontalLayout_10)
-        self.verticalLayout_5.addLayout(self.verticalLayout_4)
+        self.horizontalLayout_8.addLayout(self.verticalLayout_3)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_8)
+        self.horizontalLayout_10.addLayout(self.verticalLayout_4)
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -279,12 +289,11 @@ class Ui_Dialog(object):
         self.LengthSIgnalLabel.setText(_translate(
             "Dialog", "Length of Signal(sec)", None))
         self.AnalysisDisplay.setText(_translate(
-            "Dialog", "Power Spectral Density Vizualization Section", None))
-        self.StartTimeLabel.setText(_translate(
-            "Dialog", "Start Time(sec)", None))
-        self.StartTimeInput.setPlaceholderText(
-            _translate("Dialog", "(Inclusive)", None))
-        self.EndTimeLabel.setText(_translate("Dialog", "End Time(sec)", None))
-        self.EndTimeInput.setPlaceholderText(
-            _translate("Dialog", "(Exclusive)", None))
-        self.ActionButton.setText(_translate("Dialog", "Plot", None))
+            "Dialog", "Time Domain Vizualization Section", None))
+        self.FLowLabel.setText(_translate("Dialog", "Lower Cutoff(MHz)", None))
+        self.FHighLabel.setText(_translate(
+            "Dialog", "Higher Cutoff(MHz)", None))
+        self.FileSaveDisplay.setText(_translate("Dialog", "File Name", None))
+        self.FileSaveInput.setPlaceholderText(
+            _translate("Dialog", "Saved as .txt", None))
+        self.ActionButton.setText(_translate("Dialog", "Filter", None))

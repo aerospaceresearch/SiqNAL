@@ -1,25 +1,26 @@
 class Signal(object):
-	"""docstring for Signal"""
-	def __init__(self, filename=None,filetype=None,filedata=None,Fsample=None,Fcentre=None):
-		
-		self.filename = filename
-		self.filetype = filetype
-		self.filedata = filedata
-		self.Fsample = Fsample
-		self.Fcentre = Fcentre
+    """docstring for Signal"""
 
-	def setvalues(self,filename,filetype,Fsample,Fcentre,filedata=None):
+    def __init__(self, filename=None, filetype=None, filedata=None, Fsample=None, Fcentre=None):
 
-		self.filename = filename
-		self.filetype = filetype
-		self.filedata = filedata
-		self.Fsample = Fsample
-		self.Fcentre = Fcentre
+        self.filename = filename
+        self.filetype = filetype
+        self.filedata = filedata
+        self.Fsample = Fsample
+        self.Fcentre = Fcentre
 
-	def setdatavalue(self,filedata):
+    def setvalues(self, filename, filetype, Fsample, Fcentre, filedata=None):
 
-		self.filedata = filedata
+        self.filename = filename
+        self.filetype = filetype
+        self.filedata = filedata
+        self.Fsample = Fsample
+        self.Fcentre = Fcentre
 
-	def getvalues(self):
+    def setdatavalue(self, filedata):
 
-		return(self.filename,self.filetype,self.filedata,self.Fsample,self.Fcentre)
+        self.filedata = filedata
+
+    def getvalues(self):
+
+        return(self.filename, self.filetype, self.filedata, self.Fsample, self.Fcentre)

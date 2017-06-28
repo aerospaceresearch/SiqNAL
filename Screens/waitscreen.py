@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'waitscreen.ui'
+# Form implementation generated from reading ui file '/home/matrix/Desktop/siqnal/qt/waitscreen.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -16,11 +16,13 @@ except AttributeError:
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
+
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
+
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -40,10 +42,12 @@ class Ui_Dialog(object):
         self.WaitTextLabel.setObjectName(_fromUtf8("WaitTextLabel"))
         self.verticalLayout.addWidget(self.WaitTextLabel)
         self.ProgressBar = QtGui.QProgressBar(Dialog)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(
+            QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ProgressBar.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.ProgressBar.sizePolicy().hasHeightForWidth())
         self.ProgressBar.setSizePolicy(sizePolicy)
         self.ProgressBar.setProperty("value", 0)
         self.ProgressBar.setInvertedAppearance(False)
@@ -59,5 +63,5 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Dialog", None))
-        self.WaitTextLabel.setText(_translate("Dialog", "Please Wait :)", None))
-
+        self.WaitTextLabel.setText(_translate(
+            "Dialog", "Please Wait :)", None))
