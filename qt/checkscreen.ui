@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>625</width>
-    <height>460</height>
+    <width>688</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -199,7 +199,7 @@
      <item>
       <widget class="QPushButton" name="StartButton">
        <property name="text">
-        <string>Check Dependencies</string>
+        <string>Start</string>
        </property>
       </widget>
      </item>
