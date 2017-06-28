@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'timescreen.ui'
+# Form implementation generated from reading ui file '/home/matrix/Desktop/siqnal/qt/timescreen.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -16,16 +16,18 @@ except AttributeError:
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
+
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
+
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName(_fromUtf8("Dialog"))
-        Dialog.resize(620, 300)
+        Dialog.resize(688, 366)
         self.verticalLayout_5 = QtGui.QVBoxLayout(Dialog)
         self.verticalLayout_5.setObjectName(_fromUtf8("verticalLayout_5"))
         self.verticalLayout_4 = QtGui.QVBoxLayout()
@@ -87,7 +89,8 @@ class Ui_Dialog(object):
         self.horizontalLayout_3.addLayout(self.verticalLayout)
         self.verticalLayout_4.addLayout(self.horizontalLayout_3)
         self.horizontalLayout_10 = QtGui.QHBoxLayout()
-        self.horizontalLayout_10.setObjectName(_fromUtf8("horizontalLayout_10"))
+        self.horizontalLayout_10.setObjectName(
+            _fromUtf8("horizontalLayout_10"))
         self.verticalLayout_2 = QtGui.QVBoxLayout()
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
         self.MetaDisplay = QtGui.QLabel(Dialog)
@@ -114,10 +117,12 @@ class Ui_Dialog(object):
         self.FileNameLabel.setObjectName(_fromUtf8("FileNameLabel"))
         self.horizontalLayout_7.addWidget(self.FileNameLabel)
         self.FileNameDisplay = QtGui.QLineEdit(Dialog)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(
+            QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.FileNameDisplay.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.FileNameDisplay.sizePolicy().hasHeightForWidth())
         self.FileNameDisplay.setSizePolicy(sizePolicy)
         self.FileNameDisplay.setReadOnly(True)
         self.FileNameDisplay.setObjectName(_fromUtf8("FileNameDisplay"))
@@ -133,10 +138,12 @@ class Ui_Dialog(object):
         self.SampleFreqLabel.setObjectName(_fromUtf8("SampleFreqLabel"))
         self.horizontalLayout_4.addWidget(self.SampleFreqLabel)
         self.SampleFreqDisplay = QtGui.QLineEdit(Dialog)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(
+            QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.SampleFreqDisplay.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.SampleFreqDisplay.sizePolicy().hasHeightForWidth())
         self.SampleFreqDisplay.setSizePolicy(sizePolicy)
         self.SampleFreqDisplay.setReadOnly(True)
         self.SampleFreqDisplay.setObjectName(_fromUtf8("SampleFreqDisplay"))
@@ -152,10 +159,12 @@ class Ui_Dialog(object):
         self.CentreFreqLabel.setObjectName(_fromUtf8("CentreFreqLabel"))
         self.horizontalLayout_5.addWidget(self.CentreFreqLabel)
         self.CentreFreqDisplay = QtGui.QLineEdit(Dialog)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(
+            QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.CentreFreqDisplay.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.CentreFreqDisplay.sizePolicy().hasHeightForWidth())
         self.CentreFreqDisplay.setSizePolicy(sizePolicy)
         self.CentreFreqDisplay.setReadOnly(True)
         self.CentreFreqDisplay.setObjectName(_fromUtf8("CentreFreqDisplay"))
@@ -171,10 +180,12 @@ class Ui_Dialog(object):
         self.LengthSIgnalLabel.setObjectName(_fromUtf8("LengthSIgnalLabel"))
         self.horizontalLayout_6.addWidget(self.LengthSIgnalLabel)
         self.TimeSignalDisplay = QtGui.QLineEdit(Dialog)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(
+            QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.TimeSignalDisplay.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.TimeSignalDisplay.sizePolicy().hasHeightForWidth())
         self.TimeSignalDisplay.setSizePolicy(sizePolicy)
         self.TimeSignalDisplay.setReadOnly(True)
         self.TimeSignalDisplay.setObjectName(_fromUtf8("TimeSignalDisplay"))
@@ -193,10 +204,12 @@ class Ui_Dialog(object):
         self.AnalysisDisplay.setObjectName(_fromUtf8("AnalysisDisplay"))
         self.verticalLayout_3.addWidget(self.AnalysisDisplay)
         self.DummyLabel = QtGui.QLabel(Dialog)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Preferred)
+        sizePolicy = QtGui.QSizePolicy(
+            QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.DummyLabel.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.DummyLabel.sizePolicy().hasHeightForWidth())
         self.DummyLabel.setSizePolicy(sizePolicy)
         self.DummyLabel.setMinimumSize(QtCore.QSize(294, 0))
         self.DummyLabel.setText(_fromUtf8(""))
@@ -212,10 +225,12 @@ class Ui_Dialog(object):
         self.StartTimeLabel.setObjectName(_fromUtf8("StartTimeLabel"))
         self.horizontalLayout_9.addWidget(self.StartTimeLabel)
         self.StartTimeInput = QtGui.QLineEdit(Dialog)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(
+            QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.StartTimeInput.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.StartTimeInput.sizePolicy().hasHeightForWidth())
         self.StartTimeInput.setSizePolicy(sizePolicy)
         self.StartTimeInput.setObjectName(_fromUtf8("StartTimeInput"))
         self.horizontalLayout_9.addWidget(self.StartTimeInput)
@@ -230,10 +245,12 @@ class Ui_Dialog(object):
         self.EndTimeLabel.setObjectName(_fromUtf8("EndTimeLabel"))
         self.horizontalLayout_8.addWidget(self.EndTimeLabel)
         self.EndTimeInput = QtGui.QLineEdit(Dialog)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(
+            QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.EndTimeInput.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.EndTimeInput.sizePolicy().hasHeightForWidth())
         self.EndTimeInput.setSizePolicy(sizePolicy)
         self.EndTimeInput.setObjectName(_fromUtf8("EndTimeInput"))
         self.horizontalLayout_8.addWidget(self.EndTimeInput)
@@ -250,20 +267,31 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Dialog", None))
-        self.ProgramNameDisplay.setText(_translate("Dialog", "Google Summer of Code", None))
-        self.ProjectNameDisplay.setText(_translate("Dialog", "Project Name: SIQNAL", None))
-        self.CodeNameDisplay.setText(_translate("Dialog", "Code: <a href=\"https://github.com/aerospaceresearch/siqnal\">Github</a>", None))
-        self.MentorNameDisplay.setText(_translate("Dialog", "Mentor: Andreas Horning", None))
-        self.AuthorNameDisplay.setText(_translate("Dialog", "Author: Jay Krishna", None))
+        self.ProgramNameDisplay.setText(_translate(
+            "Dialog", "Google Summer of Code", None))
+        self.ProjectNameDisplay.setText(_translate(
+            "Dialog", "Project Name: SIQNAL", None))
+        self.CodeNameDisplay.setText(_translate(
+            "Dialog", "Code: <a href=\"https://github.com/aerospaceresearch/siqnal\">Github</a>", None))
+        self.MentorNameDisplay.setText(_translate(
+            "Dialog", "Mentor: Andreas Horning", None))
+        self.AuthorNameDisplay.setText(_translate(
+            "Dialog", "Author: Jay Krishna", None))
         self.MetaDisplay.setText(_translate("Dialog", "Meta Data", None))
         self.FileNameLabel.setText(_translate("Dialog", "File Name", None))
-        self.SampleFreqLabel.setText(_translate("Dialog", "Sampling Frequency(Hz)", None))
-        self.CentreFreqLabel.setText(_translate("Dialog", "Centre Frequency(Hz)", None))
-        self.LengthSIgnalLabel.setText(_translate("Dialog", "Length of Signal(sec)", None))
-        self.AnalysisDisplay.setText(_translate("Dialog", "Time Domain Vizualization Section", None))
-        self.StartTimeLabel.setText(_translate("Dialog", "Start Time(sec)", None))
-        self.StartTimeInput.setPlaceholderText(_translate("Dialog", "(Inclusive)", None))
+        self.SampleFreqLabel.setText(_translate(
+            "Dialog", "Sampling Frequency(Hz)", None))
+        self.CentreFreqLabel.setText(_translate(
+            "Dialog", "Centre Frequency(Hz)", None))
+        self.LengthSIgnalLabel.setText(_translate(
+            "Dialog", "Length of Signal(sec)", None))
+        self.AnalysisDisplay.setText(_translate(
+            "Dialog", "Time Domain Vizualization Section", None))
+        self.StartTimeLabel.setText(_translate(
+            "Dialog", "Start Time(sec)", None))
+        self.StartTimeInput.setPlaceholderText(
+            _translate("Dialog", "(Inclusive)", None))
         self.EndTimeLabel.setText(_translate("Dialog", "End Time(sec)", None))
-        self.EndTimeInput.setPlaceholderText(_translate("Dialog", "(Exclusive)", None))
+        self.EndTimeInput.setPlaceholderText(
+            _translate("Dialog", "(Exclusive)", None))
         self.ActionButton.setText(_translate("Dialog", "Plot", None))
-
