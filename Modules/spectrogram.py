@@ -16,6 +16,7 @@ def waterfallspect(data, fc, fs, fft_size, overlap_fac):
     pad_end_size = fft_size
 
     total_segments = np.int32(np.ceil(len(data) / np.float32(hop_size)))
+    #print(total_segments)
     t_max = len(data) / np.float32(fs)
 
     window = np.hanning(fft_size)
@@ -32,10 +33,14 @@ def waterfallspect(data, fc, fs, fft_size, overlap_fac):
         windowed = segment * window
         padded = np.append(windowed, inner_pad)
         spectrum = fftshift(fft(windowed)) / fft_size
-        result[i, :] = np.absolute(spectrum[:])
+        if (i==0):
+        	result=np.absolute(spectrum)
+        else:
+        	result=result+ np.absolute(spectrum)
+        #result[i, :] = np.absolute(spectrum[:])
 
     result = (20 * np.log10(result))
-
+    #print(result.shape)
     return result
 
 
@@ -70,7 +75,7 @@ def SpectrogramPlot(SignalInfo, cmapstr, WaitWindow):
     WaitWindow.show()
 
     for i in range(0, chunknumber):
-
+        #print(i)
         WaitWindow.updateprogress(i, chunknumber)
 
         startslice = i * factor * chunksize
@@ -91,25 +96,35 @@ def SpectrogramPlot(SignalInfo, cmapstr, WaitWindow):
                 signal_chunk.shape[0] // 2, dtype=np.complex128)
             signal_chunk_iq.real = signal_chunk[::2]
             signal_chunk_iq.imag = signal_chunk[1::2]
-
+        #print(signal_chunk_iq.shape)
         if(i == 0):
-            waterfall_data = waterfallspect(signal_chunk_iq, fc, fs, nfft, 0.5)
+            waterfall_data_one_second = waterfallspect(signal_chunk_iq, fc, fs, nfft, 0.2)
+            #print(waterfall_data_one_second.shape[0])
+            rows=waterfall_data_one_second.shape[0]
+            waterfall_data=np.zeros((chunknumber,rows),dtype=np.float32)
+            #print(waterfall_data.shape)
+            # datarowstart=i*rows
+            # datarowend=i*rows+rows
+            # print("{} {}".format(datarowstart,datarowend))
+            waterfall_data[i] = waterfall_data_one_second
         else:
-            waterfall_data = waterfall_data + \
-                waterfallspect(signal_chunk_iq, fc, fs, nfft, 0.5)
-
+            #waterfall_data = waterfall_data + \
+            # datarowstart=i*rows
+            # datarowend=i*rows+rows
+            # print("{} {}".format(datarowstart,datarowend))
+            waterfall_data[i] = waterfallspect(signal_chunk_iq, fc, fs, nfft, 0.2)
         try:
             del signal_chunk_iq, signal_chunk
         except:
             pass
 
     WaitWindow.close()
-    dummy_vector = [0.0, 10]
+    dummy_vector = [0.0, chunknumber]
     freq_vector = [-(fs / 2) + fc, (fs / 2) + fc]
-    waterfall_data = waterfall_data / chunknumber
-
-    img = plt.imshow(waterfall_data, extent=freq_vector + dummy_vector,
-                     origin='lower', interpolation='nearest', aspect='auto', cmap=cmap)
+    #waterfall_data = waterfall_data / chunknumber
+    # print(type(waterfall_data_one_second))
+    # print(type(waterfall_data_one_second[0][0]))
+    img = plt.imshow(waterfall_data, extent=freq_vector + dummy_vector,origin='lower', interpolation='nearest', aspect='auto', cmap=cmap)
     plt.colorbar()
-    plt.yticks([])
+    #plt.yticks([])
     plt.show()
