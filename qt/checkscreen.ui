@@ -84,7 +84,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Project Name: SIQNAL</string>
+        <string>Project Name: SiqNAL</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>

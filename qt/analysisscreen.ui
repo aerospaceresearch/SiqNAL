@@ -96,7 +96,7 @@
                </font>
               </property>
               <property name="text">
-               <string>Project Name: SIQNAL</string>
+               <string>Project Name: SiqNAL</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -427,13 +427,6 @@
            <widget class="QPushButton" name="SpectrogramLaunchButton">
             <property name="text">
              <string>Spectrogram Analysis</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="Spectrogram2LaunchButton">
-            <property name="text">
-             <string>Spectrogram Test</string>
             </property>
            </widget>
           </item>
