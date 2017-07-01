@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/matrix/Desktop/siqnal/qt/spectscreen.ui'
+# Form implementation generated from reading ui file 'spectscreen.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -16,21 +16,18 @@ except AttributeError:
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
-
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName(_fromUtf8("Dialog"))
         Dialog.resize(688, 366)
         self.horizontalLayout_13 = QtGui.QHBoxLayout(Dialog)
-        self.horizontalLayout_13.setObjectName(
-            _fromUtf8("horizontalLayout_13"))
+        self.horizontalLayout_13.setObjectName(_fromUtf8("horizontalLayout_13"))
         self.verticalLayout_4 = QtGui.QVBoxLayout()
         self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
@@ -90,8 +87,7 @@ class Ui_Dialog(object):
         self.horizontalLayout_3.addLayout(self.verticalLayout)
         self.verticalLayout_4.addLayout(self.horizontalLayout_3)
         self.horizontalLayout_10 = QtGui.QHBoxLayout()
-        self.horizontalLayout_10.setObjectName(
-            _fromUtf8("horizontalLayout_10"))
+        self.horizontalLayout_10.setObjectName(_fromUtf8("horizontalLayout_10"))
         self.verticalLayout_2 = QtGui.QVBoxLayout()
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
         self.MetaDisplay = QtGui.QLabel(Dialog)
@@ -133,12 +129,10 @@ class Ui_Dialog(object):
         self.SampleFreqLabel.setObjectName(_fromUtf8("SampleFreqLabel"))
         self.horizontalLayout_4.addWidget(self.SampleFreqLabel)
         self.SampleFreqDisplay = QtGui.QLineEdit(Dialog)
-        sizePolicy = QtGui.QSizePolicy(
-            QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.SampleFreqDisplay.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.SampleFreqDisplay.sizePolicy().hasHeightForWidth())
         self.SampleFreqDisplay.setSizePolicy(sizePolicy)
         self.SampleFreqDisplay.setReadOnly(True)
         self.SampleFreqDisplay.setObjectName(_fromUtf8("SampleFreqDisplay"))
@@ -154,12 +148,10 @@ class Ui_Dialog(object):
         self.CentreFreqLabel.setObjectName(_fromUtf8("CentreFreqLabel"))
         self.horizontalLayout_5.addWidget(self.CentreFreqLabel)
         self.CentreFreqDisplay = QtGui.QLineEdit(Dialog)
-        sizePolicy = QtGui.QSizePolicy(
-            QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.CentreFreqDisplay.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.CentreFreqDisplay.sizePolicy().hasHeightForWidth())
         self.CentreFreqDisplay.setSizePolicy(sizePolicy)
         self.CentreFreqDisplay.setReadOnly(True)
         self.CentreFreqDisplay.setObjectName(_fromUtf8("CentreFreqDisplay"))
@@ -175,12 +167,10 @@ class Ui_Dialog(object):
         self.LengthSIgnalLabel.setObjectName(_fromUtf8("LengthSIgnalLabel"))
         self.horizontalLayout_6.addWidget(self.LengthSIgnalLabel)
         self.TimeSignalDisplay = QtGui.QLineEdit(Dialog)
-        sizePolicy = QtGui.QSizePolicy(
-            QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.TimeSignalDisplay.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.TimeSignalDisplay.sizePolicy().hasHeightForWidth())
         self.TimeSignalDisplay.setSizePolicy(sizePolicy)
         self.TimeSignalDisplay.setReadOnly(True)
         self.TimeSignalDisplay.setObjectName(_fromUtf8("TimeSignalDisplay"))
@@ -199,8 +189,7 @@ class Ui_Dialog(object):
         self.AnalysisDisplay.setObjectName(_fromUtf8("AnalysisDisplay"))
         self.verticalLayout_3.addWidget(self.AnalysisDisplay)
         self.horizontalLayout_11 = QtGui.QHBoxLayout()
-        self.horizontalLayout_11.setObjectName(
-            _fromUtf8("horizontalLayout_11"))
+        self.horizontalLayout_11.setObjectName(_fromUtf8("horizontalLayout_11"))
         self.ColormapDisplay = QtGui.QLabel(Dialog)
         font = QtGui.QFont()
         font.setBold(True)
@@ -229,35 +218,22 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Dialog", None))
-        self.ProgramNameDisplay.setText(_translate(
-            "Dialog", "Google Summer of Code", None))
-        self.ProjectNameDisplay.setText(_translate(
-            "Dialog", "Project Name: SIQNAL", None))
-        self.CodeNameDisplay.setText(_translate(
-            "Dialog", "Code: <a href=\"https://github.com/aerospaceresearch/siqnal\">Github</a>", None))
-        self.MentorNameDisplay.setText(_translate(
-            "Dialog", "Mentor: Andreas Horning", None))
-        self.AuthorNameDisplay.setText(_translate(
-            "Dialog", "Author: Jay Krishna", None))
+        self.ProgramNameDisplay.setText(_translate("Dialog", "Google Summer of Code", None))
+        self.ProjectNameDisplay.setText(_translate("Dialog", "Project Name: SiqNAL", None))
+        self.CodeNameDisplay.setText(_translate("Dialog", "Code: <a href=\"https://github.com/aerospaceresearch/siqnal\">Github</a>", None))
+        self.MentorNameDisplay.setText(_translate("Dialog", "Mentor: Andreas Horning", None))
+        self.AuthorNameDisplay.setText(_translate("Dialog", "Author: Jay Krishna", None))
         self.MetaDisplay.setText(_translate("Dialog", "Meta Data", None))
         self.FileNameLabel.setText(_translate("Dialog", "File Name", None))
-        self.SampleFreqLabel.setText(_translate(
-            "Dialog", "Sampling Frequency(Hz)", None))
-        self.CentreFreqLabel.setText(_translate(
-            "Dialog", "Centre Frequency(Hz)", None))
-        self.LengthSIgnalLabel.setText(_translate(
-            "Dialog", "Length of Signal(sec)", None))
-        self.AnalysisDisplay.setText(_translate(
-            "Dialog", "Frequency Domain Vizualization Section", None))
+        self.SampleFreqLabel.setText(_translate("Dialog", "Sampling Frequency(Hz)", None))
+        self.CentreFreqLabel.setText(_translate("Dialog", "Centre Frequency(Hz)", None))
+        self.LengthSIgnalLabel.setText(_translate("Dialog", "Length of Signal(sec)", None))
+        self.AnalysisDisplay.setText(_translate("Dialog", "Frequency Domain Vizualization Section", None))
         self.ColormapDisplay.setText(_translate("Dialog", "Colormap", None))
-        self.ColormapInput.setItemText(
-            0, _translate("Dialog", "plt.cm.gray", None))
-        self.ColormapInput.setItemText(
-            1, _translate("Dialog", "plt.cm.magma", None))
-        self.ColormapInput.setItemText(
-            2, _translate("Dialog", "plt.cm.inferno", None))
-        self.ColormapInput.setItemText(
-            3, _translate("Dialog", "plt.cm.viridis", None))
-        self.ColormapInput.setItemText(
-            4, _translate("Dialog", "plt.cm.plasma", None))
+        self.ColormapInput.setItemText(0, _translate("Dialog", "plt.cm.gray", None))
+        self.ColormapInput.setItemText(1, _translate("Dialog", "plt.cm.magma", None))
+        self.ColormapInput.setItemText(2, _translate("Dialog", "plt.cm.inferno", None))
+        self.ColormapInput.setItemText(3, _translate("Dialog", "plt.cm.viridis", None))
+        self.ColormapInput.setItemText(4, _translate("Dialog", "plt.cm.plasma", None))
         self.ActionButton.setText(_translate("Dialog", "Plot", None))
+
