@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/matrix/Desktop/siqnal/qt/checkscreen.ui'
+# Form implementation generated from reading ui file 'checkscreen.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -16,13 +16,11 @@ except AttributeError:
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
-
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
-
 
 class Ui_checkscreen(object):
     def setupUi(self, checkscreen):
@@ -32,12 +30,10 @@ class Ui_checkscreen(object):
         self.verticalLayout = QtGui.QVBoxLayout(checkscreen)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.LogoDisplay = QtGui.QLabel(checkscreen)
-        sizePolicy = QtGui.QSizePolicy(
-            QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.LogoDisplay.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.LogoDisplay.sizePolicy().hasHeightForWidth())
         self.LogoDisplay.setSizePolicy(sizePolicy)
         self.LogoDisplay.setMinimumSize(QtCore.QSize(0, 150))
         self.LogoDisplay.setText(_fromUtf8(""))
@@ -153,15 +149,11 @@ class Ui_checkscreen(object):
 
     def retranslateUi(self, checkscreen):
         checkscreen.setWindowTitle(_translate("checkscreen", "Dialog", None))
-        self.ProgramDisplay.setText(_translate(
-            "checkscreen", "Google Summer of Code 2017", None))
-        self.ProjectName.setText(_translate(
-            "checkscreen", "Project Name: SIQNAL", None))
-        self.CodeSource.setText(_translate(
-            "checkscreen", "Code: <a href=\'https://github.com/aerospaceresearch/siqnal\'>Github</a>", None))
-        self.MentorNameDisplay.setText(_translate(
-            "checkscreen", "Mentor: Andreas Horning", None))
-        self.AuthorNameDisplay.setText(_translate(
-            "checkscreen", "Author: Jay Krishna", None))
+        self.ProgramDisplay.setText(_translate("checkscreen", "Google Summer of Code 2017", None))
+        self.ProjectName.setText(_translate("checkscreen", "Project Name: SiqNAL", None))
+        self.CodeSource.setText(_translate("checkscreen", "Code: <a href=\'https://github.com/aerospaceresearch/siqnal\'>Github</a>", None))
+        self.MentorNameDisplay.setText(_translate("checkscreen", "Mentor: Andreas Horning", None))
+        self.AuthorNameDisplay.setText(_translate("checkscreen", "Author: Jay Krishna", None))
         self.StartButton.setText(_translate("checkscreen", "Start", None))
         self.ProceedButton.setText(_translate("checkscreen", "Proceed", None))
+
