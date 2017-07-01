@@ -22,7 +22,6 @@ from Modules import signal_plot
 from Modules import signal_plot_freq
 from Modules import signal_plot_power
 from Modules import spectrogram
-from Modules import spectrogram2
 from Modules import bandpass
 
 
@@ -63,7 +62,6 @@ class ControlScreen(QtGui.QMainWindow, analysisscreen.Ui_MainWindow):
         self.FourierLaunchButton.clicked.connect(self.launchfourier)
         self.PowerLaunchButton.clicked.connect(self.launchpower)
         self.SpectrogramLaunchButton.clicked.connect(self.launchspect)
-        self.Spectrogram2LaunchButton.clicked.connect(self.launchspect2)
         self.BandpassLaunchButton.clicked.connect(self.launchfilter)
 
     def addlogo(self):
@@ -163,7 +161,6 @@ class ControlScreen(QtGui.QMainWindow, analysisscreen.Ui_MainWindow):
         self.PowerLaunchButton.setEnabled(value)
         self.SpectrogramLaunchButton.setEnabled(value)
         self.BandpassLaunchButton.setEnabled(value)
-        self.Spectrogram2LaunchButton.setEnabled(value)
 
     def initializeAnalysiscreen(self):
         self.MainTab.setEnabled(True)
@@ -190,10 +187,6 @@ class ControlScreen(QtGui.QMainWindow, analysisscreen.Ui_MainWindow):
 
     def launchspect(self):
         self.spectscreenwindow = SpectDomainScreen(self.SignalMeta)
-        self.spectscreenwindow.exec_()
-
-    def launchspect2(self):
-        self.spectscreenwindow = Spect2DomainScreen(self.SignalMeta)
         self.spectscreenwindow.exec_()
 
     def launchfilter(self):
@@ -418,57 +411,6 @@ class SpectDomainScreen(QtGui.QDialog, spectscreen.Ui_Dialog):
         cmap = self.ColormapInput.currentText()
         WaitWindow = WaitScreenReq()
         spectrogram.SpectrogramPlot(self.SignalInfo, cmap, WaitWindow)
-
-
-class Spect2DomainScreen(QtGui.QDialog, spectscreen.Ui_Dialog):
-
-    def __init__(self, SignalMeta):
-        super(self.__class__, self).__init__()
-        self.setupUi(self)
-
-        self.SignalInfo = SignalMeta
-        self.initialize()
-
-    def initialize(self):
-
-        image_directory = path.join(os.getcwd(), 'img')
-        imagefile = path.join(image_directory, 'logo_small.png')
-        pixmap = QtGui.QPixmap(imagefile)
-        self.LogoDisplay.setPixmap(pixmap)
-
-        value = self.SignalInfo.getvalues()
-
-        if(value[1] == ".wav"):
-            time = int(len(value[2]) / value[3])
-            image_directory = path.join(os.getcwd(), 'img')
-            imagefile = path.join(image_directory, 'wav_file.png')
-            pixmap = QtGui.QPixmap(imagefile)
-            self.FileLogoDisplay.setPixmap(pixmap)
-        elif(value[1] == ".dat"):
-            time = int(len(value[2]) / (2 * value[3]))
-            image_directory = path.join(os.getcwd(), 'img')
-            imagefile = path.join(image_directory, 'dat_file.png')
-            pixmap = QtGui.QPixmap(imagefile)
-            self.FileLogoDisplay.setPixmap(pixmap)
-        else:
-            time = int(len(value[2]) / (value[3]))
-            image_directory = path.join(os.getcwd(), 'img')
-            imagefile = path.join(image_directory, 'txt_file.png')
-            pixmap = QtGui.QPixmap(imagefile)
-            self.FileLogoDisplay.setPixmap(pixmap)
-
-        self.FileNameDisplay.setText(value[0])
-        self.SampleFreqDisplay.setText(str(value[3]))
-        self.CentreFreqDisplay.setText(str(value[4]))
-        self.TimeSignalDisplay.setText(str(time))
-
-        self.ActionButton.clicked.connect(self.Spect2DomainPlot)
-
-    def Spect2DomainPlot(self):
-
-        cmap = self.ColormapInput.currentText()
-        WaitWindow = WaitScreenReq()
-        spectrogram2.SpectrogramPlot(self.SignalInfo, cmap, WaitWindow)
 
 
 class FilterDomainScreen(QtGui.QDialog, bandpassscreen.Ui_Dialog):
