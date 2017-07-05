@@ -1,3 +1,8 @@
+"""
+    **Author :** *Jay Krishna*
+
+    This module graphs power spectral density plot of the given signal of specified time duration.
+"""
 from Modules import SignalData
 
 import numpy as np
@@ -6,6 +11,44 @@ from scipy.signal import csd
 
 
 def psd(signal, fs, fc, window='boxcar', nfft=None, detrend='constant', return_onesided=False, scaling='density', axis=-1):
+    """
+        This function calculates the power spectral density using the concept of cross spectral density.
+
+        Parameters
+        ---------------------------
+        signal : ndarray
+            Numpy complex array of signal.
+        fs : float
+            Sampling frequency of the signal.
+        fc : float
+            Centre frequency of the signal.
+        window : string
+            Windowing to be used, optional. Default is 'boxcar'.
+        nfft : int
+            Length of fft, optional. Default is 'None'. If nothing is specified length of signal is taken.
+        detrend : string
+            Tells how to detrend x before computing the spectrum, optional. Default is 'constant'.
+        return_onesided : bool
+            Tells whether to return one-sided spectrum or two-sided, optional. Default is False.
+        scaling : string
+            Tells the unit in which power spectral density is computed, optional. Default is 'density'.
+        axis : int
+            Axis, along which power spectral density is calculated, optional. Default is -1.
+
+        Returns
+        ------------------------------
+        pxx : ndarray
+            Numpy array of calculated power spectral density.
+        frequency : ndarray
+            Numpy array of values of frequencies present in the signal.
+
+        Note
+        ------------------------------
+        Scaling can take 2 values,
+
+        #. **"density" :** The calculated power spectral density has unit of :math:`V^2/Hz`.
+        #. **"spectrum" :** The calculated power spectral density has unit of :math:`V^2`.
+    """
 
     if window is None:
         window = 'boxcar'
@@ -33,6 +76,19 @@ def psd(signal, fs, fc, window='boxcar', nfft=None, detrend='constant', return_o
 
 
 def SignalPowerPlot(SignalInfo, start, end):
+    """
+        This function plots power spectral density graph of specified signal from a given start time(inclusive) 
+        to a given end time(exclusive).
+
+        Parameters
+        ------------------------------
+        SignalInfo : object
+            Instance of class SignalData.
+        start : int
+            Start of time(inclusive) from which plotting will start.
+        end : int
+            End of time(exclusive) from which plotting will end.
+    """
 
     value = SignalInfo.getvalues()
     signal = value[2]
