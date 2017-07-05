@@ -1,3 +1,8 @@
+"""
+    **Author :** *Jay Krishna*
+
+    This module graphs frequency domain plot of the given signal of specified time duration.
+"""
 from Modules import SignalData
 
 import numpy as np
@@ -7,6 +12,19 @@ from Modules import fourier
 
 
 def SignalFreqPlot(SignalInfo, start, end):
+    """
+        This function plots frequency domain graph of specified signal from a given start time(inclusive) 
+        to a given end time(exclusive).
+
+        Parameters
+        ------------------------------
+        SignalInfo : object
+            Instance of class SignalData.
+        start : int
+            Start of time(inclusive) from which plotting will start.
+        end : int
+            End of time(exclusive) from which plotting will end.
+    """
 
     value = SignalInfo.getvalues()
     signal = value[2]
