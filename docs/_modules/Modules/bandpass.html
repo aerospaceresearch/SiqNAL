@@ -1,0 +1,467 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Modules.bandpass &mdash; SiqNAL 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="SiqNAL 1.0.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> SiqNAL
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Modules.html">Documentation of Modules of SiqNAL</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SiqNAL</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>Modules.bandpass</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Modules.bandpass</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    **Author :** *Jay Krishna*</span>
+
+<span class="sd">    This module implements linear phase finite impule response (FIR) butterworth bandpass filter</span>
+<span class="sd">    using Frequency shift theorem and symmetricity of the filter. The computed signal after </span>
+<span class="sd">    applying bandpass filter is then stoared as (.txt) file.</span>
+
+<span class="sd">    Approach</span>
+<span class="sd">    ----------------------------</span>
+<span class="sd">    #. First of all the centre frequency of signal is shifted from current centre frequency(fc) to mean of lower and higher frequency cutoff.</span>
+<span class="sd">    #. A linear phase finite impule response (FIR) butterworth bandpass filter is constructed of width half of passband width.</span>
+<span class="sd">    #. After filtering the signal is again shifted back to the previous centre frequency.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ------------------------------</span>
+<span class="sd">    #. Frequency Shift Theorem</span>
+<span class="sd">        The frequency shift theorem states that, if</span>
+
+<span class="sd">        .. math:: x(t) = X( \omega )</span>
+
+<span class="sd">        then,</span>
+
+<span class="sd">        .. math:: x(t) e^{(j \omega_o t)} = X( \omega - \omega_o)</span>
+
+<span class="sd">        where,</span>
+
+<span class="sd">        .. math:: \omega_o = 2 \pi F_o / F_{sample}</span>
+
+<span class="sd">        :math:`F_o` is in it&#39;s equivalent baseband counterpart.</span>
+
+<span class="sd">    #. Width of the filter</span>
+<span class="sd">        Linear Phase filters are symmetric around the centre frequency of the signal. Since the centre frequency of the new signal is average of \</span>
+<span class="sd">        lower and higher frequency cutoffs. Hence, the width of the filter is kept half of the passband width.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">PyQt4</span> <span class="k">import</span> <span class="n">QtGui</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">signal</span>
+<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="k">import</span> <span class="n">butter</span><span class="p">,</span> <span class="n">lfilter</span>
+
+<span class="kn">from</span> <span class="nn">Modules</span> <span class="k">import</span> <span class="n">fourier</span>
+<span class="kn">from</span> <span class="nn">Modules</span> <span class="k">import</span> <span class="n">SignalData</span>
+
+
+<div class="viewcode-block" id="calc_parameter"><a class="viewcode-back" href="../../Modules.html#Modules.bandpass.calc_parameter">[docs]</a><span class="k">def</span> <span class="nf">calc_parameter</span><span class="p">(</span><span class="n">flow</span><span class="p">,</span> <span class="n">fhigh</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function calculates the width of the filter and the multiplying</span>
+<span class="sd">        factor for the shifting of the signal to the required centre frequency.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------------------------</span>
+<span class="sd">            flow : float</span>
+<span class="sd">                Lower cutoff frequency for bandpass filter.</span>
+<span class="sd">            fhigh : float</span>
+<span class="sd">                Higher cutoff frequency for bandpass filter.</span>
+<span class="sd">            fc : float</span>
+<span class="sd">                Center frequency of the signal.</span>
+<span class="sd">            fs : float</span>
+<span class="sd">                Sampling frequency of the signal.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ------------------------------</span>
+<span class="sd">            multiplier : float</span>
+<span class="sd">                Shifting coefficient for the frequency shift. </span>
+<span class="sd">            width : float</span>
+<span class="sd">                Width of the filter to be constructed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">centre</span> <span class="o">=</span> <span class="p">((</span><span class="n">flow</span> <span class="o">+</span> <span class="n">fhigh</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">fc</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="n">fhigh</span> <span class="o">-</span> <span class="n">flow</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">multiplier</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">centre</span> <span class="o">/</span> <span class="n">fs</span>
+
+    <span class="k">return</span> <span class="n">multiplier</span><span class="p">,</span> <span class="n">width</span></div>
+
+
+<div class="viewcode-block" id="butter_bandpass_filter"><a class="viewcode-back" href="../../Modules.html#Modules.bandpass.butter_bandpass_filter">[docs]</a><span class="k">def</span> <span class="nf">butter_bandpass_filter</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function constructs as well as applies the specified </span>
+<span class="sd">        linear phase finite impule response (FIR) butterworth </span>
+<span class="sd">        bandpass filter to the given shifted signal. The order of </span>
+<span class="sd">        the filter is automatically selected based upon the value of </span>
+<span class="sd">        *(Width of the filter / Nyquist Smapling frequency)*.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------------------------</span>
+<span class="sd">            data : ndarray</span>
+<span class="sd">                Numpy complex array of shifted signal.</span>
+<span class="sd">            width : float</span>
+<span class="sd">                Width of the filter to be constructed.</span>
+<span class="sd">            fs : float</span>
+<span class="sd">                Sampling frequency of the signal.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ------------------------------</span>
+<span class="sd">            y : ndarray</span>
+<span class="sd">                Numpy complex array of filtered and shifted signal.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nyq</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">fs</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">width</span> <span class="o">/</span> <span class="n">nyq</span>
+
+    <span class="k">if</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="mf">0.002</span><span class="p">:</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="mf">0.002</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="o">&gt;=</span> <span class="mf">0.25</span><span class="p">:</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="mi">21</span>
+    <span class="k">if</span> <span class="n">val</span> <span class="o">&gt;=</span> <span class="mf">0.025</span> <span class="ow">and</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="mf">0.25</span><span class="p">:</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="mi">11</span>
+
+    <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">butter</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">btype</span><span class="o">=</span><span class="s1">&#39;low&#39;</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">lfilter</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">y</span></div>
+
+
+<div class="viewcode-block" id="createfile"><a class="viewcode-back" href="../../Modules.html#Modules.bandpass.createfile">[docs]</a><span class="k">def</span> <span class="nf">createfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function creates a (.txt) file with specified name in the</span>
+<span class="sd">        current working directory which is used to store the filtered</span>
+<span class="sd">        signal from the bandpass filter. If file with same name already</span>
+<span class="sd">        exists first it is deleted.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ---------------------------------</span>
+<span class="sd">            filename : string</span>
+<span class="sd">                Name of the file which will be created to store filtered</span>
+<span class="sd">                signal.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        ----------------------------------</span>
+<span class="sd">            filepath : file object</span>
+<span class="sd">                Absolute path to the (.txt) file created.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_directory</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="n">filepointer</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span>
+    <span class="n">filepointer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">filepath</span></div>
+
+
+<div class="viewcode-block" id="WriteData"><a class="viewcode-back" href="../../Modules.html#Modules.bandpass.WriteData">[docs]</a><span class="k">def</span> <span class="nf">WriteData</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function stores the filtered signal in memory-mapped (.txt) </span>
+<span class="sd">        format file. </span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ------------------------------</span>
+<span class="sd">            filename : string</span>
+<span class="sd">                Absolute path to the (.txt) file.</span>
+<span class="sd">            data : ndarray</span>
+<span class="sd">                Numpy complex array of filtered signal.</span>
+<span class="sd">            i : int</span>
+<span class="sd">                Iteration value used for calculation of offset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">offset</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">*</span> <span class="n">i</span>
+
+    <span class="n">file</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">memmap</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;complex128&quot;</span><span class="p">,</span>
+                     <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r+&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">)</span>
+    <span class="n">file</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">data</span>
+
+    <span class="k">del</span> <span class="n">file</span></div>
+
+
+<div class="viewcode-block" id="filter"><a class="viewcode-back" href="../../Modules.html#Modules.bandpass.filter">[docs]</a><span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="n">SignalInfo</span><span class="p">,</span> <span class="n">Flow</span><span class="p">,</span> <span class="n">Fhigh</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">WaitWindow</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Driver function of bandpass filtering. Signal is read at the rate of</span>
+<span class="sd">        per second, shifted to the desired centre frequency, linear phase</span>
+<span class="sd">        finite impulse response (FIR) butterworth bandpass filter is applied, </span>
+<span class="sd">        signal is reshifted back and written to a (.txt) file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -----------------------</span>
+<span class="sd">            SignalInfo : object</span>
+<span class="sd">                Instance of class SignalData having meta-data of file and signal.</span>
+<span class="sd">            Flow : float</span>
+<span class="sd">                Lower cutoff frequency for bandpass filter.</span>
+<span class="sd">            Fhigh : float</span>
+<span class="sd">                Higher cutoff frequency for bandpass filter.</span>
+<span class="sd">            filename : string</span>
+<span class="sd">                Name of the (.txt) file used for storing filtered signal.</span>
+<span class="sd">            WaitWindow : object</span>
+<span class="sd">                Instance of WaitScreen</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">createfile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">SignalInfo</span><span class="o">.</span><span class="n">getvalues</span><span class="p">()</span>
+    <span class="n">signal</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;.wav&quot;</span><span class="p">):</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="mi">2</span>
+
+    <span class="n">fs</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">fc</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">chunksize</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
+    <span class="n">len_signal</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+    <span class="n">chunknumber</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">len_signal</span> <span class="o">//</span> <span class="p">(</span><span class="n">factor</span> <span class="o">*</span> <span class="n">chunksize</span><span class="p">))</span>
+
+    <span class="n">multiplier</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">calc_parameter</span><span class="p">(</span><span class="n">Flow</span><span class="p">,</span> <span class="n">Fhigh</span><span class="p">,</span> <span class="n">fc</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+    <span class="n">t_power</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">chunksize</span><span class="p">)</span>
+
+    <span class="n">WaitWindow</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">chunknumber</span><span class="p">):</span>
+
+        <span class="n">WaitWindow</span><span class="o">.</span><span class="n">updateprogress</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">chunknumber</span><span class="p">)</span>
+
+        <span class="n">start</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">chunksize</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">chunksize</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;.wav&quot;</span><span class="p">):</span>
+            <span class="n">signal_chunk</span> <span class="o">=</span> <span class="n">signal</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="n">signal_chunk</span> <span class="o">=</span> <span class="n">signal_chunk</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">signal_chunk</span> <span class="o">=</span> <span class="n">signal</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
+
+            <span class="n">signal_chunk</span> <span class="o">=</span> <span class="n">signal_chunk</span> <span class="o">-</span> <span class="mf">127.5</span>
+
+        <span class="n">signal_chunk_iq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+        <span class="n">signal_chunk</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+        <span class="n">signal_chunk_iq</span><span class="o">.</span><span class="n">real</span> <span class="o">=</span> <span class="n">signal_chunk</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">signal_chunk_iq</span><span class="o">.</span><span class="n">imag</span> <span class="o">=</span> <span class="n">signal_chunk</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="n">signal_chunk_iq_new</span> <span class="o">=</span> <span class="n">signal_chunk_iq</span> <span class="o">*</span> \
+        <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t_power</span> <span class="o">*</span> <span class="p">(</span><span class="n">multiplier</span><span class="p">)))</span>
+
+        <span class="n">final</span> <span class="o">=</span> <span class="p">(</span><span class="n">butter_bandpass_filter</span><span class="p">(</span><span class="n">signal_chunk_iq_new</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">fs</span><span class="p">)</span>
+        <span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t_power</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">multiplier</span><span class="p">)))</span>
+
+        <span class="n">WriteData</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">final</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+        <span class="k">del</span> <span class="n">final</span><span class="p">,</span> <span class="n">signal_chunk_iq</span><span class="p">,</span> <span class="n">signal_chunk</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Jay Krishna.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
