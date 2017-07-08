@@ -27,7 +27,7 @@ def loaddata(filename):
 
     try:
 
-        signal = np.memmap(filename, dtype='complex128', mode='r', mmap=True)
+        signal = np.memmap(filename, dtype='complex128', mode='r')
         return signal
 
     except:
