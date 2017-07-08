@@ -153,6 +153,7 @@ class ControlScreen(QtGui.QMainWindow, analysisscreen.Ui_MainWindow):
 
             self.SignalMeta.setvalues(filename=filename, filetype=file_extension,
                                       filedata=data, Fsample=Fsample * 1e6, Fcentre=Fcentre * 1e6)
+
             self.setVizualizationside(True)
 
     def setVizualizationside(self, value):
