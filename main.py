@@ -22,7 +22,7 @@ def singlefile():
         SignalInfo.filedata = read_wav.loaddata(SignalInfo.filename)
 
     signal = SignalInfo.filedata
-    chunksize = int(SignalInfo.Fsample)
+    chunksize = int(SignalInfo.Fsample) * 2 # twice, because of i and q in one chunk
     len_signal = len(signal)
     chunknumber = int(len_signal // chunksize)
 
@@ -34,8 +34,10 @@ def singlefile():
         signal_chunk = signal[startslice:endslice]
         signal_chunk_iq = np.empty(
             signal_chunk.shape[0] // 2, dtype=np.complex128)
-        signal_chunk_iq.real = signal_chunk[::2]
-        signal_chunk_iq.imag = signal_chunk[1::2]
+        signal_chunk_iq.real = signal_chunk[::2] - 127 # it is recorded as uint8 but sint8 is better
+        signal_chunk_iq.imag = signal_chunk[1::2] -127
+
+        ''' fft start '''
 
 
 def folderwatch():
