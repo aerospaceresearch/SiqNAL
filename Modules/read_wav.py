@@ -26,12 +26,5 @@ def loaddata(filename):
                 Memory mapped file object of specified (.wav) file.
     """
 
-    try:
-
-        rate, signal = scipy.io.wavfile.read(filename, mmap=True)
-        signal = signal[44:, :]
-        return signal
-
-    except:
-
-        return None
+    signal=np.memmap(filename, dtype='uint8', mode='r',offset=44)
+    return signal

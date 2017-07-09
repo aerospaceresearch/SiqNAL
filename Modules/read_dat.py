@@ -25,11 +25,5 @@ def loaddata(filename):
                 Memory mapped file object of specified (.dat) file.
     """
 
-    try:
-
-        signal = np.memmap(filename, dtype='uint8', mode='r')
-        return signal
-
-    except:
-
-        return None
+    signal = np.memmap(filename, dtype='uint8', mode='r')
+    return signal
