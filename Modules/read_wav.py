@@ -26,5 +26,5 @@ def loaddata(filename):
                 Memory mapped file object of specified (.wav) file.
     """
 
-    signal=np.memmap(filename, dtype='uint8', mode='r',offset=44)
+    signal = np.memmap(filename, dtype='uint8', mode='r', offset=44)
     return signal
