@@ -16,6 +16,7 @@
     while the third one is assumed to be generated from bandpass filter of this project.
 """
 
+
 class Signal(object):
 
     def __init__(self, filename=None, filetype=None, filedata=None, Fsample=None, Fcentre=None):
@@ -89,5 +90,6 @@ class Signal(object):
                     Tuple containing all the member variables of class SignalData.
         """
 
-        values = (self.filename, self.filetype, self.filedata, self.Fsample, self.Fcentre)
+        values = (self.filename, self.filetype,
+                  self.filedata, self.Fsample, self.Fcentre)
         return values
