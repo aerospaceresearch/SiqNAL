@@ -7,25 +7,21 @@ from Modules import SignalData
 
 def main():
 
-	filename,file_extension=selectfile.select()
+	SignalInfo=selectfile.select()
+	print(SignalInfo.getvalues())
 
-	if file_extension == ".dat":
-		signal=read_dat.loaddata(filename)
+	if SignalInfo.filetype == ".dat":
+		SignalInfo.filedata=read_dat.loaddata(SignalInfo.filename)
 	else:
-		signal=read_wav.loaddata(filename)
+		SignalInfo.filedata=read_wav.loaddata(SignalInfo.filename)
 
-	fs = float(input("Enter Fsampling in MHz :"))
-	fc = float(input("Enter FCentre in MHz :"))
-
-	SignalInfo = SignalData.Signal(filename=filename, filetype=file_extension,
-                                      filedata=signal, Fsample=fs * 1e6, Fcentre=fc * 1e6)
-
-	chunksize = int(fs*1e6)
+	signal=SignalInfo.filedata
+	chunksize = int(SignalInfo.Fsample)
 	len_signal = len(signal)
 	chunknumber = int(len_signal // chunksize)
-	print(chunknumber)
+
 	for i in range(0, chunknumber):
-		print(i)
+
 		startslice = i * chunksize
 		endslice = startslice + chunksize
 
