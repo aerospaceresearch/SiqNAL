@@ -16,11 +16,13 @@ except AttributeError:
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
+
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
+
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -56,10 +58,12 @@ class Ui_Dialog(object):
         self.SampleFreqLabel.setObjectName(_fromUtf8("SampleFreqLabel"))
         self.horizontalLayout.addWidget(self.SampleFreqLabel)
         self.SampleFreqInput = QtGui.QLineEdit(Dialog)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(
+            QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.SampleFreqInput.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.SampleFreqInput.sizePolicy().hasHeightForWidth())
         self.SampleFreqInput.setSizePolicy(sizePolicy)
         self.SampleFreqInput.setObjectName(_fromUtf8("SampleFreqInput"))
         self.horizontalLayout.addWidget(self.SampleFreqInput)
@@ -70,10 +74,12 @@ class Ui_Dialog(object):
         self.CentreFreqLabel.setObjectName(_fromUtf8("CentreFreqLabel"))
         self.horizontalLayout_2.addWidget(self.CentreFreqLabel)
         self.CentreFreqInput = QtGui.QLineEdit(Dialog)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(
+            QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.CentreFreqInput.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.CentreFreqInput.sizePolicy().hasHeightForWidth())
         self.CentreFreqInput.setSizePolicy(sizePolicy)
         self.CentreFreqInput.setObjectName(_fromUtf8("CentreFreqInput"))
         self.horizontalLayout_2.addWidget(self.CentreFreqInput)
@@ -90,7 +96,8 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(_translate("Dialog", "Dialog", None))
         self.ImportLabel.setText(_translate("Dialog", "Import Screen", None))
         self.FileButton.setText(_translate("Dialog", "Browse", None))
-        self.SampleFreqLabel.setText(_translate("Dialog", "Sampling Frequency (MHz)", None))
-        self.CentreFreqLabel.setText(_translate("Dialog", "Centre Frequency (MHz)", None))
+        self.SampleFreqLabel.setText(_translate(
+            "Dialog", "Sampling Frequency (MHz)", None))
+        self.CentreFreqLabel.setText(_translate(
+            "Dialog", "Centre Frequency (MHz)", None))
         self.ActionButton.setText(_translate("Dialog", "Import", None))
-
