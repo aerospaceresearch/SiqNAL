@@ -11,6 +11,7 @@ from Modules import selectfile
 from Modules import SignalData
 from Modules import importfile
 from Modules import fourier
+from Modules import spectrogram
 
 
 def singlefile():
@@ -42,8 +43,8 @@ def singlefile():
 
         ''' fft start '''
 
-        transform, frequency = fourier.CalcFourier(
-            signal_chunk_iq, SignalInfo.Fsample, SignalInfo.Fcentre)
+        frequency, transform = fourier.CalcFourier(
+            signal_chunk_iq, SignalInfo.Fsample, SignalInfo.Fcentre, 131070)
 
         if i == 0:
             row_dimension = transform.shape[0]
@@ -53,12 +54,17 @@ def singlefile():
         else:
             waterfall_data[i] = transform
 
-    waterfall_data = np.flip(waterfall_data, 0)
-    print(waterfall_data.shape)
+    time_vector = [0.0, chunknumber]
+    freq_vector = [-(SignalInfo.Fsample / 2) + SignalInfo.Fcentre,
+                   (SignalInfo.Fsample / 2) + SignalInfo.Fcentre]
 
-    # Size of waterfall data is quite big to plot, open to suggestions :)
-    # img=plt.imshow(waterfall_data)
-    # plt.show()
+    img = plt.imshow(waterfall_data, extent=freq_vector + time_vector,
+                     origin='lower', aspect='auto', cmap=plt.cm.inferno)
+    plt.colorbar()
+    plt.show()
+
+    # Approach 2
+    spectrogram.SpectrogramPlot(SignalInfo, 'plt.cm.inferno')
 
 
 def folderwatch():
