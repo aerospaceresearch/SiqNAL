@@ -2,21 +2,21 @@ import numpy as np
 from scipy.fftpack import fft, fftshift
 
 
-def CalcFourier(signal, fs, fc, nfft=0):
+def CalcFourier(signal, fs, fc):
 
     step = 1 / fs
     pole = fs
-    if nfft == 0:
-        nfft = len(signal)
     # One way I want to implement this
-    transform = 20 * \
-        np.log10(np.absolute(fftshift(fft(signal, n=nfft)) / len(signal)))
+    # transform = 20 * \
+    #     np.log10(np.absolute(fftshift(fft(signal)/ len(signal))))
 
-    # Other way I implemented keeping the log thing away
-    #transform = (np.absolute(fftshift(fft(signal,n=nfft))))
+    p = fftshift(fft(signal) / len(signal))
+    value = np.absolute(p)
+    maximum = value.max()
+    transform = 20 * np.log10(value / maximum)
 
-    #N = transform.shape[0]
+    N = transform.shape[0]
 
-    frequency = np.arange((-1 * pole) / 2 + fc, pole / 2 + fc, fs / nfft)
+    frequency = np.arange((-1 * pole) / 2 + fc, pole / 2 + fc, fs / N)
 
     return frequency, transform
