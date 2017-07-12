@@ -49,6 +49,7 @@ def singlefile():
         ''' fft start + shifting '''
         signalFFT = fourier.CalcFourier(
             signal_chunk_iq)
+        signalFFT = signalFFT / len(signalFFT)
 
         ''' fft shifted signal power '''
         frequency, transform = fourier.CalcFourierPower(
