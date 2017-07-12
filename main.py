@@ -13,7 +13,6 @@ from Modules import SignalData
 from Modules import importfile
 from Modules import fourier
 from Modules import spectrogram
-from Modules import power
 
 
 def singlefile():
@@ -28,9 +27,12 @@ def singlefile():
     signal = SignalInfo.filedata
     # twice, because of i and q in one chunk
     #chunksize = int(SignalInfo.Fsample) * 2
-    chunksize = int(1024 * 64)
+    chunksize = int(1024 * 2*2*2*2*2*2*2)
     len_signal = len(signal)
     chunknumber = int(len_signal // chunksize)
+
+    # shitty, but works
+    waterfall = []
 
     for i in range(0, chunknumber):
         print(i)
@@ -44,14 +46,29 @@ def singlefile():
         signal_chunk_iq.real = signal_chunk[::2] - 127.5
         signal_chunk_iq.imag = signal_chunk[1::2] - 127.5
 
-        ''' fft start '''
+        ''' fft start + shifting '''
+        signalFFT = fourier.CalcFourier(
+            signal_chunk_iq)
 
-        frequency, transform = fourier.CalcFourier(
-            signal_chunk_iq, SignalInfo.Fsample, SignalInfo.Fcentre)
+        ''' fft shifted signal power '''
+        frequency, transform = fourier.CalcFourierPower(
+            signalFFT, SignalInfo.Fsample, SignalInfo.Fcentre)
 
+        waterfall.append(transform)
+
+        ''' filtering the signalFFT shifted signal by multiplying it with filter window (box,...) '''
+        # next task, when other code is clean ;)
+
+        '''
         plt.plot(frequency, transform)
         plt.axvline(x=SignalInfo.Fcentre, color='r', linestyle='-')
         plt.show()
+        '''
+
+    # waterfall[::n] i guess you can caclulate the number of n until memory is full
+    plt.imshow(waterfall[::2], origin='lower', aspect='auto')
+    plt.colorbar()
+    plt.show()
 
     #     if i == 0:
     #         row_dimension = transform.shape[0]
