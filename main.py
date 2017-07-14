@@ -12,7 +12,7 @@ from Modules import selectfile
 from Modules import SignalData
 from Modules import importfile
 from Modules import fourier
-from Modules import spectrogram
+from Modules import bandpass
 
 
 def singlefile():
@@ -26,14 +26,10 @@ def singlefile():
 
     signal = SignalInfo.filedata
     # twice, because of i and q in one chunk
-    #chunksize = int(SignalInfo.Fsample) * 2
-    chunksize = int(1024 * 2*2*2*2*2*2*2)
+    chunksize = int(1024 * 2 * 2 * 2 * 2 * 2 * 2 * 2)
     len_signal = len(signal)
     chunknumber = int(len_signal // chunksize)
-
-    # shitty, but works
-    waterfall = []
-
+    print(chunknumber)
     for i in range(0, chunknumber):
         print(i)
         startslice = i * chunksize
@@ -51,46 +47,40 @@ def singlefile():
             signal_chunk_iq)
         signalFFT = signalFFT / len(signalFFT)
 
+        FLow = float(144.7 * 1e6)
+        FHigh = float(144.8 * 1e6)
+        new_signaI = bandpass.filter(
+            signal_chunk_iq, SignalInfo, FLow, FHigh, chunksize)
+
+        new_signalFFT = fourier.CalcFourier(
+            new_signaI)
+        new_signalFFT = new_signalFFT / len(new_signalFFT)
+
         ''' fft shifted signal power '''
         frequency, transform = fourier.CalcFourierPower(
-            signalFFT, SignalInfo.Fsample, SignalInfo.Fcentre)
+            new_signalFFT, SignalInfo.Fsample, SignalInfo.Fcentre)
 
-        waterfall.append(transform)
+        if i == 0:
+            row_dimension = transform.shape[0]
+            # Pre-allocation will make it faster
+            waterfall_data = np.zeros(
+                [chunknumber, row_dimension], dtype=np.float32)
+
+        waterfall_data[i] = transform
 
         ''' filtering the signalFFT shifted signal by multiplying it with filter window (box,...) '''
         # next task, when other code is clean ;)
 
-        '''
-        plt.plot(frequency, transform)
-        plt.axvline(x=SignalInfo.Fcentre, color='r', linestyle='-')
-        plt.show()
-        '''
-
-    # waterfall[::n] i guess you can caclulate the number of n until memory is full
-    plt.imshow(waterfall[::2], origin='lower', aspect='auto')
+    n = 20
+    time_vector = [0.0, int(len_signal // int(2 * SignalInfo.Fsample))]
+    freq_vector = [-(SignalInfo.Fsample / 2) + SignalInfo.Fcentre,
+                   (SignalInfo.Fsample / 2) + SignalInfo.Fcentre]
+    waterfall_data = np.flip(waterfall_data, 0)
+    new_waterfall_data = waterfall_data[::n]
+    plt.imshow(new_waterfall_data, extent=freq_vector +
+               time_vector, origin='lower', aspect='auto')
     plt.colorbar()
     plt.show()
-
-    #     if i == 0:
-    #         row_dimension = transform.shape[0]
-    #         waterfall_data = np.zeros(
-    #             [chunknumber, row_dimension], dtype=np.float32)
-    #         waterfall_data[i] = transform
-    #     else:
-    #         waterfall_data[i] = transform
-
-    # #waterfall_data=np.flip(waterfall_data,0)
-    # time_vector = [0.0, chunknumber]
-    # freq_vector = [-(SignalInfo.Fsample / 2) + SignalInfo.Fcentre,
-    #                (SignalInfo.Fsample / 2) + SignalInfo.Fcentre]
-    # # print(waterfall_data.shape)
-    # img = plt.imshow(waterfall_data, extent=freq_vector + time_vector,
-    #                  origin='lower', aspect='auto')
-    # plt.colorbar()
-    # plt.show()
-
-    # Approach 2
-    #spectrogram.SpectrogramPlot(SignalInfo, 'plt.cm.inferno')
 
 
 def folderwatch():
