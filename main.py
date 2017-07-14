@@ -29,7 +29,11 @@ def singlefile():
     chunksize = int(1024 * 2 * 2 * 2 * 2 * 2 * 2 * 2)
     len_signal = len(signal)
     chunknumber = int(len_signal // chunksize)
-    print(chunknumber)
+    FLow = float(144.7 * 1e6)
+    FHigh = float(144.8 * 1e6)
+
+    filter_array = bandpass.filter_box(SignalInfo, FLow, FHigh, chunksize)
+
     for i in range(0, chunknumber):
         print(i)
         startslice = i * chunksize
@@ -47,18 +51,24 @@ def singlefile():
             signal_chunk_iq)
         signalFFT = signalFFT / len(signalFFT)
 
-        FLow = float(144.7 * 1e6)
-        FHigh = float(144.8 * 1e6)
-        new_signaI = bandpass.filter(
-            signal_chunk_iq, SignalInfo, FLow, FHigh, chunksize)
+        # For Butterworthfilter
+        # new_signaI = bandpass.filter(
+        #     signal_chunk_iq, SignalInfo, FLow, FHigh, chunksize)
+        # new_signalFFT = fourier.CalcFourier(
+        #     new_signaI)
+        # new_signalFFT = new_signalFFT / len(new_signalFFT)
 
+        # Box filter
         new_signalFFT = fourier.CalcFourier(
-            new_signaI)
+            signal_chunk_iq)
         new_signalFFT = new_signalFFT / len(new_signalFFT)
+        new_signalFFT = new_signalFFT * filter_array
 
         ''' fft shifted signal power '''
         frequency, transform = fourier.CalcFourierPower(
             new_signalFFT, SignalInfo.Fsample, SignalInfo.Fcentre)
+        transform[transform == float('+inf')] = 0
+        transform[transform == float('-inf')] = 0
 
         if i == 0:
             row_dimension = transform.shape[0]
