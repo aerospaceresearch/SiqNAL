@@ -147,34 +147,30 @@ def filter(signal, SignalInfo, Flow, Fhigh, chunksize):
     final = (butter_bandpass_filter(signal_chunk_iq_new, width, fs)
              ) * (np.exp(1j * 2 * np.pi * t_power * (-1 * multiplier)))
 
-    # plt.rcParams["figure.figsize"] = (16,6)
-    # fig=plt.figure()
-
-    # frequency,transform=fourier.CalcFourierPower(signal,fs,fc)
-    # ax = fig.add_subplot(311)
-    # #ax.set_title('Station Turnstile Freq Domain(without filter)')
-    # plt.gca().xaxis.grid(True)
-    # plt.gca().yaxis.grid(True)
-    # ax.set_xlabel('Frequency(MHz)')
-    # ax.set_ylabel('|X(f)|')
-    # plt.plot(frequency,transform)
-
-    # frequency1,transform1=fourier.CalcFourierPower(signal_chunk_iq_new,fs,fc)
-    # ax = fig.add_subplot(312)
-    # #ax.set_title('Station Turnstile Freq Domain(without filter)')
-    # plt.gca().xaxis.grid(True)
-    # plt.gca().yaxis.grid(True)
-    # ax.set_xlabel('Frequency(MHz)')
-    # ax.set_ylabel('|X(f)|')
-    # plt.plot(frequency1,transform1)
-
-    # frequency2,transform2=fourier.CalcFourierPower(final,fs,fc)
-    # ax = fig.add_subplot(313)
-    # #ax.set_title('Station Turnstile Freq Domain(without filter)')
-    # plt.gca().xaxis.grid(True)
-    # plt.gca().yaxis.grid(True)
-    # ax.set_xlabel('Frequency(MHz)')
-    # ax.set_ylabel('|X(f)|')
-    # plt.plot(frequency2,transform2)
-
     return final
+
+
+def filter_box(SignalInfo, Flow, Fhigh, chunksize):
+
+    value = SignalInfo.getvalues()
+
+    fs = value[3]
+    fc = value[4]
+
+    length = int(chunksize // 2)
+
+    filter_array = np.ones(length)
+    np.savetxt('filter1.csv', filter_array)
+    freq = np.arange(fc - fs / 2, fc + fs / 2, fs / length)
+
+    nlow = int((Flow - (fc - fs / 2)) // (fs / length))
+    nhigh = int((Fhigh - (fc - fs / 2)) // (fs / length))
+    if abs(Flow - freq[nlow]) > abs(Flow - freq[nlow + 1]):
+        nlow = nlow + 1
+    if abs(Fhigh - freq[nhigh]) > abs(Fhigh - freq[nhigh + 1]):
+        nhigh = nhigh + 1
+
+    filter_array[:nlow] = 0
+    filter_array[nhigh:] = 0
+
+    return filter_array
