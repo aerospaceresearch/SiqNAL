@@ -29,10 +29,17 @@ def singlefile():
     chunksize = int(1024 * 2 * 2 * 2 * 2 * 2 * 2 * 2)
     len_signal = len(signal)
     chunknumber = int(len_signal // chunksize)
-    FLow = float(134.7 * 1e6)
-    FHigh = float(134.8 * 1e6)
+    FLow = float((145.9 - 0.1) * 1e6)
+    FHigh = float((145.9 + 0.1) * 1e6)
 
     filter_array = bandpass.filter_box(SignalInfo, FLow, FHigh, chunksize)
+    plt.plot(filter_array.real)
+    plt.plot(filter_array.imag)
+    plt.show()
+
+    waterfall = []
+    waterfall_filtered = []
+    signal_filtered = []
 
     for i in range(0, chunknumber):
         print(i)
@@ -47,58 +54,56 @@ def singlefile():
         signal_chunk_iq.imag = signal_chunk[1::2] - 127.5
 
         ''' fft start + shifting '''
-        # signalFFT = fourier.CalcFourier(
-        #     signal_chunk_iq)
-        # signalFFT = signalFFT / len(signalFFT)
-
-        # For Butterworthfilter
-        # new_signaI = bandpass.filter(
-        #     signal_chunk_iq, SignalInfo, FLow, FHigh, chunksize)
-        # new_signalFFT = fourier.CalcFourier(
-        #     new_signaI)
-        # new_signalFFT = new_signalFFT / len(new_signalFFT)
-
-        # Box filter
-        new_signalFFT = fourier.CalcFourier(
+        signalFFT = fourier.CalcFourier(
             signal_chunk_iq)
-        new_signalFFT = new_signalFFT / len(new_signalFFT)
-        new_signalFFT = new_signalFFT * filter_array
-
-        new_signalFFT1 = new_signalFFT * len(new_signalFFT)
-        signal_back = (fourier.CalcIFourier(new_signalFFT1))
-
-        plt.figure()
-        plt.plot(np.absolute(signal_chunk_iq))
-        plt.plot(np.absolute(signal_back))
-        plt.show()
 
         ''' fft shifted signal power '''
-    #     frequency, transform = fourier.CalcFourierPower(
-    #         new_signalFFT, SignalInfo.Fsample, SignalInfo.Fcentre)
-    #     transform[transform == float('+inf')] = 0
-    #     transform[transform == float('-inf')] = 0
+        frequency, transform = fourier.CalcFourierPower(
+            signalFFT / len(signalFFT), SignalInfo.Fsample, SignalInfo.Fcentre)
 
-    #     if i == 0:
-    #         row_dimension = transform.shape[0]
-    #         # Pre-allocation will make it faster
-    #         waterfall_data = np.zeros(
-    #             [chunknumber, row_dimension], dtype=np.float32)
+        waterfall.append(transform)
 
-    #     waterfall_data[i] = transform
 
-    #     ''' filtering the signalFFT shifted signal by multiplying it with filter window (box,...) '''
-    #     # next task, when other code is clean ;)
+        ########################
+        # from here:
+        # from here, each bandpass musst do this
+        ''' filtering the signalFFT shifted signal by multiplying it with filter window (box,...) '''
+        # next task, when other code is clean ;)
 
-    # n = 20
-    # time_vector = [0.0, int(len_signal // int(2 * SignalInfo.Fsample))]
-    # freq_vector = [-(SignalInfo.Fsample / 2) + SignalInfo.Fcentre,
-    #                (SignalInfo.Fsample / 2) + SignalInfo.Fcentre]
-    # waterfall_data = np.flip(waterfall_data, 0)
-    # new_waterfall_data = waterfall_data[::n]
-    # plt.imshow(new_waterfall_data, extent=freq_vector +
-    #            time_vector, origin='lower', aspect='auto')
-    # plt.colorbar()
-    # plt.show()
+        # Box filter
+        new_signalFFT = signalFFT * filter_array
+        new_signalFFT1 = new_signalFFT
+        #print(filter_array)
+
+        ''' fft shifted signal power '''
+        frequency, transform = fourier.CalcFourierPower(
+            new_signalFFT / len(new_signalFFT), SignalInfo.Fsample, SignalInfo.Fcentre)
+
+        waterfall_filtered.append(transform)
+
+        # going back to time series with filtered signal
+        signal_back = (fourier.CalcIFourier(new_signalFFT1))
+        # the following is shitty, but the fasted to check the filter.
+        for i in range(len(signal_back)):
+            # going int again, because of memory and comparison reasons
+            signal_filtered.append(int(signal_back.real[i] + 127.5))
+            signal_filtered.append(int(signal_back.imag[i] + 127.5))
+
+        # to here
+        # this is where each bandpass loop should end....
+
+
+    # waterfall[::n] i guess you can caclulate the number of n until memory is full
+    plt.imshow(waterfall[::2], origin='lower', aspect='auto')
+    plt.colorbar()
+    plt.show()
+    plt.imshow(waterfall_filtered[::2], origin='lower', aspect='auto')
+    plt.colorbar()
+    plt.show()
+
+    plt.plot(signal[:200000])
+    plt.plot(signal_filtered[:200000])
+    plt.show()
 
 
 def folderwatch():

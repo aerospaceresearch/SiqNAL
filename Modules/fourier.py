@@ -19,8 +19,12 @@ def CalcFourierPower(signalFFT, fs, fc):
     #     np.log10(np.absolute(fftshift(fft(signal)/ len(signal))))
 
     value = np.absolute(signalFFT)
-    maximum = value.max()
-    transform = 20 * np.log10(value / maximum)
+    #maximum = value.max()
+    #transform = 20 * np.log10(value / maximum)
+    # @jay, please don't use this on a chunk level!
+    # it is normalizing it wrongly only on a part level, but not for the full waterfall.
+    # and my limited knowledge says, it is not making it dBm
+    transform = 20 * np.log10(value)
 
     N = transform.shape[0]
 
