@@ -159,7 +159,7 @@ def filter_box(SignalInfo, Flow, Fhigh, chunksize):
 
     length = int(chunksize // 2)
 
-    filter_array = np.ones(length)
+    filter_array = np.ones(length, dtype=np.complex128) + 1j
     np.savetxt('filter1.csv', filter_array)
     freq = np.arange(fc - fs / 2, fc + fs / 2, fs / length)
 
@@ -170,7 +170,7 @@ def filter_box(SignalInfo, Flow, Fhigh, chunksize):
     if abs(Fhigh - freq[nhigh]) > abs(Fhigh - freq[nhigh + 1]):
         nhigh = nhigh + 1
 
-    filter_array[:nlow] = 0
-    filter_array[nhigh:] = 0
+    filter_array[:nlow] = 0 + 0j
+    filter_array[nhigh:] = 0 + 0j
 
     return filter_array

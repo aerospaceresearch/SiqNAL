@@ -29,8 +29,8 @@ def singlefile():
     chunksize = int(1024 * 2 * 2 * 2 * 2 * 2 * 2 * 2)
     len_signal = len(signal)
     chunknumber = int(len_signal // chunksize)
-    FLow = float(144.7 * 1e6)
-    FHigh = float(144.8 * 1e6)
+    FLow = float(134.7 * 1e6)
+    FHigh = float(134.8 * 1e6)
 
     filter_array = bandpass.filter_box(SignalInfo, FLow, FHigh, chunksize)
 
@@ -47,9 +47,9 @@ def singlefile():
         signal_chunk_iq.imag = signal_chunk[1::2] - 127.5
 
         ''' fft start + shifting '''
-        signalFFT = fourier.CalcFourier(
-            signal_chunk_iq)
-        signalFFT = signalFFT / len(signalFFT)
+        # signalFFT = fourier.CalcFourier(
+        #     signal_chunk_iq)
+        # signalFFT = signalFFT / len(signalFFT)
 
         # For Butterworthfilter
         # new_signaI = bandpass.filter(
@@ -64,33 +64,41 @@ def singlefile():
         new_signalFFT = new_signalFFT / len(new_signalFFT)
         new_signalFFT = new_signalFFT * filter_array
 
+        new_signalFFT1 = new_signalFFT * len(new_signalFFT)
+        signal_back = (fourier.CalcIFourier(new_signalFFT1))
+
+        plt.figure()
+        plt.plot(np.absolute(signal_chunk_iq))
+        plt.plot(np.absolute(signal_back))
+        plt.show()
+
         ''' fft shifted signal power '''
-        frequency, transform = fourier.CalcFourierPower(
-            new_signalFFT, SignalInfo.Fsample, SignalInfo.Fcentre)
-        transform[transform == float('+inf')] = 0
-        transform[transform == float('-inf')] = 0
+    #     frequency, transform = fourier.CalcFourierPower(
+    #         new_signalFFT, SignalInfo.Fsample, SignalInfo.Fcentre)
+    #     transform[transform == float('+inf')] = 0
+    #     transform[transform == float('-inf')] = 0
 
-        if i == 0:
-            row_dimension = transform.shape[0]
-            # Pre-allocation will make it faster
-            waterfall_data = np.zeros(
-                [chunknumber, row_dimension], dtype=np.float32)
+    #     if i == 0:
+    #         row_dimension = transform.shape[0]
+    #         # Pre-allocation will make it faster
+    #         waterfall_data = np.zeros(
+    #             [chunknumber, row_dimension], dtype=np.float32)
 
-        waterfall_data[i] = transform
+    #     waterfall_data[i] = transform
 
-        ''' filtering the signalFFT shifted signal by multiplying it with filter window (box,...) '''
-        # next task, when other code is clean ;)
+    #     ''' filtering the signalFFT shifted signal by multiplying it with filter window (box,...) '''
+    #     # next task, when other code is clean ;)
 
-    n = 20
-    time_vector = [0.0, int(len_signal // int(2 * SignalInfo.Fsample))]
-    freq_vector = [-(SignalInfo.Fsample / 2) + SignalInfo.Fcentre,
-                   (SignalInfo.Fsample / 2) + SignalInfo.Fcentre]
-    waterfall_data = np.flip(waterfall_data, 0)
-    new_waterfall_data = waterfall_data[::n]
-    plt.imshow(new_waterfall_data, extent=freq_vector +
-               time_vector, origin='lower', aspect='auto')
-    plt.colorbar()
-    plt.show()
+    # n = 20
+    # time_vector = [0.0, int(len_signal // int(2 * SignalInfo.Fsample))]
+    # freq_vector = [-(SignalInfo.Fsample / 2) + SignalInfo.Fcentre,
+    #                (SignalInfo.Fsample / 2) + SignalInfo.Fcentre]
+    # waterfall_data = np.flip(waterfall_data, 0)
+    # new_waterfall_data = waterfall_data[::n]
+    # plt.imshow(new_waterfall_data, extent=freq_vector +
+    #            time_vector, origin='lower', aspect='auto')
+    # plt.colorbar()
+    # plt.show()
 
 
 def folderwatch():
