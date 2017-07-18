@@ -1,9 +1,11 @@
 import numpy as np
-from scipy.fftpack import fft, fftshift
+from scipy.fftpack import fft, fftshift, ifft, ifftshift
+import matplotlib.pyplot as plt
 
 
 def CalcFourier(signal):
     # just the plain fft  shift, so we can use the output for ther filtering as well ;)
+
     p = fftshift(fft(signal))
 
     return p
@@ -26,3 +28,10 @@ def CalcFourierPower(signalFFT, fs, fc):
     frequency = np.arange((-1 * pole) / 2 + fc, pole / 2 + fc, fs / N)
 
     return frequency, transform
+
+
+def CalcIFourier(P):
+
+    signal = ifft(ifftshift(P))
+
+    return signal
