@@ -28,9 +28,9 @@ def singlefile():
     # twice, because of i and q in one chunk
     chunksize = int(1024 * 2 * 2 * 2 * 2 * 2 * 2 * 2)
     len_signal = len(signal)
-    chunknumber = int(len_signal // chunksize)
-    FLow = float(134.7 * 1e6)
-    FHigh = float(134.8 * 1e6)
+    chunknumber = 3#int(len_signal // chunksize)
+    FLow = float(144.78 * 1e6)
+    FHigh = float(144.8 * 1e6)
 
     filter_array = bandpass.filter_box(SignalInfo, FLow, FHigh, chunksize)
 
@@ -64,19 +64,23 @@ def singlefile():
         new_signalFFT = new_signalFFT / len(new_signalFFT)
         new_signalFFT = new_signalFFT * filter_array
 
-        new_signalFFT1 = new_signalFFT * len(new_signalFFT)
-        signal_back = (fourier.CalcIFourier(new_signalFFT1))
+        new_signalFFT1 = new_signalFFT
+        signal_back = (fourier.CalcIFourier(new_signalFFT1))* len(new_signalFFT)
 
+        print(signal_back[:10])
         plt.figure()
         plt.plot(np.absolute(signal_chunk_iq))
         plt.plot(np.absolute(signal_back))
         plt.show()
 
         ''' fft shifted signal power '''
-    #     frequency, transform = fourier.CalcFourierPower(
-    #         new_signalFFT, SignalInfo.Fsample, SignalInfo.Fcentre)
-    #     transform[transform == float('+inf')] = 0
-    #     transform[transform == float('-inf')] = 0
+        # frequency, transform = fourier.CalcFourierPower(
+        #     new_signalFFT, SignalInfo.Fsample, SignalInfo.Fcentre)
+        # #transform[transform == float('+inf')] = 0
+        # #transform[transform == float('-inf')] = 0
+        # plt.figure()
+        # plt.plot(frequency,transform)
+        # plt.show()
 
     #     if i == 0:
     #         row_dimension = transform.shape[0]
