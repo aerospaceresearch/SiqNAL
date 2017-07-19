@@ -1,0 +1,93 @@
+{
+  "satellite": [
+    {
+      "name": "iss",
+      "catalogueNumber": "25544",
+	  "internationalDesignation": "98067A",
+	  "transponders": [
+	    {
+		  "description": "Mode V/V AFSK Packet",
+		  "uplink": "145.990",
+		  "uplinkRange": "",
+		  "downlink": "145.899",
+		  "downlinkWidth": "0.016"
+		  "mode": "AFSK 1200 bps"
+		},
+		{
+		  "description": "Mode V APRS",
+		  "uplink": "145.825",
+		  "downlink": "145.825",
+		  "downlinkWidth": "0.005"
+		  "mode": "FM 1200 bps"
+		}
+	  ]
+	},
+	
+	{
+      "name": "NOAA-15",
+      "catalogueNumber": "25338",
+	  "internationalDesignation": "98030A",
+	  "transponders": [
+	    {
+		  "description": "APT",
+		  "uplink": "",
+		  "downlink": "137.500",
+		  "downlinkWidth": "0.016"
+		  "mode": ""
+		}
+	  ] 
+    },
+	
+	{
+      "name": "NOAA-18",
+      "catalogueNumber": "28654",
+	  "internationalDesignation": "05018A",
+	  "transponders": [
+	    {
+		  "description": "APT",
+		  "uplink": "",
+		  "downlink": "137.9125",
+		  "downlinkWidth": "0.016"
+		  "mode": ""
+		}
+	  ] 
+    },
+	
+	{
+      "name": "NOAA-19",
+      "catalogueNumber": "33591",
+	  "internationalDesignation": "09005A",
+	  "transponders": [
+	    {
+		  "description": "APT",
+		  "uplink": "",
+		  "downlink": "137.100",
+		  "downlinkWidth": "0.016"
+		  "mode": ""
+		}
+	  ] 
+    }
+	
+	{
+      "name": "FUNcube-1 (AO-73)",
+      "catalogueNumber": "39444",
+	  "internationalDesignation": "13066AE",
+	  "transponders": [
+	    {
+		  "description": "beacon",
+		  "uplink": "",
+		  "downlink": "145.935",
+		  "downlinkWidth": "0.016"
+		  "mode": ""
+		},
+		{
+		  "description": "beacon",
+		  "uplink": "435.14",
+		  "downlink": "145.960",
+		  "downlinkWidth": "0.020"
+		  "mode": ""
+		}
+	  ]
+    }
+  ]
+}
