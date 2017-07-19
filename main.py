@@ -25,7 +25,7 @@ def singlefile():
     else:
         SignalInfo.filedata = read_wav.loaddata(SignalInfo.filename)
 
-    filename = '/home/matrix/Desktop/SiqNAL/incoming_data_example/frequency.json'
+    filename = 'satellite_db.json'
     bands = freqbands.getbands(SignalInfo, filename)
 
     signal = SignalInfo.filedata
@@ -35,13 +35,15 @@ def singlefile():
     chunknumber = int(len_signal // chunksize)
 
     for band in bands:
-        FLow = band[0]
-        FHigh = band[1]
+        FLow = band[1]
+        FHigh = band[2]
+
         filter_array = bandpass.filter_box(SignalInfo, FLow, FHigh, chunksize)
+        signal_filtered = np.zeros(chunknumber * chunksize, dtype=np.float)
 
         waterfall = []
         waterfall_filtered = []
-        signal_filtered = []
+        # signal_filtered = []
 
         for i in range(0, chunknumber):
             print(i)
@@ -51,7 +53,7 @@ def singlefile():
             signal_chunk = signal[startslice:endslice]
             signal_chunk_iq = np.empty(
                 signal_chunk.shape[0] // 2, dtype=np.complex128)
-            # it is recorded as uint8 but sint8 is better
+
             signal_chunk_iq.real = signal_chunk[::2] - 127.5
             signal_chunk_iq.imag = signal_chunk[1::2] - 127.5
 
@@ -65,12 +67,6 @@ def singlefile():
 
             waterfall.append(transform)
 
-            ########################
-            # from here:
-            # from here, each bandpass musst do this
-            ''' filtering the signalFFT shifted signal by multiplying it with filter window (box,...) '''
-            # next task, when other code is clean ;)
-
             # Box filter
             new_signalFFT = signalFFT * filter_array
             new_signalFFT1 = new_signalFFT
@@ -81,19 +77,20 @@ def singlefile():
 
             waterfall_filtered.append(transform)
 
-            # going back to time series with filtered signal
             signal_back = (fourier.CalcIFourier(new_signalFFT1))
-            # the following is shitty, but the fasted to check the filter.
-            for i in range(len(signal_back)):
-                # going uint again, because of memory and comparison reasons
-                signal_filtered.append(int(signal_back.real[i] + 127.5))
-                signal_filtered.append(int(signal_back.imag[i] + 127.5))
 
-        #     # to here
-        #     # this is where each bandpass loop should end....
+            start_index = i * chunksize
+            end_index = start_index + chunksize
+            signal_filtered[start_index:end_index -
+                            1:2] = signal_back.real + 127.5
+            signal_filtered[start_index +
+                            1:end_index:2] = signal_back.imag + 127.5
 
-        # waterfall[::n] i guess you can caclulate the number of n until memory is full
-        n = 2
+            # for j in range(len(signal_back)):
+            #     signal_filtered.append(int(signal_back.real[j] + 127.5))
+            #     signal_filtered.append(int(signal_back.imag[j] + 127.5))
+
+        n = 30
         plt.imshow(waterfall[::n], origin='lower', aspect='auto')
         plt.colorbar()
         plt.show()
