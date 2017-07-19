@@ -32,7 +32,7 @@ def singlefile():
     # twice, because of i and q in one chunk
     chunksize = int(1024 * 2 * 2 * 2 * 2 * 2 * 2 * 2)
     len_signal = len(signal)
-    chunknumber = 100  # int(len_signal // chunksize)
+    chunknumber = int(len_signal // chunksize)
 
     for band in bands:
         FLow = band[1]
