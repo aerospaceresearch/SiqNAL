@@ -10,14 +10,14 @@
 		  "uplink": "145.990",
 		  "uplinkRange": "",
 		  "downlink": "145.899",
-		  "downlinkWidth": "0.016"
+		  "downlinkWidth": "0.016",
 		  "mode": "AFSK 1200 bps"
 		},
 		{
 		  "description": "Mode V APRS",
 		  "uplink": "145.825",
 		  "downlink": "145.825",
-		  "downlinkWidth": "0.005"
+		  "downlinkWidth": "0.005",
 		  "mode": "FM 1200 bps"
 		}
 	  ]
@@ -32,7 +32,7 @@
 		  "description": "APT",
 		  "uplink": "",
 		  "downlink": "137.500",
-		  "downlinkWidth": "0.016"
+		  "downlinkWidth": "0.016",
 		  "mode": ""
 		}
 	  ] 
@@ -47,7 +47,7 @@
 		  "description": "APT",
 		  "uplink": "",
 		  "downlink": "137.9125",
-		  "downlinkWidth": "0.016"
+		  "downlinkWidth": "0.016",
 		  "mode": ""
 		}
 	  ] 
@@ -62,7 +62,7 @@
 		  "description": "APT",
 		  "uplink": "",
 		  "downlink": "137.100",
-		  "downlinkWidth": "0.016"
+		  "downlinkWidth": "0.016",
 		  "mode": ""
 		}
 	  ] 
@@ -77,14 +77,14 @@
 		  "description": "beacon",
 		  "uplink": "",
 		  "downlink": "145.935",
-		  "downlinkWidth": "0.016"
+		  "downlinkWidth": "0.016",
 		  "mode": ""
 		},
 		{
 		  "description": "beacon",
 		  "uplink": "435.14",
 		  "downlink": "145.960",
-		  "downlinkWidth": "0.020"
+		  "downlinkWidth": "0.020",
 		  "mode": ""
 		}
 	  ]
