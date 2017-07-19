@@ -34,6 +34,34 @@ def singlefile():
     len_signal = len(signal)
     chunknumber = int(len_signal // chunksize)
 
+    waterfall = []
+    for i in range(0, chunknumber):
+        print(i)
+        startslice = i * chunksize
+        endslice = startslice + chunksize
+
+        signal_chunk = signal[startslice:endslice]
+        signal_chunk_iq = np.empty(
+            signal_chunk.shape[0] // 2, dtype=np.complex128)
+
+        signal_chunk_iq.real = signal_chunk[::2] - 127.5
+        signal_chunk_iq.imag = signal_chunk[1::2] - 127.5
+
+        ''' fft start + shifting '''
+        signalFFT = fourier.CalcFourier(
+            signal_chunk_iq)
+
+        ''' fft shifted signal power '''
+        frequency, transform = fourier.CalcFourierPower(
+            signalFFT / len(signalFFT), SignalInfo.Fsample, SignalInfo.Fcentre)
+        waterfall.append(transform)
+
+    n = 15
+    plt.imshow(waterfall[::n], origin='lower', aspect='auto')
+    plt.colorbar()
+    plt.show()
+    del waterfall
+
     for band in bands:
         FLow = band[1]
         FHigh = band[2]
@@ -41,7 +69,7 @@ def singlefile():
         filter_array = bandpass.filter_box(SignalInfo, FLow, FHigh, chunksize)
         signal_filtered = np.zeros(chunknumber * chunksize, dtype=np.float)
 
-        waterfall = []
+        #waterfall = []
         waterfall_filtered = []
         # signal_filtered = []
 
@@ -65,7 +93,7 @@ def singlefile():
             frequency, transform = fourier.CalcFourierPower(
                 signalFFT / len(signalFFT), SignalInfo.Fsample, SignalInfo.Fcentre)
 
-            waterfall.append(transform)
+            #waterfall.append(transform)
 
             # Box filter
             new_signalFFT = signalFFT * filter_array
@@ -76,7 +104,7 @@ def singlefile():
                 new_signalFFT / len(new_signalFFT), SignalInfo.Fsample, SignalInfo.Fcentre)
 
             waterfall_filtered.append(transform)
-
+            '''
             signal_back = (fourier.CalcIFourier(new_signalFFT1))
 
             start_index = i * chunksize
@@ -85,15 +113,13 @@ def singlefile():
                             1:2] = signal_back.real + 127.5
             signal_filtered[start_index +
                             1:end_index:2] = signal_back.imag + 127.5
+            '''
 
             # for j in range(len(signal_back)):
             #     signal_filtered.append(int(signal_back.real[j] + 127.5))
             #     signal_filtered.append(int(signal_back.imag[j] + 127.5))
 
-        n = 30
-        plt.imshow(waterfall[::n], origin='lower', aspect='auto')
-        plt.colorbar()
-        plt.show()
+        n = 15
         plt.imshow(waterfall_filtered[::n], origin='lower', aspect='auto')
         plt.colorbar()
         plt.show()
@@ -102,7 +128,7 @@ def singlefile():
         # plt.plot(signal_filtered[:200000])
         # plt.show()
 
-        del waterfall, waterfall_filtered, signal_filtered
+        del waterfall_filtered, signal_filtered
 
 
 def folderwatch():
