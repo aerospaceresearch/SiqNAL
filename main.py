@@ -58,10 +58,10 @@ def singlefile():
         if(i == 0):
             row = transform.shape[0]
             waterfall = np.zeros([chunknumber, row], dtype=np.float32)
-        waterfall[i] = transform
+        waterfall[chunknumber - i - 1] = transform
 
     n = 30
-    waterfall = np.flip(waterfall, axis=0)
+    #waterfall = np.flip(waterfall, axis=0)
     time_vector = [0.0, int(len_signal // int(2 * SignalInfo.Fsample))]
     freq_vector = [-(SignalInfo.Fsample / 2) + SignalInfo.Fcentre,
                    (SignalInfo.Fsample / 2) + SignalInfo.Fcentre]
@@ -117,7 +117,7 @@ def singlefile():
                 row = transform.shape[0]
                 waterfall_filtered = np.zeros(
                     [chunknumber, row], dtype=np.float32)
-            waterfall_filtered[i] = transform
+            waterfall_filtered[chunknumber - i - 1] = transform
 
             signal_back = (fourier.CalcIFourier(new_signalFFT1))
 
@@ -133,7 +133,7 @@ def singlefile():
             #     signal_filtered.append(int(signal_back.imag[j] + 127.5))
 
         n = 30
-        waterfall_filtered = np.flip(waterfall_filtered, axis=0)
+        #waterfall_filtered = np.flip(waterfall_filtered, axis=0)
         time_vector = [0.0, int(len_signal // int(2 * SignalInfo.Fsample))]
         freq_vector = [-(SignalInfo.Fsample / 2) + SignalInfo.Fcentre,
                        (SignalInfo.Fsample / 2) + SignalInfo.Fcentre]
