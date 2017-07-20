@@ -33,8 +33,8 @@ def singlefile():
     chunksize = int(1024 * 2 * 2 * 2 * 2 * 2 * 2 * 2)
     len_signal = len(signal)
     chunknumber = int(len_signal // chunksize)
-
-    waterfall = []
+    print(chunknumber)
+    #waterfall = []
     for i in range(0, chunknumber):
         print(i)
         startslice = i * chunksize
@@ -54,10 +54,19 @@ def singlefile():
         ''' fft shifted signal power '''
         frequency, transform = fourier.CalcFourierPower(
             signalFFT / len(signalFFT), SignalInfo.Fsample, SignalInfo.Fcentre)
-        waterfall.append(transform)
+        # waterfall.append(transform)
+        if(i == 0):
+            row = transform.shape[0]
+            waterfall = np.zeros([chunknumber, row], dtype=np.float32)
+        waterfall[i] = transform
 
-    n = 15
-    plt.imshow(waterfall[::n], origin='lower', aspect='auto')
+    n = 30
+    waterfall = np.flip(waterfall, axis=0)
+    time_vector = [0.0, int(len_signal // int(2 * SignalInfo.Fsample))]
+    freq_vector = [-(SignalInfo.Fsample / 2) + SignalInfo.Fcentre,
+                   (SignalInfo.Fsample / 2) + SignalInfo.Fcentre]
+    plt.imshow(waterfall[::n], extent=freq_vector +
+               time_vector, origin='lower', aspect='auto')
     plt.colorbar()
     plt.show()
     del waterfall
@@ -70,7 +79,7 @@ def singlefile():
         signal_filtered = np.zeros(chunknumber * chunksize, dtype=np.float)
 
         #waterfall = []
-        waterfall_filtered = []
+        #waterfall_filtered = []
         # signal_filtered = []
 
         for i in range(0, chunknumber):
@@ -90,10 +99,10 @@ def singlefile():
                 signal_chunk_iq)
 
             ''' fft shifted signal power '''
-            frequency, transform = fourier.CalcFourierPower(
-                signalFFT / len(signalFFT), SignalInfo.Fsample, SignalInfo.Fcentre)
+            # frequency, transform = fourier.CalcFourierPower(
+            #     signalFFT / len(signalFFT), SignalInfo.Fsample, SignalInfo.Fcentre)
 
-            #waterfall.append(transform)
+            # waterfall.append(transform)
 
             # Box filter
             new_signalFFT = signalFFT * filter_array
@@ -103,8 +112,13 @@ def singlefile():
             frequency, transform = fourier.CalcFourierPower(
                 new_signalFFT / len(new_signalFFT), SignalInfo.Fsample, SignalInfo.Fcentre)
 
-            waterfall_filtered.append(transform)
-            '''
+            # waterfall_filtered.append(transform)
+            if(i == 0):
+                row = transform.shape[0]
+                waterfall_filtered = np.zeros(
+                    [chunknumber, row], dtype=np.float32)
+            waterfall_filtered[i] = transform
+
             signal_back = (fourier.CalcIFourier(new_signalFFT1))
 
             start_index = i * chunksize
@@ -113,19 +127,23 @@ def singlefile():
                             1:2] = signal_back.real + 127.5
             signal_filtered[start_index +
                             1:end_index:2] = signal_back.imag + 127.5
-            '''
 
             # for j in range(len(signal_back)):
             #     signal_filtered.append(int(signal_back.real[j] + 127.5))
             #     signal_filtered.append(int(signal_back.imag[j] + 127.5))
 
-        n = 15
-        plt.imshow(waterfall_filtered[::n], origin='lower', aspect='auto')
+        n = 30
+        waterfall_filtered = np.flip(waterfall_filtered, axis=0)
+        time_vector = [0.0, int(len_signal // int(2 * SignalInfo.Fsample))]
+        freq_vector = [-(SignalInfo.Fsample / 2) + SignalInfo.Fcentre,
+                       (SignalInfo.Fsample / 2) + SignalInfo.Fcentre]
+        plt.imshow(waterfall_filtered[::n], extent=freq_vector +
+                   time_vector, origin='lower', aspect='auto')
         plt.colorbar()
         plt.show()
 
-        # plt.plot(signal[:200000])
-        # plt.plot(signal_filtered[:200000])
+        # plt.plot(signal[:100000])
+        # plt.plot(signal_filtered[:100000])
         # plt.show()
 
         del waterfall_filtered, signal_filtered
