@@ -106,7 +106,7 @@ def singlefile():
 
             # Box filter
             new_signalFFT = signalFFT * filter_array
-            new_signalFFT1 = new_signalFFT * len(new_signalFFT)
+            new_signalFFT1 = new_signalFFT
 
             ''' fft shifted signal power '''
             frequency, transform = fourier.CalcFourierPower(
