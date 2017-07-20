@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.fftpack import fft, fftshift, ifft, ifftshift
+from scipy.fftpack import fft, fftshift, ifft  # , ifftshift
 import matplotlib.pyplot as plt
 
 
@@ -36,6 +36,6 @@ def CalcFourierPower(signalFFT, fs, fc):
 
 def CalcIFourier(P):
 
-    signal = ifft(ifftshift(P))
+    signal = ifft(fftshift(P))
 
     return signal
