@@ -67,6 +67,7 @@ def singlefile():
                    (SignalInfo.Fsample / 2) + SignalInfo.Fcentre]
     plt.imshow(waterfall[::n], extent=freq_vector +
                time_vector, origin='lower', aspect='auto')
+    plt.gca().invert_yaxis()
     plt.colorbar()
     plt.show()
     del waterfall
@@ -139,7 +140,12 @@ def singlefile():
                        (SignalInfo.Fsample / 2) + SignalInfo.Fcentre]
         plt.imshow(waterfall_filtered[::n], extent=freq_vector +
                    time_vector, origin='lower', aspect='auto')
+        plt.gca().invert_yaxis()
         plt.colorbar()
+        plt.show()
+
+        # time domain plot of the filtered signal
+        plt.plot(((signal_filtered[::1000] - 127.5)**2 + (signal_filtered[1::1000] - 127.5)**2)**0.5)
         plt.show()
 
         # plt.plot(signal[:100000])
