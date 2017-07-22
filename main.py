@@ -77,7 +77,8 @@ def singlefile():
         FHigh = band[2]
 
         filter_array = bandpass.filter_box(SignalInfo, FLow, FHigh, chunksize)
-        signal_filtered = np.zeros(chunknumber * chunksize, dtype=np.float)
+        signal_filtered = np.zeros(
+            chunknumber * (chunksize // 2), dtype=np.float)
 
         #waterfall = []
         #waterfall_filtered = []
@@ -122,16 +123,15 @@ def singlefile():
 
             signal_back = (fourier.CalcIFourier(new_signalFFT1))
 
-            start_index = i * chunksize
-            end_index = start_index + chunksize
+            # Instead of stoaring IQ values stoared absolute values directly
+            start_index = i * (chunksize // 2)
+            end_index = start_index + (chunksize // 2)
+            signal_filtered[start_index:end_index] = np.absolute(signal_back)
+
             signal_filtered[start_index:end_index -
                             1:2] = signal_back.real + 127.5
             signal_filtered[start_index +
                             1:end_index:2] = signal_back.imag + 127.5
-
-            # for j in range(len(signal_back)):
-            #     signal_filtered.append(int(signal_back.real[j] + 127.5))
-            #     signal_filtered.append(int(signal_back.imag[j] + 127.5))
 
         n = 30
         #waterfall_filtered = np.flip(waterfall_filtered, axis=0)
@@ -145,14 +145,49 @@ def singlefile():
         plt.show()
 
         # time domain plot of the filtered signal
-        plt.plot(((signal_filtered[::1000] - 127.5)**2 + (signal_filtered[1::1000] - 127.5)**2)**0.5)
-        plt.show()
+        '''  below portion is for selecting best threshold you can uncomment & plot signal with threshold lines to see which is best '''
+        # m = 1000
+
+        #signal_plot=((signal_filtered[::m] - 127.5)**2 + (signal_filtered[1::m] - 127.5)**2)**0.5
+        # signal_plot=np.flipud(signal_filtered)
+
+        # signal_plot=signal_filtered[::m]
+        mn = np.mean(signal_filtered)
+        # md=np.median(signal_filtered)
+        st = np.std(signal_filtered)
+        # th1=mn+3*st
+        # th2=md+3*st
+        th3 = mn + 2.5 * st
+        # th4=md+2.5*st
+        # th5=mn+2*st
+        # th6=md+2*st
+
+        # print("{} {} {} {} {} {}".format(th1,th2,th3,th4,th5,th6))
+        # plt.plot(signal_plot)
+        # plt.axhline(y=th1,color='black')
+        # plt.axhline(y=th2,color='r')
+        # plt.axhline(y=th3,color='m')
+        # plt.axhline(y=th4,color='orange')
+        # plt.axhline(y=th5,color='darkblue')
+        # plt.axhline(y=th6,color='green')
+        # plt.show()
+
+        # Till here
+
+        # Getting segments where there is signal
+        start, end, dur, seg = silent_segs(signal_filtered, th3,
+                                           float(SignalInfo.Fsample * 0.5))
+
+        # np.savetxt('end.csv', end, fmt='%.0f')
+        # np.savetxt('start.csv', start, fmt='%.0f')
+        # np.savetxt('dur.csv', dur, fmt='%.0f')
+        # np.savetxt('seg.csv', seg, fmt='%.0f')
 
         # plt.plot(signal[:100000])
         # plt.plot(signal_filtered[:100000])
         # plt.show()
 
-        del waterfall_filtered, signal_filtered
+        del signal_filtered  # waterfall_filtered, signal_filtered
 
 
 def folderwatch():
@@ -196,6 +231,74 @@ def folderwatch():
                 signal_chunk_iq.imag = signal_chunk[1::2]
 
         # time.sleep(3)
+
+
+def silent_segs(samples, threshold, min_dur):
+    start = -1
+    end = -1
+    silent_segments = []
+    starts = []
+    ends = []
+    durs = []
+    for idx, x in enumerate(samples):
+        if start < 0 and x < threshold:
+            pass
+        elif start < 0 and x >= threshold:
+            start = idx
+            end = idx
+        elif start >= 0 and x >= threshold:
+            end = idx
+        elif start >= 0 and x < threshold:
+            dur = end - start + 1
+            starts.append(start)
+            ends.append(end)
+            durs.append(dur)
+
+            if(dur > 500):
+                if(len(silent_segments) == 0):
+                    silent_segments.append([start, end, dur])
+                else:
+                    start_prev = silent_segments[-1][0]
+                    end_prev = silent_segments[-1][1]
+                    dur_prev = silent_segments[-1][2]
+
+                    if(start - end_prev <= 0.0015 * dur_prev):
+                        silent_segments[-1][1] = end
+                        silent_segments[-1][2] = end - start_prev + 1
+                    elif(start - end_prev <= 30):
+                        silent_segments[-1][1] = end
+                        silent_segments[-1][2] = end - start_prev + 1
+                    else:
+                        silent_segments.append([start, end, dur])
+
+            start = -1
+            end = -1
+
+    if(start >= 0):
+
+        dur = end - start + 1
+        starts.append(start)
+        ends.append(end)
+        durs.append(dur)
+
+        if(dur > 500):
+            if(len(silent_segments) == 0):
+                silent_segments.append((start, end, dur))
+            else:
+                start_prev = silent_segments[-1][0]
+                end_prev = silent_segments[-1][1]
+                dur_prev = silent_segments[-1][2]
+
+                if(start - end_prev <= 0.0015 * dur_prev):
+                    silent_segments[-1][1] = end
+                    silent_segments[-1][2] = end - start_prev + 1
+                if(start - end_prev <= 30):
+                    silent_segments[-1][1] = end
+                    silent_segments[-1][2] = end - start_prev + 1
+                else:
+                    silent_segments.append([start, end, dur])
+
+    return starts, ends, durs, silent_segments
 
 
 def main():
