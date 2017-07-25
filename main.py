@@ -141,11 +141,14 @@ def singlefile():
         # m = 1000
 
         #signal_plot=((signal_filtered[::m] - 127.5)**2 + (signal_filtered[1::m] - 127.5)**2)**0.5
-        n=10*1000
-        all_average=calc_average(signal_filtered,n)
-        mn=np.mean(all_average)
-        segments,times,points = find_segs(all_average, mn,50,20,float(SignalInfo.Fsample),n)
+        n = 10 * 1000
+        all_average = calc_average(signal_filtered, n)
+        mn = np.mean(all_average)
+        segments, times, points = find_segs(
+            all_average, mn, 50, 20, float(SignalInfo.Fsample), n)
 
+        # Times => start time,end time (in seconds)
+        # Points => start point,end point (in I/Q file)
         np.savetxt('segments.csv', segments, fmt='%.0f')
         np.savetxt('times.csv', times, fmt='%.5f')
         np.savetxt('points.csv', points, fmt='%.0f')
@@ -198,12 +201,12 @@ def folderwatch():
         # time.sleep(3)
 
 
-def find_segs(samples, threshold, min_dur,merge_dur,fs,n):
+def find_segs(samples, threshold, min_dur, merge_dur, fs, n):
     start = -1
     end = -1
     segments = []
-    times=[]
-    points=[]
+    times = []
+    points = []
 
     for idx, x in enumerate(samples):
         if start < 0 and x < threshold:
@@ -219,8 +222,8 @@ def find_segs(samples, threshold, min_dur,merge_dur,fs,n):
             if(dur > min_dur):
                 if(len(segments) == 0):
                     segments.append([start, end, dur])
-                    times.append([start*n/fs,end*n/fs])
-                    points.append([start*n,end*n])
+                    times.append([start * n / fs, end * n / fs])
+                    points.append([start * n, end * n])
                 else:
                     start_prev = segments[-1][0]
                     end_prev = segments[-1][1]
@@ -231,8 +234,8 @@ def find_segs(samples, threshold, min_dur,merge_dur,fs,n):
                         segments[-1][2] = end - start_prev + 1
                     else:
                         segments.append([start, end, dur])
-                        times.append([start*n/fs,end*n/fs])
-                        points.append([start*n,end*n])
+                        times.append([start * n / fs, end * n / fs])
+                        points.append([start * n, end * n])
 
             start = -1
             end = -1
@@ -242,33 +245,34 @@ def find_segs(samples, threshold, min_dur,merge_dur,fs,n):
         dur = end - start + 1
 
         if(dur > min_dur):
-                if(len(segments) == 0):
-                    segments.append([start, end, dur])
-                    times.append([start*n/fs,end*n/fs])
-                    points.append([start*n,end*n])
+            if(len(segments) == 0):
+                segments.append([start, end, dur])
+                times.append([start * n / fs, end * n / fs])
+                points.append([start * n, end * n])
+            else:
+                start_prev = segments[-1][0]
+                end_prev = segments[-1][1]
+                dur_prev = segments[-1][2]
+
+                if(start - end_prev <= merge_dur):
+                    segments[-1][1] = end
+                    segments[-1][2] = end - start_prev + 1
                 else:
-                    start_prev = segments[-1][0]
-                    end_prev = segments[-1][1]
-                    dur_prev = segments[-1][2]
+                    segments.append([start, end, dur])
+                    times.append([start * n / fs, end * n / fs])
+                    points.append([start * n, end * n])
 
-                    if(start - end_prev <= merge_dur):
-                        segments[-1][1] = end
-                        segments[-1][2] = end - start_prev + 1
-                    else:
-                        segments.append([start, end, dur])
-                        times.append([start*n/fs,end*n/fs])
-                        points.append([start*n,end*n])
+    return segments, times, points
 
 
-    return segments,times,points
+def calc_average(signal_filtered, n):
 
-def calc_average(signal_filtered,n):
-
-    average=[]
-    for i in range(0,len(signal_filtered),n):
-        average.append(np.mean(signal_filtered[i:i+n]))
+    average = []
+    for i in range(0, len(signal_filtered), n):
+        average.append(np.mean(signal_filtered[i:i + n]))
 
     return average
+
 
 def main():
     option = input("Do you want to launch single signal analysis [y/n] ? ")
