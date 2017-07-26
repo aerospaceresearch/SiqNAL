@@ -61,7 +61,7 @@ def singlefile():
         waterfall[chunknumber - i - 1] = transform
 
     n = 30
-    #waterfall = np.flip(waterfall, axis=0)
+    waterfall = np.flip(waterfall, axis=0)
     time_vector = [0.0, int(len_signal // int(2 * SignalInfo.Fsample))]
     freq_vector = [-(SignalInfo.Fsample / 2) + SignalInfo.Fcentre,
                    (SignalInfo.Fsample / 2) + SignalInfo.Fcentre]
@@ -139,23 +139,22 @@ def singlefile():
 
         # time domain plot of the filtered signal
         # m = 1000
-
         #signal_plot=((signal_filtered[::m] - 127.5)**2 + (signal_filtered[1::m] - 127.5)**2)**0.5
+
         n = 10 * 1000
         all_average = calc_average(signal_filtered, n)
-        mn = np.mean(all_average)
-        segments, times, points = find_segs(
-            all_average, mn, 50, 20, float(SignalInfo.Fsample), n)
+        mn = np.mean(signal_filtered)
+        std = np.std(signal_filtered)
+        threshold = (mn + (mn + std)) / 2
+        times, points = find_segs(
+            all_average, threshold, 50, 20, float(SignalInfo.Fsample), n, signal_filtered)
 
         # Times => start time,end time (in seconds)
         # Points => start point,end point (in I/Q file)
-        np.savetxt('segments.csv', segments, fmt='%.0f')
         np.savetxt('times.csv', times, fmt='%.5f')
         np.savetxt('points.csv', points, fmt='%.0f')
 
-        print(times)
-
-        del waterfall_filtered, signal_filtered
+        del signal_filtered, waterfall_filtered
 
 
 def folderwatch():
@@ -201,7 +200,7 @@ def folderwatch():
         # time.sleep(3)
 
 
-def find_segs(samples, threshold, min_dur, merge_dur, fs, n):
+def find_segs(samples, threshold, min_dur, merge_dur, fs, n, signal_filtered):
     start = -1
     end = -1
     segments = []
@@ -211,7 +210,7 @@ def find_segs(samples, threshold, min_dur, merge_dur, fs, n):
     for idx, x in enumerate(samples):
         if start < 0 and x < threshold:
             pass
-        elif start < 0 and x >= threshold:
+        elif start < 0 and x >= threshold and x > 1.2:
             start = idx
             end = idx
         elif start >= 0 and x >= threshold:
@@ -220,6 +219,8 @@ def find_segs(samples, threshold, min_dur, merge_dur, fs, n):
             dur = end - start + 1
 
             if(dur > min_dur):
+                start = re_check(signal_filtered, threshold, start * n) / n
+                # print(point/n)
                 if(len(segments) == 0):
                     segments.append([start, end, dur])
                     times.append([start * n / fs, end * n / fs])
@@ -245,6 +246,7 @@ def find_segs(samples, threshold, min_dur, merge_dur, fs, n):
         dur = end - start + 1
 
         if(dur > min_dur):
+            start = re_check(signal_filtered, threshold, start * n) / n
             if(len(segments) == 0):
                 segments.append([start, end, dur])
                 times.append([start * n / fs, end * n / fs])
@@ -262,7 +264,7 @@ def find_segs(samples, threshold, min_dur, merge_dur, fs, n):
                     times.append([start * n / fs, end * n / fs])
                     points.append([start * n, end * n])
 
-    return segments, times, points
+    return times, points
 
 
 def calc_average(signal_filtered, n):
@@ -272,6 +274,36 @@ def calc_average(signal_filtered, n):
         average.append(np.mean(signal_filtered[i:i + n]))
 
     return average
+
+
+def re_check(signal, th, point):
+    print(point)
+    n = 50
+
+    if(signal[point] < th):
+        i = 0
+        print("1")
+        while(True):
+            start = point + i * n
+            end = start + n
+            if(np.mean(signal[start:end]) >= th):
+                point = start
+                break
+            else:
+                i = i + 1
+    else:
+        i = 0
+        print("2")
+        while(True):
+            end = point - i * n
+            start = end - n
+            if(np.mean(signal[start:end]) <= th):
+                point = end
+                break
+            else:
+                i = i + 1
+
+    return point
 
 
 def main():
