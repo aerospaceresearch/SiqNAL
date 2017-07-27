@@ -149,10 +149,32 @@ def singlefile():
         times, points = find_segs(
             all_average, threshold, 50, 20, float(SignalInfo.Fsample), n, signal_filtered)
 
+        for k in range(len(points)):
+            point = points[k][0]
+            new_point = re_check(signal_filtered, point, threshold, n)
+            points[k][0] = new_point
+            times[k][0] = new_point / int(SignalInfo.Fsample)
+
         # Times => start time,end time (in seconds)
         # Points => start point,end point (in I/Q file)
         np.savetxt('times.csv', times, fmt='%.5f')
         np.savetxt('points.csv', points, fmt='%.0f')
+
+        for k in range(len(points)):
+            point = points[k][0]
+            diff = int(SignalInfo.Fsample / 2)
+            test1 = int(point - diff)
+            test2 = int(point + diff)
+            print("{} {} {} {} {}".format(k, point, diff, test1, test2))
+            small_signal = signal_filtered[test1:test2]
+            # if(k==0):
+            #     np.savetxt("first.txt",small_signal)
+            plt.plot(small_signal)
+            display = 'Signal Detected, Point= ' + str(point)
+            plt.axvline(int(SignalInfo.Fsample / 2), color='r', label=display)
+            plt.axhline(threshold, color='orange', label='Threshold')
+            plt.legend()
+            plt.show()
 
         del signal_filtered, waterfall_filtered
 
@@ -219,12 +241,12 @@ def find_segs(samples, threshold, min_dur, merge_dur, fs, n, signal_filtered):
             dur = end - start + 1
 
             if(dur > min_dur):
-                start = re_check(signal_filtered, threshold, start * n) / n
+                #start = re_check(signal_filtered, threshold, start * n,np) / n
                 # print(point/n)
                 if(len(segments) == 0):
                     segments.append([start, end, dur])
                     times.append([start * n / fs, end * n / fs])
-                    points.append([start * n, end * n])
+                    points.append([int(start * n), int(end * n)])
                 else:
                     start_prev = segments[-1][0]
                     end_prev = segments[-1][1]
@@ -236,7 +258,7 @@ def find_segs(samples, threshold, min_dur, merge_dur, fs, n, signal_filtered):
                     else:
                         segments.append([start, end, dur])
                         times.append([start * n / fs, end * n / fs])
-                        points.append([start * n, end * n])
+                        points.append([int(start * n), int(end * n)])
 
             start = -1
             end = -1
@@ -246,11 +268,11 @@ def find_segs(samples, threshold, min_dur, merge_dur, fs, n, signal_filtered):
         dur = end - start + 1
 
         if(dur > min_dur):
-            start = re_check(signal_filtered, threshold, start * n) / n
+            #start = re_check(signal_filtered, threshold, start * n,n) / n
             if(len(segments) == 0):
                 segments.append([start, end, dur])
                 times.append([start * n / fs, end * n / fs])
-                points.append([start * n, end * n])
+                points.append([int(start * n), int(end * n)])
             else:
                 start_prev = segments[-1][0]
                 end_prev = segments[-1][1]
@@ -262,7 +284,7 @@ def find_segs(samples, threshold, min_dur, merge_dur, fs, n, signal_filtered):
                 else:
                     segments.append([start, end, dur])
                     times.append([start * n / fs, end * n / fs])
-                    points.append([start * n, end * n])
+                    points.append([int(start * n), int(end * n)])
 
     return times, points
 
@@ -276,33 +298,50 @@ def calc_average(signal_filtered, n):
     return average
 
 
-def re_check(signal, th, point):
+# def re_check(signal, th, point):
+#     print(point)
+#     n = 50
+
+#     if(signal[point] < th):
+#         i = 0
+#         print("1")
+#         while(True):
+#             start = point + i * n
+#             end = start + n
+#             if(np.mean(signal[start:end]) >= th):
+#                 point = start
+#                 break
+#             else:
+#                 i = i + 1
+#     else:
+#         i = 0
+#         print("2")
+#         while(True):
+#             end = point - i * n
+#             start = end - n
+#             if(np.mean(signal[start:end]) <= th):
+#                 point = end
+#                 break
+#             else:
+#                 i = i + 1
+
+#     return point
+
+def re_check(signal, point, threshold, m):
+    print("Start")
+    n = m
+    point = int(point)
     print(point)
-    n = 50
-
-    if(signal[point] < th):
-        i = 0
-        print("1")
-        while(True):
-            start = point + i * n
-            end = start + n
-            if(np.mean(signal[start:end]) >= th):
-                point = start
-                break
-            else:
-                i = i + 1
-    else:
-        i = 0
-        print("2")
-        while(True):
-            end = point - i * n
-            start = end - n
-            if(np.mean(signal[start:end]) <= th):
-                point = end
-                break
-            else:
-                i = i + 1
-
+    while(n >= 10):
+        average_r = np.mean(signal[point:point + n])
+        average_l = np.mean(signal[point - n:point])
+        if(average_l >= threshold):
+            point = int((point + (point - n)) / 2)
+        elif (average_r <= threshold):
+            point = int((point + (point + n)) / 2)
+        print("{} {} {} {} {}".format(average_l, average_r, threshold, n, point))
+        n = n // 2
+    print("End")
     return point
 
 
