@@ -324,25 +324,25 @@ def re_check(signal, point, threshold, m):
     n = m
     point = int(point)
     print(point)
-    option=0
+    option = 0
     while(n >= 1):
         average_r = np.mean(signal[point:point + n])
         average_l = np.mean(signal[point - n:point])
         if(average_l >= threshold):
-            option=1
+            option = 1
             point = int((point + (point - n)) / 2)
-        elif (average_r <= threshold):# or average_l < threshold):
-            option=2
+        elif (average_r <= threshold):  # or average_l < threshold):
+            option = 2
             point = int((point + (point + n)) / 2)
-        elif(average_l < threshold and average_r >=threshold):
-            option=3
-            average_temp=np.mean(signal[point:point + n//4])
-            if(average_temp <= 0.6*threshold):
-                option=4
-                point=int((point+(point+n//2))/2)
+        elif(average_l < threshold and average_r >= threshold):
+            option = 3
+            average_temp = np.mean(signal[point:point + n // 4])
+            if(average_temp <= 0.6 * threshold):
+                option = 4
+                point = int((point + (point + n // 2)) / 2)
             elif(np.mean(average_temp) < threshold):
-                option=5
-                point=int((point+(point+n//4))/2)
+                option = 5
+                point = int((point + (point + n // 4)) / 2)
         #print("{} {} {} {} {} {}".format(average_l, average_r, threshold, n, point,option))
         n = n // 2
     return point
