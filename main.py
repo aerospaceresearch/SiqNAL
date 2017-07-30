@@ -80,10 +80,6 @@ def singlefile():
         signal_filtered = np.zeros(
             chunknumber * (chunksize // 2), dtype=np.float)
 
-        #waterfall = []
-        #waterfall_filtered = []
-        # signal_filtered = []
-
         for i in range(0, chunknumber):
             print(i)
             startslice = i * chunksize
@@ -152,29 +148,29 @@ def singlefile():
         for k in range(len(points)):
             point = points[k][0]
             new_point = re_check(signal_filtered, point, threshold, n)
-            points[k][0] = new_point
-            times[k][0] = new_point / int(SignalInfo.Fsample)
+            # points[k][0] = new_point
+            # times[k][0] = new_point / int(SignalInfo.Fsample)
 
         # Times => start time,end time (in seconds)
         # Points => start point,end point (in I/Q file)
-        np.savetxt('times.csv', times, fmt='%.5f')
-        np.savetxt('points.csv', points, fmt='%.0f')
+        # np.savetxt('times.csv', times, fmt='%.5f')
+        # np.savetxt('points.csv', points, fmt='%.0f')
 
-        for k in range(len(points)):
-            point = points[k][0]
-            diff = int(SignalInfo.Fsample / 2)
-            test1 = int(point - diff)
-            test2 = int(point + diff)
-            print("{} {} {} {} {}".format(k, point, diff, test1, test2))
-            small_signal = signal_filtered[test1:test2]
-            # if(k==0):
-            #     np.savetxt("first.txt",small_signal)
-            plt.plot(small_signal)
-            display = 'Signal Detected, Point= ' + str(point)
-            plt.axvline(int(SignalInfo.Fsample / 2), color='r', label=display)
-            plt.axhline(threshold, color='orange', label='Threshold')
-            plt.legend()
-            plt.show()
+        # for k in range(len(points)):
+        #     point = points[k][0]
+        #     diff = int(10*1000 / 2)
+        #     test1 = int(point - diff)
+        #     test2 = int(point + diff)
+        #     print("{} {} {} {} {}".format(k, point, diff, test1, test2))
+        #     small_signal = signal_filtered[test1:test2]
+        #     # if(k==0):
+        #     #     np.savetxt("first.txt",small_signal)
+        #     plt.plot(small_signal)
+        #     display = 'Signal Detected, Point= ' + str(point)
+        #     plt.axvline(diff, color='r', label=display)
+        #     plt.axhline(threshold, color='orange', label='Threshold')
+        #     plt.legend()
+        #     plt.show()
 
         del signal_filtered, waterfall_filtered
 
@@ -241,8 +237,6 @@ def find_segs(samples, threshold, min_dur, merge_dur, fs, n, signal_filtered):
             dur = end - start + 1
 
             if(dur > min_dur):
-                #start = re_check(signal_filtered, threshold, start * n,np) / n
-                # print(point/n)
                 if(len(segments) == 0):
                     segments.append([start, end, dur])
                     times.append([start * n / fs, end * n / fs])
@@ -268,7 +262,6 @@ def find_segs(samples, threshold, min_dur, merge_dur, fs, n, signal_filtered):
         dur = end - start + 1
 
         if(dur > min_dur):
-            #start = re_check(signal_filtered, threshold, start * n,n) / n
             if(len(segments) == 0):
                 segments.append([start, end, dur])
                 times.append([start * n / fs, end * n / fs])
@@ -328,20 +321,30 @@ def calc_average(signal_filtered, n):
 #     return point
 
 def re_check(signal, point, threshold, m):
-    print("Start")
     n = m
     point = int(point)
     print(point)
-    while(n >= 10):
+    option=0
+    while(n >= 1):
         average_r = np.mean(signal[point:point + n])
         average_l = np.mean(signal[point - n:point])
         if(average_l >= threshold):
+            option=1
             point = int((point + (point - n)) / 2)
-        elif (average_r <= threshold):
+        elif (average_r <= threshold):# or average_l < threshold):
+            option=2
             point = int((point + (point + n)) / 2)
-        print("{} {} {} {} {}".format(average_l, average_r, threshold, n, point))
+        elif(average_l < threshold and average_r >=threshold):
+            option=3
+            average_temp=np.mean(signal[point:point + n//4])
+            if(average_temp <= 0.6*threshold):
+                option=4
+                point=int((point+(point+n//2))/2)
+            elif(np.mean(average_temp) < threshold):
+                option=5
+                point=int((point+(point+n//4))/2)
+        #print("{} {} {} {} {} {}".format(average_l, average_r, threshold, n, point,option))
         n = n // 2
-    print("End")
     return point
 
 
