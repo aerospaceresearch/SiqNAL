@@ -158,6 +158,9 @@ def filter_box(SignalInfo, Flow, Fhigh, chunksize):
     fc = value[4]
 
     length = int(chunksize // 2)
+    signal = SignalInfo.filedata
+    len_signal = len(signal)
+    chunknumber = int(len_signal // chunksize)
 
     filter_array = np.ones(length, dtype=np.complex128) + 1j
     freq = np.arange(fc - fs / 2, fc + fs / 2, fs / length)
@@ -172,4 +175,32 @@ def filter_box(SignalInfo, Flow, Fhigh, chunksize):
     filter_array[:nlow] = 0 + 0j
     filter_array[nhigh:] = 0 + 0j
 
-    return filter_array
+    signal_filtered = np.zeros(
+        chunknumber * (chunksize // 2), dtype=np.float)
+    for i in range(0, chunknumber):
+        print(i)
+        startslice = i * chunksize
+        endslice = startslice + chunksize
+
+        signal_chunk = signal[startslice:endslice]
+        signal_chunk_iq = np.empty(
+            signal_chunk.shape[0] // 2, dtype=np.complex128)
+
+        signal_chunk_iq.real = signal_chunk[::2] - 127.5
+        signal_chunk_iq.imag = signal_chunk[1::2] - 127.5
+
+        ''' fft start + shifting '''
+        signalFFT = fourier.CalcFourier(
+            signal_chunk_iq)
+
+        # Box filter
+        new_signalFFT = signalFFT * filter_array
+
+        signal_back = (fourier.CalcIFourier(new_signalFFT))
+
+        # Instead of stoaring IQ values stoared absolute values directly
+        start_index = i * (chunksize // 2)
+        end_index = start_index + (chunksize // 2)
+        signal_filtered[start_index:end_index] = np.absolute(signal_back)
+
+    return signal_filtered
