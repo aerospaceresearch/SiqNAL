@@ -16,9 +16,11 @@ from Modules import bandpass
 from Modules import freqbands
 from Modules import waterfall
 from Modules import detect
+from Modules import selectfolder
 
 
 def analysis(SignalInfo):
+    is_peaks = False
     filename = 'satellite_db.json'
     bands = freqbands.getbands(SignalInfo, filename)
 
@@ -38,6 +40,9 @@ def analysis(SignalInfo):
         times, points = detect.find_segs(
             all_average, threshold, 50, 20, float(SignalInfo.Fsample), n, signal_filtered)
 
+        if(len(points) > 0):
+            is_peaks = True
+
         for k in range(len(points)):
             point = points[k][0]
             new_point = detect.re_check(signal_filtered, point, threshold, n)
@@ -45,6 +50,8 @@ def analysis(SignalInfo):
             times[k][0] = new_point / int(SignalInfo.Fsample)
 
         del signal_filtered
+
+        return is_peaks
 
 
 def singlefile():
@@ -56,22 +63,23 @@ def singlefile():
     else:
         SignalInfo.filedata = read_wav.loaddata(SignalInfo.filename)
 
-    analysis(SignalInfo)
+    is_peaks = analysis(SignalInfo)
 
 
 def folderwatch():
-    name = "/home/matrix/Desktop/aero/data"
+    foldername = selectfolder.select()
+
     laststamp = -1
     while True:
-        contents = os.listdir(name)
+        contents = os.listdir(foldername)
         process = []
         for content in contents:
             if(content.endswith('.dat') or content.endswith('.wav')):
                 if (laststamp == -1):
-                    process.append(join(name, content))
+                    process.append(join(foldername, content))
                 else:
-                    if(getmtime(join(name, content)) > laststamp):
-                        process.append(join(name, content))
+                    if(getmtime(join(foldername, content)) > laststamp):
+                        process.append(join(foldername, content))
 
         laststamp = time.time()
 
@@ -83,7 +91,10 @@ def folderwatch():
             else:
                 SignalInfo.filedata = read_wav.loaddata(SignalInfo.filename)
 
-            analysis(SignalInfo)
+            is_peaks = analysis(SignalInfo)
+
+            if(not is_peaks):
+                os.remove(SignalInfo.filename)
 
 
 def main():
