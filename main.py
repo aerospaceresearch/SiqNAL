@@ -16,11 +16,12 @@ from Modules import bandpass
 from Modules import freqbands
 from Modules import waterfall
 from Modules import detect
-from Modules import selectfolder
+### Jay, please check for this module. no file in folder
+#from Modules import selectfolder
 
 
 def analysis(SignalInfo):
-    is_peaks = False
+    is_peaks_all = False
     filename = 'satellite_db.json'
     bands = freqbands.getbands(SignalInfo, filename)
 
@@ -28,8 +29,11 @@ def analysis(SignalInfo):
     # waterfall.plot_waterfall(SignalInfo,chunksize,30)
 
     for band in bands:
+        is_peaks = False
+
         FLow = band[1]
         FHigh = band[2]
+        print(band, FLow, FHigh)
 
         signal_filtered = bandpass.filter_box(
             SignalInfo, FLow, FHigh, chunksize)
@@ -43,15 +47,20 @@ def analysis(SignalInfo):
         if(len(points) > 0):
             is_peaks = True
 
+            # if ONE band has peaks, we keep the file.
+            # later, we will also distinguish on which bands it was
+            is_peaks_all = True
+
         for k in range(len(points)):
             point = points[k][0]
             new_point = detect.re_check(signal_filtered, point, threshold, n)
             points[k][0] = new_point
             times[k][0] = new_point / int(SignalInfo.Fsample)
 
+        print(band, len(points), is_peaks, is_peaks_all)
         del signal_filtered
 
-        return is_peaks
+    return is_peaks_all
 
 
 def singlefile():
@@ -64,6 +73,7 @@ def singlefile():
         SignalInfo.filedata = read_wav.loaddata(SignalInfo.filename)
 
     is_peaks = analysis(SignalInfo)
+    print(is_peaks)
 
 
 def folderwatch():
