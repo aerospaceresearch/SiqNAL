@@ -5,7 +5,8 @@ from PyQt4 import QtGui, QtCore
 
 from Screens import FolderScreen
 
-foldername=""
+foldername = ""
+
 
 class ImportScreen(QtGui.QDialog, FolderScreen.Ui_Dialog):
     def __init__(self):
@@ -19,7 +20,8 @@ class ImportScreen(QtGui.QDialog, FolderScreen.Ui_Dialog):
         self.ActionButton.clicked.connect(self.importvalues)
 
     def choosefile(self):
-        filename = str(QtGui.QFileDialog.getExistingDirectory(self, "Select Directory"))
+        filename = str(QtGui.QFileDialog.getExistingDirectory(
+            self, "Select Directory"))
         #filename = QtGui.QFileDialog.getOpenFileName()
         self.FileNameLabel.setText(filename)
 
@@ -37,4 +39,4 @@ def select():
     app.exec_()
 
     return foldername
-    #return SignalMeta
+    # return SignalMeta
