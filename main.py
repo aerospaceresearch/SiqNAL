@@ -16,8 +16,7 @@ from Modules import bandpass
 from Modules import freqbands
 from Modules import waterfall
 from Modules import detect
-### Jay, please check for this module. no file in folder
-#from Modules import selectfolder
+from Modules import selectfolder
 
 
 def analysis(SignalInfo):
@@ -58,6 +57,21 @@ def analysis(SignalInfo):
             times[k][0] = new_point / int(SignalInfo.Fsample)
 
         print(band, len(points), is_peaks, is_peaks_all)
+
+        for k in range(len(points)):
+            point = points[k][0]
+            diff = 5000
+            test1 = int(point - diff)
+            test2 = int(point + diff)
+            print("{} {} {} {} {}".format(k, point, diff, test1, test2))
+            small_signal = signal_filtered[test1:test2]
+            plt.plot(small_signal)
+            display = 'Signal Detected, Point= ' + str(point)
+            plt.axvline(diff, color='r', label=display)
+            plt.axhline(threshold, color='orange', label='Threshold')
+            plt.legend()
+            plt.show()
+
         del signal_filtered
 
     return is_peaks_all
@@ -104,12 +118,12 @@ def folderwatch():
             is_peaks = analysis(SignalInfo)
 
             if(not is_peaks):
-                os.remove(SignalInfo.filename)
+            	print("Deleted "+str(SignalInfo.filename))
+                #os.remove(SignalInfo.filename)
 
 
 def main():
-    option = "y"
-    option = input("Do you want to launch single signal analysis (y/n) [y]? ")
+    option = input("Do you want to launch single signal analysis (y/n)? ")
     if option == "y" or option == "Y":
         singlefile()
     elif option == "n" or option == "N":
