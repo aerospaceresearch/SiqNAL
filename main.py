@@ -118,8 +118,8 @@ def folderwatch():
             is_peaks = analysis(SignalInfo)
 
             if(not is_peaks):
-            	print("Deleted "+str(SignalInfo.filename))
-                #os.remove(SignalInfo.filename)
+            	   print("Deleted " + str(SignalInfo.filename))
+                os.remove(SignalInfo.filename)
 
 
 def main():
