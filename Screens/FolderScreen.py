@@ -16,11 +16,13 @@ except AttributeError:
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
+
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
+
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -60,7 +62,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(_translate("Dialog", "Dialog", None))
-        self.ImportLabel.setText(_translate("Dialog", "Folder Select Screen", None))
+        self.ImportLabel.setText(_translate(
+            "Dialog", "Folder Select Screen", None))
         self.FileButton.setText(_translate("Dialog", "Browse", None))
         self.ActionButton.setText(_translate("Dialog", "Confirm", None))
-
