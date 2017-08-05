@@ -25,10 +25,10 @@ def analysis(SignalInfo):
     bands = freqbands.getbands(SignalInfo, filename)
 
     chunksize = int(1024 * 2 * 2 * 2 * 2 * 2 * 2 * 2)
-    # waterfall.plot_waterfall(SignalInfo,chunksize,30)
+    waterfall.plot_waterfall(SignalInfo, chunksize, 30)
 
+    is_peaks_all = False
     for band in bands:
-        is_peaks = False
 
         FLow = band[1]
         FHigh = band[2]
@@ -40,12 +40,11 @@ def analysis(SignalInfo):
         n = 10 * 1000
         all_average = detect.calc_average(signal_filtered, n)
         threshold = detect.calc_threshold(signal_filtered)
-        print("threshold and all_average", threshold, all_average)
         times, points = detect.find_segs(
             all_average, threshold, 50, 20, float(SignalInfo.Fsample), n, signal_filtered)
 
         if(len(points) > 0):
-            is_peaks = True
+            #is_peaks = True
 
             # if ONE band has peaks, we keep the file.
             # later, we will also distinguish on which bands it was
@@ -57,7 +56,7 @@ def analysis(SignalInfo):
             points[k][0] = new_point
             times[k][0] = new_point / int(SignalInfo.Fsample)
 
-        print(band, len(points), is_peaks, is_peaks_all)
+        print(band, len(points), is_peaks_all)
 
         for k in range(len(points)):
             point = points[k][0]
@@ -72,7 +71,6 @@ def analysis(SignalInfo):
             plt.axhline(threshold, color='orange', label='Threshold')
             plt.legend()
             plt.show()
-            plt.clf()
 
         del signal_filtered
 
@@ -121,19 +119,14 @@ def folderwatch():
 
             if(not is_peaks):
                 print("Deleted " + str(SignalInfo.filename))
-
-                # you cannot delete a file that is still loaded in.
-                # this works...
-                file_for_deletion = SignalInfo.filename
-                del SignalInfo
-                os.remove(file_for_deletion)
-
-        print(time.time(), "waiting")
-        time.sleep(5)
+                del SignalInfo.filedata
+                os.remove(SignalInfo.filename)
+                os.remove(SignalInfo.filename.split(".")[0] + ".json")
 
 
 def main():
-    option = input("Do you want to launch single signal analysis (y/n)? ")
+    option = str(
+        input("Do you want to launch single signal analysis (y/n) [n]? ") or "n")
     if option == "y" or option == "Y":
         singlefile()
     elif option == "n" or option == "N":
