@@ -40,6 +40,7 @@ def analysis(SignalInfo):
         n = 10 * 1000
         all_average = detect.calc_average(signal_filtered, n)
         threshold = detect.calc_threshold(signal_filtered)
+        print("threshold and all_average", threshold, all_average)
         times, points = detect.find_segs(
             all_average, threshold, 50, 20, float(SignalInfo.Fsample), n, signal_filtered)
 
@@ -71,6 +72,7 @@ def analysis(SignalInfo):
             plt.axhline(threshold, color='orange', label='Threshold')
             plt.legend()
             plt.show()
+            plt.clf()
 
         del signal_filtered
 
@@ -118,8 +120,16 @@ def folderwatch():
             is_peaks = analysis(SignalInfo)
 
             if(not is_peaks):
-            	   print("Deleted " + str(SignalInfo.filename))
-                os.remove(SignalInfo.filename)
+                print("Deleted " + str(SignalInfo.filename))
+
+                # you cannot delete a file that is still loaded in.
+                # this works...
+                file_for_deletion = SignalInfo.filename
+                del SignalInfo
+                os.remove(file_for_deletion)
+
+        print(time.time(), "waiting")
+        time.sleep(5)
 
 
 def main():
@@ -134,3 +144,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+Contact GitHub API Training Shop Blog About
