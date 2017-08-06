@@ -37,6 +37,10 @@ def analysis(SignalInfo):
         signal_filtered = bandpass.filter_box(
             SignalInfo, FLow, FHigh, chunksize)
 
+        print(len(signal_filtered), len(SignalInfo.filedata)/2)
+
+        signal_filtered = np.absolute(signal_filtered)
+
         n = 10 * 1000
         all_average = detect.calc_average(signal_filtered, n)
         threshold = detect.calc_threshold(signal_filtered)

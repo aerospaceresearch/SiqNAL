@@ -162,7 +162,7 @@ def filter_box(SignalInfo, Flow, Fhigh, chunksize):
     len_signal = len(signal)
     chunknumber = int(len_signal // chunksize)
 
-    filter_array = np.ones(length, dtype=np.complex128) + 1j
+    filter_array = np.ones(length, dtype=np.complex64) + 1j
     freq = np.arange(fc - fs / 2, fc + fs / 2, fs / length)
 
     nlow = int((Flow - (fc - fs / 2)) // (fs / length))
@@ -175,10 +175,12 @@ def filter_box(SignalInfo, Flow, Fhigh, chunksize):
     filter_array[:nlow] = 0 + 0j
     filter_array[nhigh:] = 0 + 0j
 
+    # signal_filtered = np.zeros(
+    #    chunknumber * (chunksize // 2), dtype=np.float)
+
     signal_filtered = np.zeros(
-        chunknumber * (chunksize // 2), dtype=np.float)
-    signal_filtered_iq = np.zeros(
-        chunknumber * (chunksize), dtype=np.float)
+        chunknumber * (chunksize // 2), dtype=np.complex64)
+
     for i in range(0, chunknumber):
         print(i)
         startslice = i * chunksize
@@ -186,7 +188,7 @@ def filter_box(SignalInfo, Flow, Fhigh, chunksize):
 
         signal_chunk = signal[startslice:endslice]
         signal_chunk_iq = np.empty(
-            signal_chunk.shape[0] // 2, dtype=np.complex128)
+            signal_chunk.shape[0] // 2, dtype=np.complex64)
 
         signal_chunk_iq.real = signal_chunk[::2] - 127.5
         signal_chunk_iq.imag = signal_chunk[1::2] - 127.5
@@ -201,18 +203,8 @@ def filter_box(SignalInfo, Flow, Fhigh, chunksize):
         signal_back = (fourier.CalcIFourier(new_signalFFT))
 
         # Instead of stoaring IQ values stoared absolute values directly
-        # start_index = i * (chunksize // 2)
-        # end_index = start_index + (chunksize // 2)
-        # signal_filtered[start_index:end_index] = np.absolute(signal_back)
-
-        start_index = i * (chunksize)
-        end_index = start_index + (chunksize)
-        signal_filtered_iq[start_index:end_index:2] = signal_back.real + 127.5
-        signal_filtered_iq[start_index +
-                           1:end_index:2] = signal_back.imag + 127.5
-
-    signal_filtered = (
-        (signal_filtered_iq[::2] - 127.5)**2 + (signal_filtered_iq[1::2] - 127.5)**2)**0.5
-    del signal_filtered_iq
+        start_index = i * (chunksize // 2)
+        end_index = start_index + (chunksize // 2)
+        signal_filtered[start_index:end_index] = signal_back
 
     return signal_filtered

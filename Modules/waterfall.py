@@ -18,7 +18,7 @@ def plot_waterfall(SignalInfo, chunksize, n):
 
         signal_chunk = signal[startslice:endslice]
         signal_chunk_iq = np.empty(
-            signal_chunk.shape[0] // 2, dtype=np.complex128)
+            signal_chunk.shape[0] // 2, dtype=np.complex64)
 
         signal_chunk_iq.real = signal_chunk[::2] - 127.5
         signal_chunk_iq.imag = signal_chunk[1::2] - 127.5
