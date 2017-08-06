@@ -42,6 +42,6 @@ def plot_waterfall(SignalInfo, chunksize, n):
                    (SignalInfo.Fsample / 2) + SignalInfo.Fcentre]
     plt.imshow(waterfall[::n], extent=freq_vector +
                time_vector, origin='lower', aspect='auto')
-    plt.gca().invert_yaxis()
+    #plt.gca().invert_yaxis()
     plt.colorbar()
     plt.show()
