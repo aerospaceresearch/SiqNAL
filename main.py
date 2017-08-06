@@ -97,19 +97,23 @@ def singlefile():
 def folderwatch():
     foldername = selectfolder.select()
 
-    laststamp = -1
+    #laststamp = -1
     while True:
         contents = os.listdir(foldername)
         process = []
         for content in contents:
             if(content.endswith('.dat') or content.endswith('.wav')):
-                if (laststamp == -1):
-                    process.append(join(foldername, content))
-                else:
-                    if(getmtime(join(foldername, content)) > laststamp):
-                        process.append(join(foldername, content))
+                process.append(join(foldername, content))
 
-        laststamp = time.time()
+        # not working with new files being dropped in the folder.
+        # deactivated for now...
+        #        if (laststamp == -1):
+        #            process.append(join(foldername, content))
+        #        else:
+        #            if(getmtime(join(foldername, content)) > laststamp):
+        #                process.append(join(foldername, content))
+
+        # laststamp = time.time()
 
         for file in process:
             SignalInfo = importfile.loadfile(file)
@@ -126,6 +130,9 @@ def folderwatch():
                 del SignalInfo.filedata
                 os.remove(SignalInfo.filename)
                 os.remove(SignalInfo.filename.split(".")[0] + ".json")
+
+        print(time.time(), "waiting for new file...")
+        time.sleep(10)
 
 
 def main():
