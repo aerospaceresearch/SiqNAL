@@ -12,7 +12,7 @@ def plot_waterfall(SignalInfo, chunksize, n):
     chunknumber = int(len_signal // chunksize)
 
     for i in range(0, chunknumber):
-        print(i)
+        #print(i)
         startslice = i * chunksize
         endslice = startslice + chunksize
 
@@ -44,4 +44,6 @@ def plot_waterfall(SignalInfo, chunksize, n):
                time_vector, origin='lower', aspect='auto')
     #plt.gca().invert_yaxis()
     plt.colorbar()
-    plt.show()
+    plt.savefig(SignalInfo.filename + ".png", dpi=1600)
+    plt.clf()
+    #plt.show()

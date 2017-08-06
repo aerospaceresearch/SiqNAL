@@ -182,7 +182,7 @@ def filter_box(SignalInfo, Flow, Fhigh, chunksize):
         chunknumber * (chunksize // 2), dtype=np.complex64)
 
     for i in range(0, chunknumber):
-        print(i)
+        #print(i)
         startslice = i * chunksize
         endslice = startslice + chunksize
 

@@ -74,7 +74,9 @@ def analysis(SignalInfo):
             plt.axvline(diff, color='r', label=display)
             plt.axhline(threshold, color='orange', label='Threshold')
             plt.legend()
-            plt.show()
+            plt.savefig(SignalInfo.filename + "_" + str(int((FLow + FHigh)/2.0)) + "_" + str(k) + ".png")
+            plt.clf()
+            #plt.show()
 
         del signal_filtered
 
@@ -103,7 +105,14 @@ def folderwatch():
         process = []
         for content in contents:
             if(content.endswith('.dat') or content.endswith('.wav')):
-                process.append(join(foldername, content))
+                duplicate = 0
+                for content1 in contents:
+                    if content + ".png" == content1:
+                        # we assume that as soon as the waterfall graph image is there, it was already processed
+                        duplicate = 1
+
+                if duplicate == 0:
+                    process.append(join(foldername, content))
 
         # not working with new files being dropped in the folder.
         # deactivated for now...
