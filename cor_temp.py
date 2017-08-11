@@ -249,7 +249,7 @@ def test_cor():
 
 def analysis(SignalInfo):
     is_peaks_all = False
-    filename = 'satellite_db (copy).json'
+    filename = 'satellite_db.json'
     bands = freqbands.getbands(SignalInfo, filename)
 
     chunksize = int(1024 * 2 * 2 * 2 * 2 * 2 * 2 * 2)
