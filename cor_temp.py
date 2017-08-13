@@ -190,10 +190,10 @@ def calc_average(signal_filtered, n):
 
 def test_cor():
 
-    needle = np.loadtxt('needle2.txt').view(complex)
+    needle = np.loadtxt('needle.txt').view(complex)
     needle = needle[:8192]
     needle = needle[::-1]
-    hay = np.loadtxt('hay2.txt').view(complex)
+    hay = np.loadtxt('hay.txt').view(complex)
     print("Start")
     needle_mn = np.mean(needle.real) + 1j * np.mean(needle.imag)
     # hay_mn=np.mean(hay.real)+1j*np.mean(hay.imag)
@@ -222,13 +222,13 @@ def test_cor():
         autocor_abs = np.absolute(autocor)
         average_all, average = calc_average(autocor_abs, 3 * 8192)
 
-        # print(np.average(average))
+        #mn= (np.mean(average))
         md = np.median(average)
-        st = np.std(average)
-        threshold = md + 1.5 * st
+        #st = np.std(average)
+        threshold = 2.2 * md  # + 1.5 * st
         # print(md)
         # print(st)
-        print(threshold)
+        print("{} {} {} {}".format(mn, md, st, threshold))
 
         point = find_segs(average, threshold, 20, 5, int(fs), 3 * 8192)
         print(point)
@@ -250,6 +250,10 @@ def test_cor():
 
         plt.subplot(212)
         plt.plot(average)
+        plt.axhline(threshold, color='red', label="median=" +
+                    str(md) + ", threshold=" + str(threshold))
+        plt.legend(loc='lower center')
+        # plt.text(10,threshold+0.5,"median="+str(mn)+"threshold="+str(threshold))
         plt.show()
         start = start + int(fs) // 2
         end = start + chunksize
@@ -322,8 +326,8 @@ def test_cor_double():
         autocor_abs = np.absolute(autocor)
         average_all, average = calc_average(autocor_abs, 3 * 8192)
         md = np.median(average)
-        st = np.std(average)
-        threshold = md + 1.5 * st
+        #st = np.std(average)
+        threshold = 2.2 * md  # + 1.5 * st
         point = find_segs(average, threshold, 30, 5, int(fs), 3 * 8192)
 
         plt.subplot(211)
@@ -343,7 +347,11 @@ def test_cor_double():
 
         plt.subplot(212)
         plt.plot(average)
-        plt.savefig(str(i) + ".png", dpi=1600)
+        plt.axhline(threshold, color='red', label="median=" +
+                    str(md) + ", threshold=" + str(threshold))
+        plt.legend(loc='lower center')
+        plt.savefig(str(i) + "_" + str(start) +
+                    "_" + str(end) + ".png", dpi=1600)
         plt.clf()
         # plt.show()
         start = start + int(fs) // 2
