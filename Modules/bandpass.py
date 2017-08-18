@@ -207,6 +207,6 @@ def filter_box(SignalInfo, Flow, Fhigh, chunksize):
         end_index = start_index + (chunksize // 2)
         signal_filtered[start_index:end_index] = signal_back
 
-        del signal_back,new_signalFFT,signalFFT,signal_chunk_iq,signal_chunk
+        del signal_back, new_signalFFT, signalFFT, signal_chunk_iq, signal_chunk
 
     return signal_filtered
