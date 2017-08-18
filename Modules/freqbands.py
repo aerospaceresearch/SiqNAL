@@ -26,7 +26,7 @@ def getbands(SignalInfo, filename):
                 upper = downlink + width + doppler
 
                 if(lower > flow and upper < fhigh):
-                    bands.append((name, lower, upper,description))
+                    bands.append((name, lower, upper, description))
 
-    #print(bands)
+    # print(bands)
     return bands
