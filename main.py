@@ -17,70 +17,54 @@ from Modules import freqbands
 from Modules import waterfall
 from Modules import detect
 from Modules import selectfolder
+from Modules import aprs
 
 
 def analysis(SignalInfo):
-    is_peaks_all = False
+
     filename = 'satellite_db.json'
     bands = freqbands.getbands(SignalInfo, filename)
-
+    print(bands)
     chunksize = int(1024 * 2 * 2 * 2 * 2 * 2 * 2 * 2)
     waterfall.plot_waterfall(SignalInfo, chunksize, 30)
 
+    peaks = []
     is_peaks_all = False
+    fc = SignalInfo.Fcentre
+    fs = SignalInfo.Fsample
+
     for band in bands:
 
+        name = band[0]
         FLow = band[1]
         FHigh = band[2]
-        print(band, FLow, FHigh)
+        description = band[3]
+        # print(band, FLow, FHigh)
 
-        signal_filtered = bandpass.filter_box(
-            SignalInfo, FLow, FHigh, chunksize)
+        if(fc - fs / 2 < FLow and fc + fs / 2 > FHigh):
 
-        print(len(signal_filtered), len(SignalInfo.filedata)/2)
+            signal_filtered = bandpass.filter_box(
+                SignalInfo, FLow, FHigh, chunksize)
 
-        signal_filtered = np.absolute(signal_filtered)
+            if("APT" in description):
+                print("NOAA")
+            else:
+                # For beacon & APRS
+                points = aprs.check(SignalInfo, signal_filtered)
+                if(len(points) > 0):
+                    is_peaks_all = True
+                    # Data kept in json format
+                    data = ({"Peaks": True}, {"Band Name": name}, {"FLow": FLow}, {
+                            "FHigh": FHigh}, {"Description": description}, {"Points": points})
+                    peaks.append({SignalInfo.filename: data})
+                else:
+                    data = ({"Peaks": False}, {"Band Name": name}, {"FLow": FLow}, {
+                            "FHigh": FHigh}, {"Description": description}, {"Points": []})
+                    peaks.append({SignalInfo.filename: data})
 
-        n = 10 * 1000
-        all_average = detect.calc_average(signal_filtered, n)
-        threshold = detect.calc_threshold(signal_filtered)
-        times, points = detect.find_segs(
-            all_average, threshold, 50, 20, float(SignalInfo.Fsample), n, signal_filtered)
+            del signal_filtered
 
-        if(len(points) > 0):
-            #is_peaks = True
-
-            # if ONE band has peaks, we keep the file.
-            # later, we will also distinguish on which bands it was
-            is_peaks_all = True
-
-        for k in range(len(points)):
-            point = points[k][0]
-            new_point = detect.re_check(signal_filtered, point, threshold, n)
-            points[k][0] = new_point
-            times[k][0] = new_point / int(SignalInfo.Fsample)
-
-        print(band, len(points), is_peaks_all)
-
-        for k in range(len(points)):
-            point = points[k][0]
-            diff = 5000
-            test1 = int(point - diff)
-            test2 = int(point + diff)
-            print("{} {} {} {} {}".format(k, point, diff, test1, test2))
-            small_signal = signal_filtered[test1:test2]
-            plt.plot(small_signal)
-            display = 'Signal Detected, Point= ' + str(point)
-            plt.axvline(diff, color='r', label=display)
-            plt.axhline(threshold, color='orange', label='Threshold')
-            plt.legend()
-            plt.savefig(SignalInfo.filename + "_" + str(int((FLow + FHigh)/2.0)) + "_" + str(k) + ".png")
-            plt.clf()
-            #plt.show()
-
-        del signal_filtered
-
-    return is_peaks_all
+    return peaks, is_peaks_all
 
 
 def singlefile():
@@ -92,8 +76,8 @@ def singlefile():
     else:
         SignalInfo.filedata = read_wav.loaddata(SignalInfo.filename)
 
-    is_peaks = analysis(SignalInfo)
-    print(is_peaks)
+    peaks, is_peaks = analysis(SignalInfo)
+    print(peaks)
 
 
 def folderwatch():
@@ -114,16 +98,6 @@ def folderwatch():
                 if duplicate == 0:
                     process.append(join(foldername, content))
 
-        # not working with new files being dropped in the folder.
-        # deactivated for now...
-        #        if (laststamp == -1):
-        #            process.append(join(foldername, content))
-        #        else:
-        #            if(getmtime(join(foldername, content)) > laststamp):
-        #                process.append(join(foldername, content))
-
-        # laststamp = time.time()
-
         for file in process:
             SignalInfo = importfile.loadfile(file)
 
@@ -132,7 +106,7 @@ def folderwatch():
             else:
                 SignalInfo.filedata = read_wav.loaddata(SignalInfo.filename)
 
-            is_peaks = analysis(SignalInfo)
+            peaks, is_peaks = analysis(SignalInfo)
 
             if(not is_peaks):
                 print("Deleted " + str(SignalInfo.filename))
