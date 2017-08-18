@@ -19,13 +19,14 @@ def getbands(SignalInfo, filename):
             for transponder in sat["transponders"]:
                 downlink = float(transponder["downlink"]) * 1e6
                 width = float(transponder["downlinkWidth"]) * 1e6 / 2
+                description = str(transponder["description"])
                 doppler = 0.01 * 1e6
 
                 lower = downlink - width - doppler
                 upper = downlink + width + doppler
 
                 if(lower > flow and upper < fhigh):
-                    bands.append((name, lower, upper))
+                    bands.append((name, lower, upper,description))
 
-    print(bands)
+    #print(bands)
     return bands
