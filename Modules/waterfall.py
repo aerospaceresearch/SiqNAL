@@ -12,7 +12,7 @@ def plot_waterfall(SignalInfo, chunksize, n):
     chunknumber = int(len_signal // chunksize)
 
     for i in range(0, chunknumber):
-        #print(i)
+        # print(i)
         startslice = i * chunksize
         endslice = startslice + chunksize
 
@@ -36,14 +36,18 @@ def plot_waterfall(SignalInfo, chunksize, n):
             waterfall = np.zeros([chunknumber, row], dtype=np.float32)
         waterfall[chunknumber - i - 1] = transform
 
+        del signal_chunk, signal_chunk_iq, signalFFT, frequency, transform
+
     waterfall = np.flip(waterfall, axis=0)
     time_vector = [0.0, int(len_signal // int(2 * SignalInfo.Fsample))]
     freq_vector = [-(SignalInfo.Fsample / 2) + SignalInfo.Fcentre,
                    (SignalInfo.Fsample / 2) + SignalInfo.Fcentre]
     plt.imshow(waterfall[::n], extent=freq_vector +
                time_vector, origin='lower', aspect='auto')
-    #plt.gca().invert_yaxis()
+    # plt.gca().invert_yaxis()
     plt.colorbar()
     plt.savefig(SignalInfo.filename + ".png", dpi=1600)
     plt.clf()
-    #plt.show()
+    # plt.show()
+
+    del time_vector, freq_vector, waterfall
