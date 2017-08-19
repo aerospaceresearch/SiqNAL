@@ -18,6 +18,7 @@ from Modules import waterfall
 from Modules import detect
 from Modules import selectfolder
 from Modules import aprs
+from Modules import beacon
 
 
 def analysis(SignalInfo):
@@ -48,8 +49,23 @@ def analysis(SignalInfo):
 
             if("APT" in description):
                 print("NOAA")
+
+            elif("beacon" in description):
+                # For Beacon like funcube
+                points = beacon.check(SignalInfo, signal_filtered)
+                if(len(points) > 0):
+                    is_peaks_all = True
+                    # Data kept in json format
+                    data = ({"Peaks": True}, {"Band Name": name}, {"FLow": FLow}, {
+                            "FHigh": FHigh}, {"Description": description}, {"Points": points})
+                    peaks.append({SignalInfo.filename: data})
+                else:
+                    data = ({"Peaks": False}, {"Band Name": name}, {"FLow": FLow}, {
+                            "FHigh": FHigh}, {"Description": description}, {"Points": []})
+                    peaks.append({SignalInfo.filename: data})
+
             else:
-                # For beacon & APRS
+                # For APRS
                 points = aprs.check(SignalInfo, signal_filtered)
                 if(len(points) > 0):
                     is_peaks_all = True
