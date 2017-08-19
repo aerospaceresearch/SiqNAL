@@ -67,7 +67,6 @@ def check(SignaIInfo, signal):
         start = i * chunksize
         end = start + chunksize
 
-        print("{} {} {}".format(i, start, end))
         hay = np.absolute(signal[start:end])
         point = cfar(hay)
 
