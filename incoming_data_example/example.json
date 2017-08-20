@@ -1,0 +1,7 @@
+{
+  "fileName": "example.dat",
+  "centerFrequency" : 146000000,
+  "samplingRate": 2048000,
+  "gain": "20",
+  "thereWillBeMore": "coming"
+}
