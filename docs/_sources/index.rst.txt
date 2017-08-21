@@ -1,0 +1,35 @@
+.. SiqNAL documentation master file, created by
+   sphinx-quickstart on Mon Aug 21 01:19:05 2017.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to SiqNAL's documentation!
+==================================
+
+This project aims to provide a reliable open-sourced cubesats tracking following different
+mechanisms and protocols for transmitting signals that too using very low end receiver i.e
+Software Defined Radio (SDR) and under limited computation power. As an input it takes output file
+of sdr (both .dat or .wav) plots waterfall displaying of the signal file showing signal present in different
+bands of frequency. Further, it applies bandpass filtering to remove undesired frequency and based
+upon the transmission mechanism used by the transponder on the satellite it follows appropriate tracking
+pipeline. Right now transponders following Automatic Packet Reporting System (APRS), Beacons or
+Automatic Picture Transmission (APT) is supported.
+
+Our future goal is to make this project more universal by tracking signals using correlation of signal
+received from different ground stations but, it will require us to know the preamble part of signal in
+advance since simple signal correlation gives ambiguous results due to colored gaussian noise.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   Install
+   Module
+   Track
+   
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
