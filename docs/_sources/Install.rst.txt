@@ -1,0 +1,39 @@
+Installation
+=================================
+
+This project requires
+
+    * Python-3.x
+    * Numpy >= 1.12.0
+    * Matplotlib >= 2.0.0
+    * Scipy >= 0.18.1
+    * PyQt4
+
+Make sure you have ``python3.x`` and ``pip`` installeted on your machine then except for PyQt4 rest of the
+dependencies can be installed using requirements.txt provided. Open terminal in SiqNAL folder and type
+
+::
+
+    pip3 install -r requirements.txt
+
+.. Note:: Above command may require administrative permissions.
+
+Installation of PyQt4 is system dependent, for some major distributions steps are below.
+
+#. **Ubuntu**
+    
+    ::
+
+        sudo apt-get install python-qt4
+
+#. **Windows**
+
+    Run installer after downloading from `here <https://goo.gl/LgVh2>`_ .
+
+#. **Mac OSX**
+
+    ::
+
+        brew install qt
+        brew install sip
+        brew install cartr/qt4/pyqt
