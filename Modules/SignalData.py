@@ -10,10 +10,7 @@
 
     #. .dat
     #. .wav
-    #. .txt
-
-    where the first and second are assumed to be generated from Software-defined Radio 
-    while the third one is assumed to be generated from bandpass filter of this project.
+    
 """
 
 
