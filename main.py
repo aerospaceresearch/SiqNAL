@@ -15,11 +15,12 @@ from Modules import fourier
 from Modules import bandpass
 from Modules import freqbands
 from Modules import waterfall
-from Modules import detect
 from Modules import selectfolder
-from Modules import aprs
-from Modules import beacon
-from Modules import apt
+
+from Track import detect
+from Track import aprs
+from Track import beacon
+from Track import apt
 
 
 def analysis(SignalInfo):
