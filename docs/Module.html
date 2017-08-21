@@ -1,0 +1,659 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Helper Modules of SiqNAL &mdash; SiqNAL  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="SiqNAL  documentation" href="index.html"/>
+        <link rel="next" title="Tracking Modules of SiqNAL" href="Track.html"/>
+        <link rel="prev" title="Installation" href="Install.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> SiqNAL
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Helper Modules of SiqNAL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-Modules.bandpass">Bandpass Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#approach">Approach</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-Modules.fourier">Fourier Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-Modules.freqbands">Frequency Band Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-Modules.importfile">Import File Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-Modules.read_dat">Read Dat Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-Modules.read_wav">Read Wav Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-Modules.SignalData">SignalData Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-Modules.waterfall">Waterfall Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Approach</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Track.html">Tracking Modules of SiqNAL</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SiqNAL</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Helper Modules of SiqNAL</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="helper-modules-of-siqnal">
+<h1>Helper Modules of SiqNAL<a class="headerlink" href="#helper-modules-of-siqnal" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-Modules.bandpass">
+<span id="bandpass-module"></span><h2>Bandpass Module<a class="headerlink" href="#module-Modules.bandpass" title="Permalink to this headline">¶</a></h2>
+<p><strong>Author :</strong> <em>Jay Krishna</em></p>
+<p>This module implements linear phase finite impule response (FIR) butterworth bandpass filter
+using Frequency shift theorem and symmetricity of the filter. The computed signal after
+applying bandpass filter is then stoared as (.txt) file.</p>
+<div class="section" id="approach">
+<h3>Approach<a class="headerlink" href="#approach" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first"><strong>Frequency Shift Approach</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>First of all the centre frequency of signal is shifted from current centre frequency(fc) to mean of lower and higher frequency cutoff.</li>
+<li>A linear phase finite impule response (FIR) butterworth bandpass filter is constructed of width half of passband width.</li>
+<li>After filtering the signal is again shifted back to the previous centre frequency.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Frequency Zeroing Aprroach</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>Rectangular window in frequency domain is constructed with unity at passband while zero elsewhere.</li>
+<li>The rectangular window is multiplied with the signal in frequency domain.</li>
+</ul>
+<p>Though this approach is quite easygoing but sometimes have it’s own consequences because multiplying with zero equals to subtraction of
+sin wave of same frequency. In our case it won’t affect much beacause we are going to just detect signals.</p>
+</div></blockquote>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ol class="last arabic">
+<li><dl class="first docutils">
+<dt>Frequency Shift Theorem</dt>
+<dd><p class="first">The frequency shift theorem states that, if</p>
+<div class="math">
+\[x(t) = X( \omega )\]</div>
+<p>then,</p>
+<div class="math">
+\[x(t) e^{(j \omega_o t)} = X( \omega - \omega_o)\]</div>
+<p>where,</p>
+<div class="math">
+\[\omega_o = 2 \pi F_o / F_{sample}\]</div>
+<p><span class="math">\(F_o\)</span> is in it’s equivalent baseband counterpart.</p>
+<ol class="last arabic simple">
+<li><dl class="first docutils">
+<dt>Width of the filter</dt>
+<dd>Linear Phase filters are symmetric around the centre frequency of the signal. Since the centre frequency of the new signal is average of             lower and higher frequency cutoffs. Hence, the width of the filter is kept half of the passband width.</dd>
+</dl>
+</li>
+</ol>
+</dd>
+</dl>
+</li>
+</ol>
+</div>
+<dl class="function">
+<dt id="Modules.bandpass.butter_bandpass_filter">
+<code class="descclassname">Modules.bandpass.</code><code class="descname">butter_bandpass_filter</code><span class="sig-paren">(</span><em>data</em>, <em>width</em>, <em>fs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Modules/bandpass.html#butter_bandpass_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Modules.bandpass.butter_bandpass_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function constructs as well as applies the specified
+linear phase finite impule response (FIR) butterworth
+bandpass filter to the given shifted signal. The order of
+the filter is automatically selected based upon the value of
+<em>(Width of the filter / Nyquist Smapling frequency)</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>ndarray</em>) – Numpy complex array of shifted signal.</li>
+<li><strong>width</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Width of the filter to be constructed.</li>
+<li><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Sampling frequency of the signal.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>y</strong> – Numpy complex array of filtered and shifted signal.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Modules.bandpass.calc_parameter">
+<code class="descclassname">Modules.bandpass.</code><code class="descname">calc_parameter</code><span class="sig-paren">(</span><em>flow</em>, <em>fhigh</em>, <em>fc</em>, <em>fs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Modules/bandpass.html#calc_parameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Modules.bandpass.calc_parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the width of the filter and the multiplying
+factor for the shifting of the signal to the required centre frequency.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>flow</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Lower cutoff frequency for bandpass filter.</li>
+<li><strong>fhigh</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Higher cutoff frequency for bandpass filter.</li>
+<li><strong>fc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Center frequency of the signal.</li>
+<li><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Sampling frequency of the signal.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>multiplier</strong> (<em>float</em>) – Shifting coefficient for the frequency shift.</li>
+<li><strong>width</strong> (<em>float</em>) – Width of the filter to be constructed.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Modules.bandpass.filter">
+<code class="descclassname">Modules.bandpass.</code><code class="descname">filter</code><span class="sig-paren">(</span><em>signal</em>, <em>SignalInfo</em>, <em>Flow</em>, <em>Fhigh</em>, <em>chunksize</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Modules/bandpass.html#filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Modules.bandpass.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Driver function of bandpass filtering. Signal is read at the rate of
+per second, shifted to the desired centre frequency, linear phase
+finite impulse response (FIR) butterworth bandpass filter is applied,
+signal is reshifted back and written to a (.txt) file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>signal</strong> (<em>ndarray</em>) – Numpy complex array of signal.</li>
+<li><strong>SignalInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><em>object</em></a>) – Instance of class SignalData having meta-data of file and signal.</li>
+<li><strong>Flow</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Lower cutoff frequency for bandpass filter.</li>
+<li><strong>Fhigh</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Higher cutoff frequency for bandpass filter.</li>
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.6)"><em>string</em></a>) – Name of the (.txt) file used for storing filtered signal.</li>
+<li><strong>chunksize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Size of one signal chunk processed each time, preferred power of two for faster FFT computation.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>final</strong> – Numpy complex array of filtered signal.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Modules.bandpass.filter_box">
+<code class="descclassname">Modules.bandpass.</code><code class="descname">filter_box</code><span class="sig-paren">(</span><em>SignalInfo</em>, <em>Flow</em>, <em>Fhigh</em>, <em>chunksize</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Modules/bandpass.html#filter_box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Modules.bandpass.filter_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function implement box filter approach for bandpass filtering
+using multiplication of rectangular pulse with the signal in frequency
+domain.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>SignalInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><em>object</em></a>) – Instance of class SignalData having meta-data of file and signal.</li>
+<li><strong>Flow</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Lower cutoff frequency for bandpass filter.</li>
+<li><strong>Fhigh</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Higher cutoff frequency for bandpass filter.</li>
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.6)"><em>string</em></a>) – Name of the (.txt) file used for storing filtered signal.</li>
+<li><strong>chunksize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Size of one signal chunk processed each time, preferred power of two for faster FFT computation.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>signal_filtered</strong> – Numpy complex array of filtered signal.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">ndarray</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-Modules.fourier">
+<span id="fourier-module"></span><h2>Fourier Module<a class="headerlink" href="#module-Modules.fourier" title="Permalink to this headline">¶</a></h2>
+<p><strong>Author :</strong> <em>Jay Krishna</em></p>
+<p>This module computes the fourier transform, fourier transform power &amp; inverse
+fourier transform of the signal.</p>
+<dl class="function">
+<dt id="Modules.fourier.CalcFourier">
+<code class="descclassname">Modules.fourier.</code><code class="descname">CalcFourier</code><span class="sig-paren">(</span><em>signal</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Modules/fourier.html#CalcFourier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Modules.fourier.CalcFourier" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the fourier transform of a signal. The fourier transform’s
+zero frequency is shifted to the centre of the spectrum.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>signal</strong> (<em>ndarray</em>) – Numpy complex array of signal.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>transform</strong> – Numpy array of computed fourier transform.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Modules.fourier.CalcFourierPower">
+<code class="descclassname">Modules.fourier.</code><code class="descname">CalcFourierPower</code><span class="sig-paren">(</span><em>signal</em>, <em>fs</em>, <em>fc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Modules/fourier.html#CalcFourierPower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Modules.fourier.CalcFourierPower" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the power of fourier transform of a signal in each frequency bin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>signal</strong> (<em>ndarray</em>) – Numpy complex array of signal.</li>
+<li><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Sampling frequency of the signal.</li>
+<li><strong>fc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Centre frequency of the signal.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>frequency</strong> (<em>ndarray</em>) – Numpy array of values of frequencies present in the signal.</li>
+<li><strong>transform</strong> (<em>ndarray</em>) – Numpy array of computed fourier transform.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Modules.fourier.CalcIFourier">
+<code class="descclassname">Modules.fourier.</code><code class="descname">CalcIFourier</code><span class="sig-paren">(</span><em>signal</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Modules/fourier.html#CalcIFourier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Modules.fourier.CalcIFourier" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates the inverse fourier transform of a signal. The fourier transform’s
+zero frequency is shifted to the left of the spectrum.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>signal</strong> (<em>ndarray</em>) – Numpy complex array of signal.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>isignal</strong> – Numpy array of computed inverse fourier transform.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-Modules.freqbands">
+<span id="frequency-band-module"></span><h2>Frequency Band Module<a class="headerlink" href="#module-Modules.freqbands" title="Permalink to this headline">¶</a></h2>
+<p><strong>Author :</strong> <em>Jay Krishna</em></p>
+<p>This module reads the json database of satellites &amp; correspondingly
+populates list object for construction of bandpass filter and signal detection.</p>
+<dl class="function">
+<dt id="Modules.freqbands.getbands">
+<code class="descclassname">Modules.freqbands.</code><code class="descname">getbands</code><span class="sig-paren">(</span><em>SignalInfo</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Modules/freqbands.html#getbands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Modules.freqbands.getbands" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function go through the json database of satellites, read the meta data
+about them usch as name and transmission method used by them. It also
+reads about their transponder data particularly Downlink frequency
+along with width of frequency band used by them which is further corrected
+for doppler shift and stored.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>SignalInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><em>object</em></a>) – Instance of class SignalData having meta-data of file and signal.</li>
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Absolute path to json satellite database.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>bands</strong> – List object containing meta data about each satellite.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)">list</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-Modules.importfile">
+<span id="import-file-module"></span><h2>Import File Module<a class="headerlink" href="#module-Modules.importfile" title="Permalink to this headline">¶</a></h2>
+<p><strong>Author :</strong> <em>Jay Krishna</em></p>
+<p>This module reads the json file associated with a signal file for
+server version of this project.</p>
+<dl class="function">
+<dt id="Modules.importfile.loadfile">
+<code class="descclassname">Modules.importfile.</code><code class="descname">loadfile</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Modules/importfile.html#loadfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Modules.importfile.loadfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function read the json file associated with the signal file and extract
+centre frequency and sampling frequency of the signal file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.6)"><em>string</em></a>) – Absolute path of signal file whose associated json file need to be read.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>SignalInfo</strong> – Instance of class SignalData having meta-data of file and signal.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)">object</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-Modules.read_dat">
+<span id="read-dat-module"></span><h2>Read Dat Module<a class="headerlink" href="#module-Modules.read_dat" title="Permalink to this headline">¶</a></h2>
+<p><strong>Author :</strong> <em>Jay Krishna</em></p>
+<p>This module read (.dat) file from physical storage as a memory-
+mapped file.</p>
+<dl class="function">
+<dt id="Modules.read_dat.loaddata">
+<code class="descclassname">Modules.read_dat.</code><code class="descname">loaddata</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Modules/read_dat.html#loaddata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Modules.read_dat.loaddata" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function opens a (.dat) format file specified by it’s absolute
+path and returns a memory-mapped file object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.6)"><em>string</em></a>) – Absolute path to (.dat) format file to be read.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>signal</strong> – Memory mapped file object of specified (.dat) file.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">file object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-Modules.read_wav">
+<span id="read-wav-module"></span><h2>Read Wav Module<a class="headerlink" href="#module-Modules.read_wav" title="Permalink to this headline">¶</a></h2>
+<p><strong>Author :</strong> <em>Jay Krishna</em></p>
+<p>This module read (.wav) file from physical storage as a memory-
+mapped file.</p>
+<dl class="function">
+<dt id="Modules.read_wav.loaddata">
+<code class="descclassname">Modules.read_wav.</code><code class="descname">loaddata</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Modules/read_wav.html#loaddata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Modules.read_wav.loaddata" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function opens a (.wav) format file specified by it’s absolute
+path and returns a memory-mapped file object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.6)"><em>string</em></a>) – Absolute path to (.wav) format file to be read.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>signal</strong> – Memory mapped file object of specified (.wav) file.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">file object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-Modules.SignalData">
+<span id="signaldata-module"></span><h2>SignalData Module<a class="headerlink" href="#module-Modules.SignalData" title="Permalink to this headline">¶</a></h2>
+<p><strong>Author :</strong> <em>Jay Krishna</em></p>
+<p>This module defines class to pass meta data about the file source
+and signal in structured manner.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Three file extensions are supported in this project, namely</p>
+<ol class="last arabic simple">
+<li>.dat</li>
+<li>.wav</li>
+</ol>
+</div>
+</div>
+<div class="section" id="module-Modules.waterfall">
+<span id="waterfall-module"></span><h2>Waterfall Module<a class="headerlink" href="#module-Modules.waterfall" title="Permalink to this headline">¶</a></h2>
+<p><strong>Author :</strong> <em>Jay Krishna</em></p>
+<p>This module saves the waterfall diagram of the entire signal by concatenating waterfall diagram of each second.</p>
+<div class="section" id="id1">
+<h3>Approach<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">Signal is broken down into slices of size specified.</p>
+</li>
+<li><p class="first">For each signal slice</p>
+<blockquote>
+<div><ul class="simple">
+<li>Rectangular window is chosen based of size according to overlaping factor.</li>
+<li>Fast Fourier Transform is calculated whose zero frequency spectrum is shifted to the centre and length normalized.</li>
+<li>Each fft is stacked over previous one.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<dl class="function">
+<dt id="Modules.waterfall.plot_waterfall">
+<code class="descclassname">Modules.waterfall.</code><code class="descname">plot_waterfall</code><span class="sig-paren">(</span><em>SignalInfo</em>, <em>chunksize</em>, <em>number</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Modules/waterfall.html#plot_waterfall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Modules.waterfall.plot_waterfall" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>SignalInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><em>object</em></a>) – Instance of class SignalData.</li>
+<li><strong>chunksize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Size of one signal chunk processed each time, preferred
+power of two for faster FFT computation.</li>
+<li><strong>number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Number of rows to be interleaved to help reduce memory consumption.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Track.html" class="btn btn-neutral float-right" title="Tracking Modules of SiqNAL" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Install.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Jay Krishna.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
