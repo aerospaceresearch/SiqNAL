@@ -1,0 +1,42 @@
+Helper Modules of SiqNAL
+========================
+
+Bandpass Module
+----------------------------------------------
+.. automodule:: Modules.bandpass
+   :members:
+
+Fourier Module
+----------------------------------------------
+.. automodule:: Modules.fourier
+   :members:
+
+Frequency Band Module
+----------------------------------------------
+.. automodule:: Modules.freqbands
+   :members:
+
+Import File Module
+----------------------------------------------
+.. automodule:: Modules.importfile
+   :members:
+
+Read Dat Module
+----------------------------------------------
+.. automodule:: Modules.read_dat
+   :members:
+
+Read Wav Module
+----------------------------------------------
+.. automodule:: Modules.read_wav
+   :members:
+
+SignalData Module
+----------------------------------------------
+.. automodule:: Modules.SignalData
+   :members:
+
+Waterfall Module
+----------------------------------------------
+.. automodule:: Modules.waterfall
+   :members:
