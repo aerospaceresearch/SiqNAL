@@ -7,10 +7,21 @@
 
     Approach
     ----------------------------
-    #. First of all the centre frequency of signal is shifted from current centre frequency(fc) to mean of lower and higher frequency cutoff.
-    #. A linear phase finite impule response (FIR) butterworth bandpass filter is constructed of width half of passband width.
-    #. After filtering the signal is again shifted back to the previous centre frequency.
 
+    1. **Frequency Shift Approach**
+    
+        * First of all the centre frequency of signal is shifted from current centre frequency(fc) to mean of lower and higher frequency cutoff.
+        * A linear phase finite impule response (FIR) butterworth bandpass filter is constructed of width half of passband width.
+        * After filtering the signal is again shifted back to the previous centre frequency.
+
+    2. **Frequency Zeroing Aprroach**
+    
+        * Rectangular window in frequency domain is constructed with unity at passband while zero elsewhere.
+        * The rectangular window is multiplied with the signal in frequency domain.
+
+        Though this approach is quite easygoing but sometimes have it's own consequences because multiplying with zero equals to subtraction of 
+        sin wave of same frequency. In our case it won't affect much beacause we are going to just detect signals. 
+    
     Note
     ------------------------------
     #. Frequency Shift Theorem
@@ -28,9 +39,10 @@
 
         :math:`F_o` is in it's equivalent baseband counterpart.
 
-    #. Width of the filter
-        Linear Phase filters are symmetric around the centre frequency of the signal. Since the centre frequency of the new signal is average of \
-        lower and higher frequency cutoffs. Hence, the width of the filter is kept half of the passband width.
+        #. Width of the filter
+            Linear Phase filters are symmetric around the centre frequency of the signal. Since the centre frequency of the new signal is average of \
+            lower and higher frequency cutoffs. Hence, the width of the filter is kept half of the passband width.
+
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -119,6 +131,8 @@ def filter(signal, SignalInfo, Flow, Fhigh, chunksize):
 
         Parameters
         -----------------------
+            signal : ndarray
+                Numpy complex array of signal.
             SignalInfo : object
                 Instance of class SignalData having meta-data of file and signal.
             Flow : float
@@ -127,8 +141,13 @@ def filter(signal, SignalInfo, Flow, Fhigh, chunksize):
                 Higher cutoff frequency for bandpass filter.
             filename : string
                 Name of the (.txt) file used for storing filtered signal.
-            WaitWindow : object
-                Instance of WaitScreen
+            chunksize : int
+                Size of one signal chunk processed each time, preferred power of two for faster FFT computation.
+
+        Returns
+        ------------------------------
+            final : ndarray
+                Numpy complex array of filtered signal.
 
     """
 
@@ -149,9 +168,31 @@ def filter(signal, SignalInfo, Flow, Fhigh, chunksize):
 
     return final
 
-
 def filter_box(SignalInfo, Flow, Fhigh, chunksize):
+    """
+        This function implement box filter approach for bandpass filtering
+        using multiplication of rectangular pulse with the signal in frequency 
+        domain.
 
+        Parameters
+        -----------------------
+            SignalInfo : object
+                Instance of class SignalData having meta-data of file and signal.
+            Flow : float
+                Lower cutoff frequency for bandpass filter.
+            Fhigh : float
+                Higher cutoff frequency for bandpass filter.
+            filename : string
+                Name of the (.txt) file used for storing filtered signal.
+            chunksize : int
+                Size of one signal chunk processed each time, preferred power of two for faster FFT computation.
+
+        Returns
+        ------------------------------
+            signal_filtered : ndarray
+                Numpy complex array of filtered signal.
+
+    """
     value = SignalInfo.getvalues()
 
     fs = value[3]
@@ -175,14 +216,10 @@ def filter_box(SignalInfo, Flow, Fhigh, chunksize):
     filter_array[:nlow] = 0 + 0j
     filter_array[nhigh:] = 0 + 0j
 
-    # signal_filtered = np.zeros(
-    #    chunknumber * (chunksize // 2), dtype=np.float)
-
     signal_filtered = np.zeros(
         chunknumber * (chunksize // 2), dtype=np.complex64)
 
     for i in range(0, chunknumber):
-        # print(i)
         startslice = i * chunksize
         endslice = startslice + chunksize
 
@@ -202,7 +239,6 @@ def filter_box(SignalInfo, Flow, Fhigh, chunksize):
 
         signal_back = (fourier.CalcIFourier(new_signalFFT))
 
-        # Instead of stoaring IQ values stoared absolute values directly
         start_index = i * (chunksize // 2)
         end_index = start_index + (chunksize // 2)
         signal_filtered[start_index:end_index] = signal_back

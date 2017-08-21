@@ -22,7 +22,6 @@ class ImportScreen(QtGui.QDialog, FolderScreen.Ui_Dialog):
     def choosefile(self):
         filename = str(QtGui.QFileDialog.getExistingDirectory(
             self, "Select Directory"))
-        #filename = QtGui.QFileDialog.getOpenFileName()
         self.FileNameLabel.setText(filename)
 
     def importvalues(self):
