@@ -20,6 +20,9 @@ received from different ground stations but, it will require us to know the prea
 advance as well as synchronized signals from multiple sources since simple signal correlation gives 
 ambiguous results due to colored gaussian noise.
 
+This project is part of Google Summer of Code 2017 under `Aerospaceresearch <http://aerospaceresearch.net>`_ 
+written by `Jay Krishna <https://github.com/jay-krishna>`_ with `Andreas Hornig <https://github.com/hornig>`_ as mentor.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
