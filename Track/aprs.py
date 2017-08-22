@@ -28,6 +28,9 @@ from Modules import SignalData
 
 def radar_detect(diff, refLength, threshold_min=1.2, threshold_ratio=10, threshold_max=1.5):
     """
+        
+        Based upon the values calculated start of APRS signal is detected while taking care of false results
+        due to spikes induced by noise.
 
         Parameters
         -----------------------
@@ -68,6 +71,9 @@ def radar_detect(diff, refLength, threshold_min=1.2, threshold_ratio=10, thresho
 
 def cfar(signal, refLength=10000, guardLength=10, p=0.001):
     """
+        Calculates threshold value for each point using leading & lagging cells
+        while discarding leading & lagging guard cells. 
+
         Parameters
         -----------------------
             signal : ndarray
@@ -110,13 +116,15 @@ def cfar(signal, refLength=10000, guardLength=10, p=0.001):
 
 def check(SignaIInfo, signal):
     """
+        Breaks the signal into smaller chunks and send them
+        sequentially for APRS signal detection.
 
         Parameters
         -----------------------
             SignalInfo : object
                 Instance of class SignalData having meta-data of file and signal.
             signal : ndarray
-                Numpy complex array of signal.
+                Numpy complex array of filtered signal.
 
         Returns
         ------------------------------
