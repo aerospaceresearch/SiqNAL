@@ -29,7 +29,7 @@ def analysis(SignalInfo):
     bands = freqbands.getbands(SignalInfo, filename)
     print(bands)
     chunksize = int(1024 * 2 * 2 * 2 * 2 * 2 * 2 * 2)
-    # waterfall.plot_waterfall(SignalInfo, chunksize, 30)
+    waterfall.plot_waterfall(SignalInfo, chunksize, 30)
 
     peaks = []
     is_peaks_all = False
@@ -50,18 +50,19 @@ def analysis(SignalInfo):
                 SignalInfo, FLow, FHigh, chunksize)
 
             if("APT" in description):
-                # print("NOAA")
+
                 is_present = apt.check(SignalInfo, signal_filtered)
-                peaks = "NOAA Present"
-                # print(is_present==True)
+                
                 if(is_present == True):
                     is_peaks_all = True
                     # Data kept in json format
                     data = ({"Peaks": True}, {"Band Name": name}, {"FLow": FLow}, {
                         "FHigh": FHigh}, {"Description": description})
+                    peaks = "NOAA Present"
                 else:
                     data = ({"Peaks": False}, {"Band Name": name}, {"FLow": FLow}, {
                         "FHigh": FHigh}, {"Description": description})
+                    peaks = "NOAA not Present"
 
             elif("beacon" in description):
                 # For Beacon like funcube
