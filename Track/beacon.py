@@ -1,19 +1,19 @@
 """
     **Author :** *Jay Krishna*
     
-    This module detects the presence of signal_chunk sent by beacon. Dynamic thresholding is applied based upon leading & lagging cells.
+    This module detects the presence of signal sent by beacon. Dynamic thresholding is applied based upon leading & lagging cells.
 
     Approach
     ----------------------------
      
-    * signal_chunk is broken down in chunks of one second each.
-    * At each point of smaller signal_chunk threshold is calculated based upon average of lagging & leading reference cells after removing guard cells from both sides.
-    * Point where APRS signal_chunk is suppossed to start is found & checked against peak induced by random noise.
+    * signal is broken down in chunks of one second each.
+    * At each point of smaller signal threshold is calculated based upon average of lagging & leading reference cells after removing guard cells from both sides.
+    * Point where APRS signal is suppossed to start is found & checked against peak induced by random noise.
 
     Reference
     ------------------------------
     
-    `Barkat, Mourad & Varshney, P.K (1987). On adaptive cell-averaging CFAR (Constant False-Alarm Rate) radar signal_chunk detection. Final Technical Report, Jun. 1984 - Dec. 1986 Syracuse Univ., NY. Dept. of Electrical and Computer Engineering <https://goo.gl/15t64a>`_
+    `Barkat, Mourad & Varshney, P.K (1987). On adaptive cell-averaging CFAR (Constant False-Alarm Rate) radar signal detection. Final Technical Report, Jun. 1984 - Dec. 1986 Syracuse Univ., NY. Dept. of Electrical and Computer Engineering <https://goo.gl/15t64a>`_
 
 """
 
@@ -35,7 +35,7 @@ def merge(peak, signal_chunk):
             peak : list
                 Points of presence of beacon.
             signal_chunk : ndarray
-                Numpy array of signal_chunk.
+                Numpy array of signal.
         
         Returns
         -------------------------
@@ -69,7 +69,7 @@ def merge(peak, signal_chunk):
 def radar_detect(radar, signal_chunk):
     """
 
-        Based upon the values calculated start of APRS signal_chunk is detected while taking care of false results
+        Based upon the values calculated start of APRS signal is detected while taking care of false results
         due to spikes induced by noise.
 
         Parameters
@@ -77,7 +77,7 @@ def radar_detect(radar, signal_chunk):
             radar : ndarray
                 Threshold values calculated at each point.
             signal_chunk : ndarray
-                Numpy array of signal_chunk.
+                Numpy array of signal.
         
         Returns
         -------------------------
@@ -109,7 +109,7 @@ def cfar(signal_chunk, refLength=1000, guardLength=100, p=0.01):
         Parameters
         -----------------------
             signal_chunk : ndarray
-                Numpy complex array of signal_chunk.
+                Numpy complex array of signal.
             refLength : int
                 Length of reference cells
             guardLength : int
@@ -120,7 +120,7 @@ def cfar(signal_chunk, refLength=1000, guardLength=100, p=0.01):
         Returns
         -----------------------
             point : int
-                Starting point of aprs signal_chunk if present.
+                Starting point of aprs signal if present.
 
     """
 
@@ -148,20 +148,20 @@ def cfar(signal_chunk, refLength=1000, guardLength=100, p=0.01):
 def check(SignaIInfo, signal_chunk):
     """
 
-        Breaks the signal_chunk into smaller chunks and send them
-        sequentially for APRS signal_chunk detection.
+        Breaks the signal into smaller chunks and send them
+        sequentially for APRS signal detection.
 
         Parameters
         -----------------------
-            signal_chunkInfo : object
-                Instance of class SignalData having meta-data of file and signal_chunk.
+            SignalInfo : object
+                Instance of class SignalData having meta-data of file and signal.
             signal_chunk : ndarray
-                Numpy complex array of signal_chunk.
+                Numpy complex array of signal.
 
         Returns
         ------------------------------
             points : list
-                List of starting index of aprs signal_chunk.
+                List of starting index of aprs signal.
 
     """
 
