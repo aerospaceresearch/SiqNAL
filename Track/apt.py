@@ -21,6 +21,8 @@ from Modules import SignalData
 
 def stat_check(values, threshold, chunknumber):
     """
+        Based upon the threshold views the statistical distribution of
+        points in signal file and concludes the presence of APT signal.
 
         Parameters
         -----------------------
@@ -54,6 +56,9 @@ def stat_check(values, threshold, chunknumber):
 
 def check(SignaIInfo, signal):
     """
+
+        Breaks the signal into smaller chunks and calculates statistical parameters
+        for each chunk. Also calculates mean of whole signal file.
 
         Parameters
         -----------------------
