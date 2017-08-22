@@ -166,7 +166,7 @@
 <span class="sd">    Approach</span>
 <span class="sd">    ----------------------------</span>
 <span class="sd">     </span>
-<span class="sd">    * Signal is broken down in chunks of one second each.</span>
+<span class="sd">    * signal is broken down in chunks of one second each.</span>
 <span class="sd">    * At each point of smaller signal threshold is calculated based upon difference of lagging &amp; leading reference cells after removing guard cells from both sides.</span>
 <span class="sd">    * Point where APRS signal is suppossed to start is found &amp; checked against peak induced by random noise.</span>
 
@@ -228,14 +228,14 @@
     <span class="k">return</span> <span class="n">point</span></div>
 
 
-<div class="viewcode-block" id="cfar"><a class="viewcode-back" href="../../Track.html#Track.aprs.cfar">[docs]</a><span class="k">def</span> <span class="nf">cfar</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">refLength</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">guardLength</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
+<div class="viewcode-block" id="cfar"><a class="viewcode-back" href="../../Track.html#Track.aprs.cfar">[docs]</a><span class="k">def</span> <span class="nf">cfar</span><span class="p">(</span><span class="n">signal_chunk</span><span class="p">,</span> <span class="n">refLength</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">guardLength</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculates threshold value for each point using leading &amp; lagging cells</span>
 <span class="sd">        while discarding leading &amp; lagging guard cells. </span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        -----------------------</span>
-<span class="sd">            signal : ndarray</span>
+<span class="sd">            signal_chunk : ndarray</span>
 <span class="sd">                Numpy complex array of signal.</span>
 <span class="sd">            refLength : int</span>
 <span class="sd">                Length of reference cells</span>
@@ -254,26 +254,26 @@
     <span class="n">N</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">refLength</span>
     <span class="n">alpha</span> <span class="o">=</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="n">N</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">N</span>
 
-    <span class="n">signal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">signal_chunk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">signal_chunk</span><span class="p">,</span> <span class="p">(</span><span class="n">signal_chunk</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
 
     <span class="n">cfarWin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(((</span><span class="n">refLength</span> <span class="o">+</span> <span class="n">guardLength</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">cfarWin</span><span class="p">[</span><span class="n">refLength</span><span class="p">:</span><span class="n">refLength</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">guardLength</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">cfarWin</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">refLength</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="n">cfarWin</span> <span class="o">=</span> <span class="n">cfarWin</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">cfarWin</span><span class="p">))</span>
 
-    <span class="n">noiseLevel</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">fftconvolve</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">cfarWin</span><span class="p">,</span> <span class="s1">&#39;same&#39;</span><span class="p">)</span>
+    <span class="n">noiseLevel</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">fftconvolve</span><span class="p">(</span><span class="n">signal_chunk</span><span class="p">,</span> <span class="n">cfarWin</span><span class="p">,</span> <span class="s1">&#39;same&#39;</span><span class="p">)</span>
     <span class="n">cfarThreshold</span> <span class="o">=</span> <span class="n">noiseLevel</span> <span class="o">*</span> <span class="n">alpha</span>
     <span class="n">cfarThreshold</span><span class="p">[:</span><span class="n">refLength</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">cfarThreshold</span><span class="p">[</span><span class="n">cfarThreshold</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">refLength</span><span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="n">point</span> <span class="o">=</span> <span class="n">radar_detect</span><span class="p">(</span><span class="n">cfarThreshold</span><span class="p">,</span> <span class="n">refLength</span><span class="p">)</span>
 
-    <span class="k">del</span> <span class="n">cfarThreshold</span><span class="p">,</span> <span class="n">cfarWin</span><span class="p">,</span> <span class="n">signal</span>
+    <span class="k">del</span> <span class="n">cfarThreshold</span><span class="p">,</span> <span class="n">cfarWin</span><span class="p">,</span> <span class="n">signal_chunk</span>
 
     <span class="k">return</span> <span class="n">point</span></div>
 
 
-<div class="viewcode-block" id="check"><a class="viewcode-back" href="../../Track.html#Track.aprs.check">[docs]</a><span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="n">SignaIInfo</span><span class="p">,</span> <span class="n">signal</span><span class="p">):</span>
+<div class="viewcode-block" id="check"><a class="viewcode-back" href="../../Track.html#Track.aprs.check">[docs]</a><span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="n">SignaIInfo</span><span class="p">,</span> <span class="n">signal_chunk</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Breaks the signal into smaller chunks and send them</span>
 <span class="sd">        sequentially for APRS signal detection.</span>
@@ -282,7 +282,7 @@
 <span class="sd">        -----------------------</span>
 <span class="sd">            SignalInfo : object</span>
 <span class="sd">                Instance of class SignalData having meta-data of file and signal.</span>
-<span class="sd">            signal : ndarray</span>
+<span class="sd">            signal_chunk : ndarray</span>
 <span class="sd">                Numpy complex array of filtered signal.</span>
 
 <span class="sd">        Returns</span>
@@ -296,7 +296,7 @@
 
     <span class="n">fs</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
     <span class="n">chunksize</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
-    <span class="n">chunknumber</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">signal</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">//</span> <span class="n">chunksize</span><span class="p">)</span>
+    <span class="n">chunknumber</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">signal_chunk</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">//</span> <span class="n">chunksize</span><span class="p">)</span>
 
     <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -304,7 +304,7 @@
         <span class="n">start</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">chunksize</span>
         <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">chunksize</span>
 
-        <span class="n">hay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">signal</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">])</span>
+        <span class="n">hay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">signal_chunk</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">])</span>
         <span class="n">point</span> <span class="o">=</span> <span class="n">cfar</span><span class="p">(</span><span class="n">hay</span><span class="p">)</span>
 
         <span class="k">if</span><span class="p">(</span><span class="n">point</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>

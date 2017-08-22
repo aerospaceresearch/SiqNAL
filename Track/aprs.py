@@ -7,7 +7,7 @@
     Approach
     ----------------------------
      
-    * Signal is broken down in chunks of one second each.
+    * signal is broken down in chunks of one second each.
     * At each point of smaller signal threshold is calculated based upon difference of lagging & leading reference cells after removing guard cells from both sides.
     * Point where APRS signal is suppossed to start is found & checked against peak induced by random noise.
 
@@ -69,14 +69,14 @@ def radar_detect(diff, refLength, threshold_min=1.2, threshold_ratio=10, thresho
     return point
 
 
-def cfar(signal, refLength=10000, guardLength=10, p=0.001):
+def cfar(signal_chunk, refLength=10000, guardLength=10, p=0.001):
     """
         Calculates threshold value for each point using leading & lagging cells
         while discarding leading & lagging guard cells. 
 
         Parameters
         -----------------------
-            signal : ndarray
+            signal_chunk : ndarray
                 Numpy complex array of signal.
             refLength : int
                 Length of reference cells
@@ -95,26 +95,26 @@ def cfar(signal, refLength=10000, guardLength=10, p=0.001):
     N = 2 * refLength
     alpha = (math.pow(p, -1 / N) - 1) * N
 
-    signal = np.reshape(signal, (signal.shape[0], 1))
+    signal_chunk = np.reshape(signal_chunk, (signal_chunk.shape[0], 1))
 
     cfarWin = np.ones(((refLength + guardLength) * 2 + 1, 1))
     cfarWin[refLength:refLength + 1 + 2 * guardLength] = 0
     cfarWin[0:refLength] = -1
     cfarWin = cfarWin / sum(np.absolute(cfarWin))
 
-    noiseLevel = signal.fftconvolve(signal, cfarWin, 'same')
+    noiseLevel = signal.fftconvolve(signal_chunk, cfarWin, 'same')
     cfarThreshold = noiseLevel * alpha
     cfarThreshold[:refLength] = 0
     cfarThreshold[cfarThreshold.shape[0] - refLength:] = 0
 
     point = radar_detect(cfarThreshold, refLength)
 
-    del cfarThreshold, cfarWin, signal
+    del cfarThreshold, cfarWin, signal_chunk
 
     return point
 
 
-def check(SignaIInfo, signal):
+def check(SignaIInfo, signal_chunk):
     """
         Breaks the signal into smaller chunks and send them
         sequentially for APRS signal detection.
@@ -123,7 +123,7 @@ def check(SignaIInfo, signal):
         -----------------------
             SignalInfo : object
                 Instance of class SignalData having meta-data of file and signal.
-            signal : ndarray
+            signal_chunk : ndarray
                 Numpy complex array of filtered signal.
 
         Returns
@@ -137,7 +137,7 @@ def check(SignaIInfo, signal):
 
     fs = value[3]
     chunksize = int(fs)
-    chunknumber = int((signal.shape[0]) // chunksize)
+    chunknumber = int((signal_chunk.shape[0]) // chunksize)
 
     points = []
 
@@ -145,7 +145,7 @@ def check(SignaIInfo, signal):
         start = i * chunksize
         end = start + chunksize
 
-        hay = np.absolute(signal[start:end])
+        hay = np.absolute(signal_chunk[start:end])
         point = cfar(hay)
 
         if(point > 0):
