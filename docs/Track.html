@@ -175,19 +175,19 @@
 <div class="section" id="module-Track.aprs">
 <span id="aprs-module"></span><h2>APRS Module<a class="headerlink" href="#module-Track.aprs" title="Permalink to this headline">¶</a></h2>
 <p><strong>Author :</strong> <em>Jay Krishna</em></p>
-<p>This module detects the presence of signal_chunk sent following Automatic Packet Reporting System(APRS). Instead of having
+<p>This module detects the presence of signal sent following Automatic Packet Reporting System(APRS). Instead of having
 constant threshold, dynamic thresholding is applied based upon leading &amp; lagging cells.</p>
 <div class="section" id="approach">
 <h3>Approach<a class="headerlink" href="#approach" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>signal_chunk is broken down in chunks of one second each.</li>
-<li>At each point of smaller signal_chunk threshold is calculated based upon difference of lagging &amp; leading reference cells after removing guard cells from both sides.</li>
-<li>Point where APRS signal_chunk is suppossed to start is found &amp; checked against peak induced by random noise.</li>
+<li>signal is broken down in chunks of one second each.</li>
+<li>At each point of smaller signal threshold is calculated based upon difference of lagging &amp; leading reference cells after removing guard cells from both sides.</li>
+<li>Point where APRS signal is suppossed to start is found &amp; checked against peak induced by random noise.</li>
 </ul>
 </div>
 <div class="section" id="reference">
 <h3>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference external" href="https://goo.gl/15t64a">Barkat, Mourad &amp; Varshney, P.K (1987). On adaptive cell-averaging CFAR (Constant False-Alarm Rate) radar signal_chunk detection. Final Technical Report, Jun. 1984 - Dec. 1986 Syracuse Univ., NY. Dept. of Electrical and Computer Engineering</a></p>
+<p><a class="reference external" href="https://goo.gl/15t64a">Barkat, Mourad &amp; Varshney, P.K (1987). On adaptive cell-averaging CFAR (Constant False-Alarm Rate) radar signal detection. Final Technical Report, Jun. 1984 - Dec. 1986 Syracuse Univ., NY. Dept. of Electrical and Computer Engineering</a></p>
 <dl class="function">
 <dt id="Track.aprs.cfar">
 <code class="descclassname">Track.aprs.</code><code class="descname">cfar</code><span class="sig-paren">(</span><em>signal_chunk</em>, <em>refLength=10000</em>, <em>guardLength=10</em>, <em>p=0.001</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Track/aprs.html#cfar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Track.aprs.cfar" title="Permalink to this definition">¶</a></dt>
@@ -198,14 +198,14 @@ while discarding leading &amp; lagging guard cells.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>signal_chunk</strong> (<em>ndarray</em>) – Numpy complex array of signal_chunk.</li>
+<li><strong>signal_chunk</strong> (<em>ndarray</em>) – Numpy complex array of signal.</li>
 <li><strong>refLength</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Length of reference cells</li>
 <li><strong>guardLength</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Length of guard cells</li>
 <li><strong>p</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Accepted probability of false alarm.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>point</strong> – Starting point of aprs signal_chunk if present.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>point</strong> – Starting point of aprs signal if present.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)">int</a></p>
@@ -218,19 +218,19 @@ while discarding leading &amp; lagging guard cells.</p>
 <dl class="function">
 <dt id="Track.aprs.check">
 <code class="descclassname">Track.aprs.</code><code class="descname">check</code><span class="sig-paren">(</span><em>SignaIInfo</em>, <em>signal_chunk</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Track/aprs.html#check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Track.aprs.check" title="Permalink to this definition">¶</a></dt>
-<dd><p>Breaks the signal_chunk into smaller chunks and send them
-sequentially for APRS signal_chunk detection.</p>
+<dd><p>Breaks the signal into smaller chunks and send them
+sequentially for APRS signal detection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>signal_chunkInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><em>object</em></a>) – Instance of class SignalData having meta-data of file and signal_chunk.</li>
-<li><strong>signal_chunk</strong> (<em>ndarray</em>) – Numpy complex array of filtered signal_chunk.</li>
+<li><strong>SignalInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><em>object</em></a>) – Instance of class SignalData having meta-data of file and signal.</li>
+<li><strong>signal_chunk</strong> (<em>ndarray</em>) – Numpy complex array of filtered signal.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>points</strong> – List of starting index of aprs signal_chunk.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>points</strong> – List of starting index of aprs signal.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)">list</a></p>
@@ -243,7 +243,7 @@ sequentially for APRS signal_chunk detection.</p>
 <dl class="function">
 <dt id="Track.aprs.radar_detect">
 <code class="descclassname">Track.aprs.</code><code class="descname">radar_detect</code><span class="sig-paren">(</span><em>diff</em>, <em>refLength</em>, <em>threshold_min=1.2</em>, <em>threshold_ratio=10</em>, <em>threshold_max=1.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Track/aprs.html#radar_detect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Track.aprs.radar_detect" title="Permalink to this definition">¶</a></dt>
-<dd><p>Based upon the values calculated start of APRS signal_chunk is detected while taking care of false results
+<dd><p>Based upon the values calculated start of APRS signal is detected while taking care of false results
 due to spikes induced by noise.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -253,12 +253,12 @@ due to spikes induced by noise.</p>
 <li><strong>diff</strong> (<em>ndarray</em>) – Values calculated at each point</li>
 <li><strong>refLength</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Length of reference cells</li>
 <li><strong>threshold_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Minimum level of threshold</li>
-<li><strong>threshold_ratio</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Minimum ratio of detected point and mean of signal_chunk chunk</li>
+<li><strong>threshold_ratio</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Minimum ratio of detected point and mean of signal chunk</li>
 <li><strong>threshold_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Maximum value of local maxima to ensure false detection due to random spikes.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>point</strong> – Starting point of aprs signal_chunk if present.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>point</strong> – Starting point of aprs signal if present.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)">int</a></p>
@@ -338,18 +338,18 @@ points in signal file and concludes the presence of APT signal.</p>
 <div class="section" id="module-Track.beacon">
 <span id="beacon-module"></span><h2>Beacon Module<a class="headerlink" href="#module-Track.beacon" title="Permalink to this headline">¶</a></h2>
 <p><strong>Author :</strong> <em>Jay Krishna</em></p>
-<p>This module detects the presence of signal_chunk sent by beacon. Dynamic thresholding is applied based upon leading &amp; lagging cells.</p>
+<p>This module detects the presence of signal sent by beacon. Dynamic thresholding is applied based upon leading &amp; lagging cells.</p>
 <div class="section" id="id2">
 <h3>Approach<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>signal_chunk is broken down in chunks of one second each.</li>
-<li>At each point of smaller signal_chunk threshold is calculated based upon average of lagging &amp; leading reference cells after removing guard cells from both sides.</li>
-<li>Point where APRS signal_chunk is suppossed to start is found &amp; checked against peak induced by random noise.</li>
+<li>signal is broken down in chunks of one second each.</li>
+<li>At each point of smaller signal threshold is calculated based upon average of lagging &amp; leading reference cells after removing guard cells from both sides.</li>
+<li>Point where APRS signal is suppossed to start is found &amp; checked against peak induced by random noise.</li>
 </ul>
 </div>
 <div class="section" id="id3">
 <h3>Reference<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference external" href="https://goo.gl/15t64a">Barkat, Mourad &amp; Varshney, P.K (1987). On adaptive cell-averaging CFAR (Constant False-Alarm Rate) radar signal_chunk detection. Final Technical Report, Jun. 1984 - Dec. 1986 Syracuse Univ., NY. Dept. of Electrical and Computer Engineering</a></p>
+<p><a class="reference external" href="https://goo.gl/15t64a">Barkat, Mourad &amp; Varshney, P.K (1987). On adaptive cell-averaging CFAR (Constant False-Alarm Rate) radar signal detection. Final Technical Report, Jun. 1984 - Dec. 1986 Syracuse Univ., NY. Dept. of Electrical and Computer Engineering</a></p>
 <dl class="function">
 <dt id="Track.beacon.cfar">
 <code class="descclassname">Track.beacon.</code><code class="descname">cfar</code><span class="sig-paren">(</span><em>signal_chunk</em>, <em>refLength=1000</em>, <em>guardLength=100</em>, <em>p=0.01</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Track/beacon.html#cfar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Track.beacon.cfar" title="Permalink to this definition">¶</a></dt>
@@ -360,14 +360,14 @@ while discarding leading &amp; lagging guard cells.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>signal_chunk</strong> (<em>ndarray</em>) – Numpy complex array of signal_chunk.</li>
+<li><strong>signal_chunk</strong> (<em>ndarray</em>) – Numpy complex array of signal.</li>
 <li><strong>refLength</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Length of reference cells</li>
 <li><strong>guardLength</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Length of guard cells</li>
 <li><strong>p</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Accepted probability of false alarm.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>point</strong> – Starting point of aprs signal_chunk if present.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>point</strong> – Starting point of aprs signal if present.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)">int</a></p>
@@ -380,19 +380,19 @@ while discarding leading &amp; lagging guard cells.</p>
 <dl class="function">
 <dt id="Track.beacon.check">
 <code class="descclassname">Track.beacon.</code><code class="descname">check</code><span class="sig-paren">(</span><em>SignaIInfo</em>, <em>signal_chunk</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Track/beacon.html#check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Track.beacon.check" title="Permalink to this definition">¶</a></dt>
-<dd><p>Breaks the signal_chunk into smaller chunks and send them
-sequentially for APRS signal_chunk detection.</p>
+<dd><p>Breaks the signal into smaller chunks and send them
+sequentially for APRS signal detection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>signal_chunkInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><em>object</em></a>) – Instance of class SignalData having meta-data of file and signal_chunk.</li>
-<li><strong>signal_chunk</strong> (<em>ndarray</em>) – Numpy complex array of signal_chunk.</li>
+<li><strong>SignalInfo</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><em>object</em></a>) – Instance of class SignalData having meta-data of file and signal.</li>
+<li><strong>signal_chunk</strong> (<em>ndarray</em>) – Numpy complex array of signal.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>points</strong> – List of starting index of aprs signal_chunk.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>points</strong> – List of starting index of aprs signal.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)">list</a></p>
@@ -413,7 +413,7 @@ classified as same peak.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>peak</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – Points of presence of beacon.</li>
-<li><strong>signal_chunk</strong> (<em>ndarray</em>) – Numpy array of signal_chunk.</li>
+<li><strong>signal_chunk</strong> (<em>ndarray</em>) – Numpy array of signal.</li>
 </ul>
 </td>
 </tr>
@@ -430,7 +430,7 @@ classified as same peak.</p>
 <dl class="function">
 <dt id="Track.beacon.radar_detect">
 <code class="descclassname">Track.beacon.</code><code class="descname">radar_detect</code><span class="sig-paren">(</span><em>radar</em>, <em>signal_chunk</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Track/beacon.html#radar_detect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Track.beacon.radar_detect" title="Permalink to this definition">¶</a></dt>
-<dd><p>Based upon the values calculated start of APRS signal_chunk is detected while taking care of false results
+<dd><p>Based upon the values calculated start of APRS signal is detected while taking care of false results
 due to spikes induced by noise.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -438,7 +438,7 @@ due to spikes induced by noise.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>radar</strong> (<em>ndarray</em>) – Threshold values calculated at each point.</li>
-<li><strong>signal_chunk</strong> (<em>ndarray</em>) – Numpy array of signal_chunk.</li>
+<li><strong>signal_chunk</strong> (<em>ndarray</em>) – Numpy array of signal.</li>
 </ul>
 </td>
 </tr>
