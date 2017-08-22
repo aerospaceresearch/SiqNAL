@@ -47,7 +47,6 @@ def stat_check(values, threshold, chunknumber):
         measure = round(sum(values > (threshold / i)) / chunknumber, 2)
         stat.append(measure)
 
-    print(stat)
     if(stat[0] >= 0.5 and stat[1] >= 0.7 and stat[2] >= 0.8 and stat[3] >= 0.9 and stat[4] >= 0.95):
         is_present = True
 
