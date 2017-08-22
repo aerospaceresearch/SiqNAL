@@ -180,6 +180,8 @@
 
 <div class="viewcode-block" id="stat_check"><a class="viewcode-back" href="../../Track.html#Track.apt.stat_check">[docs]</a><span class="k">def</span> <span class="nf">stat_check</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">chunknumber</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Based upon the threshold views the statistical distribution of</span>
+<span class="sd">        points in signal file and concludes the presence of APT signal.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        -----------------------</span>
@@ -213,6 +215,9 @@
 
 <div class="viewcode-block" id="check"><a class="viewcode-back" href="../../Track.html#Track.apt.check">[docs]</a><span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="n">SignaIInfo</span><span class="p">,</span> <span class="n">signal</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Breaks the signal into smaller chunks and calculates statistical parameters</span>
+<span class="sd">        for each chunk. Also calculates mean of whole signal file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        -----------------------</span>
