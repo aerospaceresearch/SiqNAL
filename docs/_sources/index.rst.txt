@@ -17,7 +17,8 @@ Automatic Picture Transmission (APT) is supported.
 
 Our future goal is to make this project more universal by tracking signals using correlation of signal
 received from different ground stations but, it will require us to know the preamble part of signal in
-advance since simple signal correlation gives ambiguous results due to colored gaussian noise.
+advance as well as synchronized signals from multiple sources since simple signal correlation gives 
+ambiguous results due to colored gaussian noise.
 
 .. toctree::
    :maxdepth: 2

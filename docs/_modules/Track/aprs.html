@@ -187,6 +187,9 @@
 
 <div class="viewcode-block" id="radar_detect"><a class="viewcode-back" href="../../Track.html#Track.aprs.radar_detect">[docs]</a><span class="k">def</span> <span class="nf">radar_detect</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="n">refLength</span><span class="p">,</span> <span class="n">threshold_min</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">threshold_ratio</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">threshold_max</span><span class="o">=</span><span class="mf">1.5</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        </span>
+<span class="sd">        Based upon the values calculated start of APRS signal is detected while taking care of false results</span>
+<span class="sd">        due to spikes induced by noise.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        -----------------------</span>
@@ -227,6 +230,9 @@
 
 <div class="viewcode-block" id="cfar"><a class="viewcode-back" href="../../Track.html#Track.aprs.cfar">[docs]</a><span class="k">def</span> <span class="nf">cfar</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">refLength</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">guardLength</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates threshold value for each point using leading &amp; lagging cells</span>
+<span class="sd">        while discarding leading &amp; lagging guard cells. </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        -----------------------</span>
 <span class="sd">            signal : ndarray</span>
@@ -269,13 +275,15 @@
 
 <div class="viewcode-block" id="check"><a class="viewcode-back" href="../../Track.html#Track.aprs.check">[docs]</a><span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="n">SignaIInfo</span><span class="p">,</span> <span class="n">signal</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Breaks the signal into smaller chunks and send them</span>
+<span class="sd">        sequentially for APRS signal detection.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        -----------------------</span>
 <span class="sd">            SignalInfo : object</span>
 <span class="sd">                Instance of class SignalData having meta-data of file and signal.</span>
 <span class="sd">            signal : ndarray</span>
-<span class="sd">                Numpy complex array of signal.</span>
+<span class="sd">                Numpy complex array of filtered signal.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        ------------------------------</span>
