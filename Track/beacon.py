@@ -27,6 +27,9 @@ from Modules import SignalData
 def merge(peak, signal):
     """
 
+        Points detected very close to each other are merged and
+        classified as same peak.
+
         Parameters
         -----------------------
             peak : list
@@ -66,6 +69,9 @@ def merge(peak, signal):
 def radar_detect(radar, signal):
     """
 
+        Based upon the values calculated start of APRS signal is detected while taking care of false results
+        due to spikes induced by noise.
+
         Parameters
         -----------------------
             radar : ndarray
@@ -96,6 +102,10 @@ def radar_detect(radar, signal):
 
 def cfar(signal, refLength=1000, guardLength=100, p=0.01):
     """
+        
+        Calculates threshold value for each point using leading & lagging cells
+        while discarding leading & lagging guard cells. 
+
         Parameters
         -----------------------
             signal : ndarray
@@ -137,6 +147,9 @@ def cfar(signal, refLength=1000, guardLength=100, p=0.01):
 
 def check(SignaIInfo, signal):
     """
+
+        Breaks the signal into smaller chunks and send them
+        sequentially for APRS signal detection.
 
         Parameters
         -----------------------
