@@ -20,6 +20,12 @@ received from different ground stations but, it will require us to know the prea
 advance as well as synchronized signals from multiple sources since simple signal correlation gives 
 ambiguous results due to colored gaussian noise.
 
+This project is part of Google Summer of Code 2017 under `Aerospaceresearch <http://aerospaceresearch.net>`_ 
+written by `Jay Krishna <https://github.com/jay-krishna>`_ with `Andreas Hornig <https://github.com/hornig>`_ as mentor.
+
+The project repository can be accessed on `GitHub <https://github.com/aerospaceresearch/SiqNAL>`_  , blog post at
+`Wordpress <https://aerospaceresearch.net/?p=422>`_ and detailed explanation on `Google Document <https://goo.gl/o1v4ug>`_.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
@@ -27,6 +33,7 @@ ambiguous results due to colored gaussian noise.
    Install
    Module
    Track
+   Demo
    
 Indices and tables
 ==================
