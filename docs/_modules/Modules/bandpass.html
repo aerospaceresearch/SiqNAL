@@ -93,6 +93,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../Install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Module.html">Helper Modules of SiqNAL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Track.html">Tracking Modules of SiqNAL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Demo.html">Demonstration</a></li>
 </ul>
 
             
@@ -160,7 +161,7 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    **Author :** *Jay Krishna*</span>
 
-<span class="sd">    This module implements linear phase finite impule response (FIR) butterworth bandpass filter</span>
+<span class="sd">    This module implements linear phase finite impulse response (FIR) butterworth bandpass filter</span>
 <span class="sd">    using Frequency shift theorem and symmetricity of the filter. The computed signal after </span>
 <span class="sd">    applying bandpass filter is then stoared as (.txt) file.</span>
 
@@ -170,10 +171,10 @@
 <span class="sd">    1. **Frequency Shift Approach**</span>
 <span class="sd">    </span>
 <span class="sd">        * First of all the centre frequency of signal is shifted from current centre frequency(fc) to mean of lower and higher frequency cutoff.</span>
-<span class="sd">        * A linear phase finite impule response (FIR) butterworth bandpass filter is constructed of width half of passband width.</span>
+<span class="sd">        * A linear phase finite impulse response (FIR) butterworth bandpass filter is constructed of width half of passband width.</span>
 <span class="sd">        * After filtering the signal is again shifted back to the previous centre frequency.</span>
 
-<span class="sd">    2. **Frequency Zeroing Aprroach**</span>
+<span class="sd">    2. **Frequency Zeroing Approach**</span>
 <span class="sd">    </span>
 <span class="sd">        * Rectangular window in frequency domain is constructed with unity at passband while zero elsewhere.</span>
 <span class="sd">        * The rectangular window is multiplied with the signal in frequency domain.</span>
@@ -245,7 +246,7 @@
 <div class="viewcode-block" id="butter_bandpass_filter"><a class="viewcode-back" href="../../Module.html#Modules.bandpass.butter_bandpass_filter">[docs]</a><span class="k">def</span> <span class="nf">butter_bandpass_filter</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">fs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function constructs as well as applies the specified </span>
-<span class="sd">        linear phase finite impule response (FIR) butterworth </span>
+<span class="sd">        linear phase finite impulse response (FIR) butterworth </span>
 <span class="sd">        bandpass filter to the given shifted signal. The order of </span>
 <span class="sd">        the filter is automatically selected based upon the value of </span>
 <span class="sd">        *(Width of the filter / Nyquist Smapling frequency)*.</span>

@@ -176,7 +176,7 @@
 <div class="section" id="module-Modules.bandpass">
 <span id="bandpass-module"></span><h2>Bandpass Module<a class="headerlink" href="#module-Modules.bandpass" title="Permalink to this headline">¶</a></h2>
 <p><strong>Author :</strong> <em>Jay Krishna</em></p>
-<p>This module implements linear phase finite impule response (FIR) butterworth bandpass filter
+<p>This module implements linear phase finite impulse response (FIR) butterworth bandpass filter
 using Frequency shift theorem and symmetricity of the filter. The computed signal after
 applying bandpass filter is then stoared as (.txt) file.</p>
 <div class="section" id="approach">
@@ -186,12 +186,12 @@ applying bandpass filter is then stoared as (.txt) file.</p>
 <blockquote>
 <div><ul class="simple">
 <li>First of all the centre frequency of signal is shifted from current centre frequency(fc) to mean of lower and higher frequency cutoff.</li>
-<li>A linear phase finite impule response (FIR) butterworth bandpass filter is constructed of width half of passband width.</li>
+<li>A linear phase finite impulse response (FIR) butterworth bandpass filter is constructed of width half of passband width.</li>
 <li>After filtering the signal is again shifted back to the previous centre frequency.</li>
 </ul>
 </div></blockquote>
 </li>
-<li><p class="first"><strong>Frequency Zeroing Aprroach</strong></p>
+<li><p class="first"><strong>Frequency Zeroing Approach</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li>Rectangular window in frequency domain is constructed with unity at passband while zero elsewhere.</li>
@@ -233,7 +233,7 @@ sin wave of same frequency. In our case it won’t affect much beacause we are g
 <dt id="Modules.bandpass.butter_bandpass_filter">
 <code class="descclassname">Modules.bandpass.</code><code class="descname">butter_bandpass_filter</code><span class="sig-paren">(</span><em>data</em>, <em>width</em>, <em>fs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Modules/bandpass.html#butter_bandpass_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Modules.bandpass.butter_bandpass_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function constructs as well as applies the specified
-linear phase finite impule response (FIR) butterworth
+linear phase finite impulse response (FIR) butterworth
 bandpass filter to the given shifted signal. The order of
 the filter is automatically selected based upon the value of
 <em>(Width of the filter / Nyquist Smapling frequency)</em>.</p>
