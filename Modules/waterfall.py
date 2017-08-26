@@ -1,6 +1,6 @@
 """
     **Author :** *Jay Krishna*
-
+     
     This module saves the waterfall diagram of the entire signal by concatenating waterfall diagram of each second.
 
     Approach
