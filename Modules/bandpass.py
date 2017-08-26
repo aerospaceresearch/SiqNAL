@@ -1,7 +1,7 @@
 """
     **Author :** *Jay Krishna*
 
-    This module implements linear phase finite impule response (FIR) butterworth bandpass filter
+    This module implements linear phase finite impulse response (FIR) butterworth bandpass filter
     using Frequency shift theorem and symmetricity of the filter. The computed signal after 
     applying bandpass filter is then stoared as (.txt) file.
 
@@ -11,10 +11,10 @@
     1. **Frequency Shift Approach**
     
         * First of all the centre frequency of signal is shifted from current centre frequency(fc) to mean of lower and higher frequency cutoff.
-        * A linear phase finite impule response (FIR) butterworth bandpass filter is constructed of width half of passband width.
+        * A linear phase finite impulse response (FIR) butterworth bandpass filter is constructed of width half of passband width.
         * After filtering the signal is again shifted back to the previous centre frequency.
 
-    2. **Frequency Zeroing Aprroach**
+    2. **Frequency Zeroing Approach**
     
         * Rectangular window in frequency domain is constructed with unity at passband while zero elsewhere.
         * The rectangular window is multiplied with the signal in frequency domain.
@@ -86,7 +86,7 @@ def calc_parameter(flow, fhigh, fc, fs):
 def butter_bandpass_filter(data, width, fs):
     """
         This function constructs as well as applies the specified 
-        linear phase finite impule response (FIR) butterworth 
+        linear phase finite impulse response (FIR) butterworth 
         bandpass filter to the given shifted signal. The order of 
         the filter is automatically selected based upon the value of 
         *(Width of the filter / Nyquist Smapling frequency)*.
