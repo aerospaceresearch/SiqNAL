@@ -54,5 +54,4 @@ Installation of PyQt4 is system dependent, for some major distributions steps ar
 External Links
 =========
 
-For more details you can check this project's [documentation](https://goo.gl/8dddPf), [blog post](https://aerospaceresearch.net/?p=422)
-or detailed explanation on [Google Document](https://goo.gl/o1v4ug).
+For more details you can check this project's detailed explanation on [Google Document](https://goo.gl/xLXGsH), [documentation](https://goo.gl/8dddPf) or [blog post](https://aerospaceresearch.net/?p=422).
